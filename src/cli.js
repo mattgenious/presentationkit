@@ -3,6 +3,7 @@ import path from 'node:path';
 import { buildDeck } from './deck.js';
 import { renderDiagrams } from './diagrams.js';
 import { loadManifest } from './manifest.js';
+import { writePlanArtifacts } from './plan.js';
 import { exportSvgToPng } from './svg-to-png.js';
 import { validateManifest } from './validate.js';
 
@@ -11,8 +12,9 @@ function usage() {
 
 Usage:
   presentationkit validate <deck.json>
+  presentationkit plan <deck.json> [--out dist/plan] [--diagrams dist/diagrams] [--deck-out dist/deck.pptx]
   presentationkit render-diagrams <deck.json> [--out dist/diagrams]
-  presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams]
+  presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams] [--plan-out dist/plan]
   presentationkit export-svg <input.svg> <output.png> [--scale 2]
 `);
 }
@@ -55,12 +57,39 @@ async function main() {
     return;
   }
 
+  if (command === 'plan') {
+    const file = args[0];
+    if (!file) throw new Error('plan requires a deck manifest path.');
+    const outDir = path.resolve(readFlag(args, '--out', 'dist/plan'));
+    const diagramDir = path.resolve(readFlag(args, '--diagrams', 'dist/diagrams'));
+    const deckOut = path.resolve(readFlag(args, '--deck-out', 'dist/deck.pptx'));
+    const { manifest } = await loadManifest(file);
+    const plan = await writePlanArtifacts(manifest, {
+      manifestFile: file,
+      outDir,
+      diagramDir,
+      deckOut
+    });
+    console.log(plan.outputPaths.renderPlanJson);
+    console.log(plan.outputPaths.storyboardMarkdown);
+    return;
+  }
+
   if (command === 'build') {
     const file = args[0];
     if (!file) throw new Error('build requires a deck manifest path.');
     const out = path.resolve(readFlag(args, '--out', 'dist/deck.pptx'));
     const diagramDir = path.resolve(readFlag(args, '--diagrams', 'dist/diagrams'));
     const { manifest } = await loadManifest(file);
+    const planOut = readFlag(args, '--plan-out', undefined);
+    if (planOut) {
+      await writePlanArtifacts(manifest, {
+        manifestFile: file,
+        outDir: path.resolve(planOut),
+        diagramDir,
+        deckOut: out
+      });
+    }
     await renderDiagrams(manifest, diagramDir);
     const deck = await buildDeck(manifest, { out, diagramDir });
     console.log(deck);

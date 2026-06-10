@@ -8,9 +8,10 @@
   },
   "scripts": {
     "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
+    "plan:example": "node src/cli.js plan examples/operational-ai-support.deck.json --out dist/plan --diagrams dist/diagrams --deck-out dist/operational-ai-support.pptx",
     "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
-    "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
-    "smoke": "npm run check && npm run render:example && npm run build:example"
+    "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx --plan-out dist/plan",
+    "smoke": "npm run check && npm run plan:example && npm run render:example && npm run build:example"
   },
   "keywords": [
     "presentation",

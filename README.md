@@ -16,23 +16,37 @@
 
 ```powershell
 npm install
+npm run plan:example
 npm run smoke
 ```
 
 Outputs land in `dist/`:
 
 - `dist/diagrams/*.svg` generated from the example manifest.
+- `dist/plan/render-plan.json` deterministic render audit trail for the example manifest.
+- `dist/plan/storyboard.md` markdown storyboard for human review before rendering.
 - `dist/operational-ai-support.pptx` generated from the same manifest.
 
 ## CLI
 
 ```powershell
 node src/cli.js validate examples/operational-ai-support.deck.json
+node src/cli.js plan examples/operational-ai-support.deck.json --out dist/plan --diagrams dist/diagrams --deck-out dist/example.pptx
 node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
-node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
+node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx --plan-out dist/plan
 ```
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+
+## Plan -> storyboard -> build workflow
+
+Generate the audit trail before PPTX rendering:
+
+1. `npm run plan:example` writes `dist/plan/render-plan.json` and `dist/plan/storyboard.md`.
+2. Review the storyboard for slide order, headlines, speaker notes, diagram references, warnings, and expected artifacts.
+3. Run `npm run build:example` to regenerate the plan audit trail and then render diagrams plus PPTX.
+
+The render plan is intentionally deterministic: it contains manifest metadata, resolved output paths, expected artifacts, theme summary, slide list, diagram references, and validation warnings without timestamps or machine-generated IDs.
 
 ## Repository layout
 
@@ -41,8 +55,10 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/cli.js` | Command entry point. |
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
+| `src/plan.js` | Deterministic render-plan JSON and markdown storyboard generation. |
 | `src/layout.js` | Cards, pills, text, arrows, and aspect-ratio fitting. |
 | `src/validate.js` | Lightweight manifest validation. |
+| `docs/audit-trail-workflow.md` | Plan/storyboard audit-trail workflow. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
 | `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |
