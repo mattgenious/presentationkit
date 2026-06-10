@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PresentationKit deck manifest",
+  "type": "object",
+  "required": ["metadata", "slides"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "author": { "type": "string" },
+        "company": { "type": "string" },
+        "language": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "diagrams": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type", "title"],
+        "properties": {
+          "type": {
+            "enum": ["context", "proof", "ambition"]
+          },
+          "label": { "type": "string" },
+          "title": { "type": "string" },
+          "headline": { "type": "string" },
+          "supportingLine": { "type": "string" },
+          "speakerNotes": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

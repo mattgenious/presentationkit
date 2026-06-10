@@ -1,0 +1,143 @@
+{
+  "$schema": "../schemas/deck.schema.json",
+  "metadata": {
+    "title": "Operational AI Support Pattern",
+    "subject": "Three-slide evidence-first technical introduction",
+    "author": "PresentationKit",
+    "company": "Example Organization",
+    "language": "en-US"
+  },
+  "theme": {
+    "fonts": {
+      "heading": "Aptos Display",
+      "body": "Aptos"
+    },
+    "palette": {
+      "background": "F6F8FC",
+      "surface": "FFFFFF",
+      "ink": "172033",
+      "muted": "60708A",
+      "line": "D6E0ED",
+      "dark": "07111F",
+      "blue": "2563EB",
+      "bluePale": "EAF2FF",
+      "green": "22C55E",
+      "greenPale": "E6FAEE",
+      "yellow": "FACC15",
+      "yellowPale": "FFF7CC",
+      "orange": "F59E0B",
+      "orangePale": "FFF1D6",
+      "purple": "4B2E83"
+    }
+  },
+  "diagrams": {
+    "processFlow": {
+      "title": "How work becomes action",
+      "subtitle": "One incoming signal moves through context, decision support, and human-owned follow-up.",
+      "steps": [
+        { "title": "Signal", "detail": "incident, request, or case", "kind": "human" },
+        { "title": "Context", "detail": "logs, docs, and history", "kind": "system" },
+        { "title": "Reasoning", "detail": "hypotheses and checks", "kind": "system" },
+        { "title": "Artifact", "detail": "brief, ticket, or PR", "kind": "system" },
+        { "title": "Action", "detail": "human review and decision", "kind": "outcome" }
+      ],
+      "caption": "The capability is useful because it connects signals to accountable action."
+    },
+    "footprint": {
+      "title": "Support footprint",
+      "subtitle": "Reusable patterns matter when the same workflow appears across teams, systems, or regions.",
+      "items": [
+        { "code": "T1", "name": "Team one", "group": "Live" },
+        { "code": "T2", "name": "Team two", "group": "Live" },
+        { "code": "S1", "name": "Service one", "group": "Live" },
+        { "code": "R1", "name": "Region one", "group": "Pilot" },
+        { "code": "N1", "name": "Next area", "group": "Upcoming" }
+      ],
+      "caption": "Same pattern, repeated safely."
+    },
+    "architecture": {
+      "title": "How the support capability works",
+      "subtitle": "Read-only evidence goes in; support-ready material comes out.",
+      "sources": [
+        { "title": "Observability", "detail": "logs, metrics, traces" },
+        { "title": "Work tracking", "detail": "tickets and history" },
+        { "title": "Repositories", "detail": "code and decisions" },
+        { "title": "Runbooks", "detail": "team knowledge" }
+      ],
+      "center": {
+        "title": "Support agent",
+        "detail": "chat UI + scheduled checks",
+        "badges": ["on demand", "proactive"]
+      },
+      "outputs": [
+        { "title": "Case brief", "detail": "timeline and evidence" },
+        { "title": "Follow-up ticket", "detail": "tracked platform work" },
+        { "title": "Draft PR", "detail": "human-reviewed change" }
+      ],
+      "guardrails": ["read-only by default", "no autonomous deploys", "audit trail"]
+    },
+    "ambition": {
+      "leftLabel": "Operational context",
+      "rightLabel": "Compounding impact",
+      "center": {
+        "title": "AI support teammate",
+        "detail": "evidence-first + guardrailed + human-owned"
+      },
+      "inputs": [
+        { "title": "Production evidence", "detail": "signals and traces" },
+        { "title": "Support history", "detail": "cases and decisions" },
+        { "title": "Code context", "detail": "repos and PRs" },
+        { "title": "Team knowledge", "detail": "runbooks and handovers" }
+      ],
+      "outcomes": [
+        { "title": "Team", "line1": "less manual triage", "line2": "better handovers" },
+        { "title": "Platform", "line1": "faster learning", "line2": "from incidents" },
+        { "title": "Organization", "line1": "reusable guarded", "line2": "AI pattern" }
+      ]
+    }
+  },
+  "slides": [
+    {
+      "type": "context",
+      "label": "1 / context",
+      "title": "This is the world the capability supports",
+      "headline": "Support work is connected to real operational flow, not just screens.",
+      "supportingLine": "A signal becomes context gathering, decision support, a reviewable artifact, and accountable human action.",
+      "processDiagram": "processFlow",
+      "footprintDiagram": "footprint",
+      "footprintChips": [
+        ["T1", "Team one"],
+        ["T2", "Team two"],
+        ["S1", "Service one"],
+        ["R1", "Pilot"],
+        ["N1", "Next"]
+      ],
+      "speakerNotes": "Start with the operational context. The audience only needs enough background to understand why support quality matters."
+    },
+    {
+      "type": "proof",
+      "label": "2 / proof",
+      "title": "The capability is already producing support-ready artifacts",
+      "headline": "Evidence in. Human-reviewed action out.",
+      "supportingLine": "The system gathers context, prepares the next support step, and keeps people in control.",
+      "architectureDiagram": "architecture",
+      "guardrailLine": "Guardrails: read-only by default; no autonomous deploys; no restarts; audit trail.",
+      "proofArtifacts": [
+        { "label": "Case brief", "caption": "timeline and evidence", "accent": "green" },
+        { "label": "Investigation report", "caption": "root-cause framing", "accent": "blue" },
+        { "label": "Follow-up ticket", "caption": "tracked action", "accent": "orange" }
+      ],
+      "speakerNotes": "This is the credibility slide. Show the system, the proof artifacts, and the guardrails together."
+    },
+    {
+      "type": "ambition",
+      "label": "3 / ambition",
+      "title": "The dream: a reusable AI support teammate",
+      "headline": "A guarded pattern for making operational knowledge available exactly when teams need it.",
+      "ambitionDiagram": "ambition",
+      "badge": "Applied AI pattern",
+      "closingLine": "Do not wait for the playbook. Build it through real support work.",
+      "speakerNotes": "Close by widening from the first use case to the repeatable operating model."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "presentationkit",
+  "version": "0.1.0",
+  "description": "Manifest-driven presentation generation toolkit for evidence-first technical stories.",
+  "type": "module",
+  "bin": {
+    "presentationkit": "./src/cli.js"
+  },
+  "scripts": {
+    "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
+    "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
+    "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
+    "smoke": "npm run check && npm run render:example && npm run build:example"
+  },
+  "keywords": [
+    "presentation",
+    "pptx",
+    "storytelling",
+    "technical-presentations",
+    "evidence"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}
