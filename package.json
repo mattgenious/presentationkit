@@ -8,9 +8,12 @@
   },
   "scripts": {
     "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
+    "inspect:example": "node src/cli.js inspect examples/operational-ai-support.deck.json",
+    "list:example": "node src/cli.js list examples/operational-ai-support.deck.json",
     "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
     "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
-    "smoke": "npm run check && npm run render:example && npm run build:example"
+    "cli:help": "node src/cli.js --help",
+    "smoke": "npm run check && npm run inspect:example && npm run render:example && npm run build:example"
   },
   "keywords": [
     "presentation",
@@ -25,6 +28,7 @@
     "node": ">=20"
   },
   "dependencies": {
+    "commander": "12.1.0",
     "pptxgenjs": "^4.0.1"
   }
 }

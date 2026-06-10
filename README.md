@@ -27,10 +27,35 @@ Outputs land in `dist/`:
 ## CLI
 
 ```powershell
+node src/cli.js --help
 node src/cli.js validate examples/operational-ai-support.deck.json
+node src/cli.js inspect examples/operational-ai-support.deck.json --json
+node src/cli.js list examples/operational-ai-support.deck.json
+node src/cli.js examples
 node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
 node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
+node src/cli.js export-svg dist/diagrams/processFlow.svg dist/processFlow.png --scale 2
 ```
+
+Available commands:
+
+| Command | Aliases | Purpose |
+|---|---|---|
+| `validate <deck.json>` | `check` | Validate a manifest. Add `--json` for machine-readable errors and warnings. |
+| `inspect <deck.json>` | `info` | Show deck metadata, slide and diagram counts, and validation status. Add `--json` for automation. |
+| `list <deck.json>` | `ls` | List slide titles and diagram keys. Add `--json` for automation. |
+| `examples` | `example` | Print the bundled example manifest and common commands. |
+| `render-diagrams <deck.json>` | `diagrams` | Render SVG diagrams. Use `--out`/`-o` to choose the output directory. |
+| `build <deck.json>` | `deck` | Build a PPTX. Use `--out`/`-o` for the deck path and `--diagrams`/`-d` for the diagram directory. |
+| `export-svg <input.svg> <output.png>` | `png` | Export SVG to PNG. Use `--scale`/`-s` to set the device scale factor. |
+
+Add `--verbose` before a command to log progress details to stderr, for example:
+
+```powershell
+node src/cli.js --verbose build examples/operational-ai-support.deck.json --out dist/example.pptx
+```
+
+The CLI prints command help after argument and option errors, and suggests close command names for typos.
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
 
