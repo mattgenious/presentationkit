@@ -21,6 +21,7 @@ npm run smoke
 
 Outputs land in `dist/`:
 
+- `dist/qa/presentation-qa.md` and `dist/qa/presentation-qa.json` generated from the example manifest.
 - `dist/diagrams/*.svg` generated from the example manifest.
 - `dist/operational-ai-support.pptx` generated from the same manifest.
 
@@ -28,11 +29,25 @@ Outputs land in `dist/`:
 
 ```powershell
 node src/cli.js validate examples/operational-ai-support.deck.json
+node src/cli.js qa/review examples/operational-ai-support.deck.json --out dist/qa
 node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
 node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
 ```
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+
+## QA workflow
+
+Run `npm run qa:example` to produce human-readable Markdown and machine-readable JSON review artifacts without opening PowerPoint or any external office app. The QA review checks:
+
+- slide count and baseline manifest readiness;
+- speaker notes coverage;
+- proof artifacts and proof-slide guardrail lines;
+- metric-like claims that need sources, assumptions, or caveats;
+- missing and unused diagrams;
+- aspect-ratio metadata when the manifest or built-in diagram renderer provides it.
+
+Use `docs/presentation-quality-rubric.md` for the quality gate criteria and `docs/presenter-review-checklist.md` for the final presenter pass.
 
 ## Repository layout
 
@@ -42,7 +57,10 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
 | `src/layout.js` | Cards, pills, text, arrows, and aspect-ratio fitting. |
+| `src/qa.js` | Presentation QA review and artifact generation. |
 | `src/validate.js` | Lightweight manifest validation. |
+| `docs/presentation-quality-rubric.md` | QA criteria for review-ready decks. |
+| `docs/presenter-review-checklist.md` | Presenter-facing final review checklist. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
 | `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |

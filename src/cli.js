@@ -3,6 +3,7 @@ import path from 'node:path';
 import { buildDeck } from './deck.js';
 import { renderDiagrams } from './diagrams.js';
 import { loadManifest } from './manifest.js';
+import { reviewManifest, writeReviewArtifacts } from './qa.js';
 import { exportSvgToPng } from './svg-to-png.js';
 import { validateManifest } from './validate.js';
 
@@ -11,6 +12,7 @@ function usage() {
 
 Usage:
   presentationkit validate <deck.json>
+  presentationkit qa/review <deck.json> [--out dist/qa]
   presentationkit render-diagrams <deck.json> [--out dist/diagrams]
   presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams]
   presentationkit export-svg <input.svg> <output.png> [--scale 2]
@@ -52,6 +54,22 @@ async function main() {
     const { manifest } = await loadManifest(file);
     const written = await renderDiagrams(manifest, out);
     for (const diagram of written) console.log(diagram);
+    return;
+  }
+
+  if (command === 'qa/review' || command === 'review') {
+    const file = args[0];
+    if (!file) throw new Error('qa/review requires a deck manifest path.');
+    const out = readFlag(args, '--out', 'dist/qa');
+    const { manifest } = await loadManifest(file);
+    const review = reviewManifest(manifest);
+    const artifacts = await writeReviewArtifacts(review, out);
+    console.log(`QA status: ${review.summary.status}`);
+    console.log(`Markdown: ${artifacts.markdownPath}`);
+    console.log(`JSON: ${artifacts.jsonPath}`);
+    if (review.summary.counts.error > 0) {
+      throw new Error(`QA review found ${review.summary.counts.error} error(s).`);
+    }
     return;
   }
 
