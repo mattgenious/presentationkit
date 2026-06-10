@@ -23,6 +23,7 @@ Outputs land in `dist/`:
 
 - `dist/diagrams/*.svg` generated from the example manifest.
 - `dist/operational-ai-support.pptx` generated from the same manifest.
+- `dist/render-manifest.json` containing render metadata, artifact paths, checksums, and validation warnings.
 
 ## CLI
 
@@ -30,9 +31,12 @@ Outputs land in `dist/`:
 node src/cli.js validate examples/operational-ai-support.deck.json
 node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
 node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
+node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx --manifest-out dist/example.render.json --deterministic
 ```
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+
+See [docs/render-output-contract.md](docs/render-output-contract.md) for reproducibility notes and the generated artifact contract.
 
 ## Repository layout
 
@@ -45,6 +49,7 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/validate.js` | Lightweight manifest validation. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
+| `docs/render-output-contract.md` | Render manifest, reproducibility, and generated artifact contract. |
 | `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |
 
 ## Design principles
