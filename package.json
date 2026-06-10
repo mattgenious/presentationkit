@@ -7,10 +7,13 @@
     "presentationkit": "./src/cli.js"
   },
   "scripts": {
-    "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
+    "check": "node scripts/examples.js validate",
+    "validate:examples": "node scripts/examples.js validate",
     "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
+    "render:examples": "node scripts/examples.js render-diagrams",
     "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
-    "smoke": "npm run check && npm run render:example && npm run build:example"
+    "build:examples": "node scripts/examples.js build",
+    "smoke": "npm run check && npm run render:examples && npm run build:examples"
   },
   "keywords": [
     "presentation",

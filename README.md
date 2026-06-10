@@ -21,8 +21,8 @@ npm run smoke
 
 Outputs land in `dist/`:
 
-- `dist/diagrams/*.svg` generated from the example manifest.
-- `dist/operational-ai-support.pptx` generated from the same manifest.
+- `dist/diagrams/<example>/*.svg` generated from each example manifest.
+- `dist/examples/*.pptx` generated from each example manifest.
 
 ## CLI
 
@@ -32,7 +32,30 @@ node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out 
 node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
 ```
 
-Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+Use any file in `examples/` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+
+## Examples
+
+The example suite is intentionally brand-neutral and covers several common technical storytelling jobs:
+
+| Manifest | Purpose |
+|---|---|
+| `examples/operational-ai-support.deck.json` | Evidence-first support capability introduction. |
+| `examples/roadmap-story.deck.json` | Roadmap narrative with signals, trade-offs, and sequencing. |
+| `examples/incident-postmortem.deck.json` | Blameless incident review with timeline, evidence, and follow-up. |
+| `examples/system-architecture-overview.deck.json` | Architecture overview across request flow, boundaries, and operations. |
+| `examples/research-findings-brief.deck.json` | Research readout that separates evidence, inference, and uncertainty. |
+| `examples/metrics-board-update.deck.json` | Board-style metrics update with progress, risk, and decision asks. |
+
+Validate or build every example with:
+
+```powershell
+npm run validate:examples
+npm run render:examples
+npm run build:examples
+```
+
+Generated SVG and PPTX outputs are written under `dist/`, which is ignored by git.
 
 ## Repository layout
 
@@ -45,7 +68,7 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/validate.js` | Lightweight manifest validation. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
-| `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |
+| `examples/*.deck.json` | Brand-neutral example deck manifests. |
 
 ## Design principles
 

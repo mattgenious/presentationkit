@@ -1,0 +1,114 @@
+{
+  "$schema": "../schemas/deck.schema.json",
+  "metadata": {
+    "title": "Incident Postmortem",
+    "subject": "Blameless post-incident narrative for learning and follow-up",
+    "author": "PresentationKit",
+    "company": "Example Organization",
+    "language": "en-US"
+  },
+  "diagrams": {
+    "processFlow": {
+      "title": "How the incident unfolded",
+      "subtitle": "A neutral timeline moves from signal through mitigation and learning.",
+      "steps": [
+        { "title": "Detect", "detail": "alert or report", "kind": "system" },
+        { "title": "Triage", "detail": "impact and scope", "kind": "human" },
+        { "title": "Mitigate", "detail": "stabilize service", "kind": "system" },
+        { "title": "Explain", "detail": "root causes", "kind": "system" },
+        { "title": "Improve", "detail": "owned actions", "kind": "outcome" }
+      ],
+      "caption": "The point is learning, not blame."
+    },
+    "footprint": {
+      "title": "Impact frame",
+      "subtitle": "Separate observed impact, affected paths, dependencies, and recovery status.",
+      "items": [
+        { "code": "I", "name": "Impact", "group": "Observed" },
+        { "code": "P", "name": "Path", "group": "Affected" },
+        { "code": "D", "name": "Dependency", "group": "Contributing" },
+        { "code": "R", "name": "Recovery", "group": "Complete" },
+        { "code": "F", "name": "Follow-up", "group": "Upcoming" }
+      ],
+      "caption": "Impact language stays factual and scoped."
+    },
+    "architecture": {
+      "title": "Postmortem evidence model",
+      "subtitle": "Incident evidence is organized into causes, mitigations, and durable follow-up.",
+      "sources": [
+        { "title": "Alerts", "detail": "time and threshold" },
+        { "title": "Logs", "detail": "events and errors" },
+        { "title": "Changes", "detail": "deploys and config" },
+        { "title": "Operator notes", "detail": "decisions and context" }
+      ],
+      "center": {
+        "title": "Learning review",
+        "detail": "timeline + causes + actions",
+        "badges": ["blameless", "factual"]
+      },
+      "outputs": [
+        { "title": "Timeline", "detail": "what happened when" },
+        { "title": "Cause map", "detail": "contributing factors" },
+        { "title": "Action list", "detail": "owners and due dates" }
+      ],
+      "guardrails": ["focus on systems", "evidence before claims", "owners for actions"]
+    },
+    "ambition": {
+      "leftLabel": "Incident evidence",
+      "rightLabel": "Operational learning",
+      "center": {
+        "title": "Blameless postmortem",
+        "detail": "timeline + evidence + prevention"
+      },
+      "inputs": [
+        { "title": "Customer impact", "detail": "scope and duration" },
+        { "title": "System signals", "detail": "metrics and logs" },
+        { "title": "Response notes", "detail": "decisions and handoffs" },
+        { "title": "Change history", "detail": "deploys and configuration" }
+      ],
+      "outcomes": [
+        { "title": "Responders", "line1": "shared facts", "line2": "less re-litigation" },
+        { "title": "Service", "line1": "reduced recurrence", "line2": "better detection" },
+        { "title": "Organization", "line1": "learning culture", "line2": "clear accountability" }
+      ]
+    }
+  },
+  "slides": [
+    {
+      "type": "context",
+      "label": "1 / incident context",
+      "title": "The incident story starts with impact and timeline",
+      "headline": "A useful postmortem turns a stressful event into shared operational knowledge.",
+      "supportingLine": "Use a clear sequence to show detection, response, mitigation, explanation, and improvement.",
+      "processDiagram": "processFlow",
+      "footprintDiagram": "footprint",
+      "footprintChips": [["I", "Impact"], ["P", "Path"], ["D", "Dependency"], ["R", "Recovery"], ["F", "Follow-up"]],
+      "speakerNotes": "Start with facts and scope. Avoid blame and avoid overstating certainty."
+    },
+    {
+      "type": "proof",
+      "label": "2 / incident proof",
+      "title": "Evidence makes the learning defensible",
+      "headline": "Claims are tied to alerts, logs, changes, and responder notes.",
+      "supportingLine": "The deck should make it easy to see what is known, what changed, and what will improve.",
+      "architectureDiagram": "architecture",
+      "guardrailLine": "Guardrails: focus on systems; evidence before claims; every action has an owner.",
+      "proofArtifacts": [
+        { "label": "Timeline", "caption": "events and decisions", "accent": "blue" },
+        { "label": "Cause map", "caption": "contributing factors", "accent": "orange" },
+        { "label": "Action tracker", "caption": "owners and due dates", "accent": "green" }
+      ],
+      "speakerNotes": "Anchor the postmortem in inspectable evidence and clear follow-up."
+    },
+    {
+      "type": "ambition",
+      "label": "3 / incident ambition",
+      "title": "The dream: incidents improve the system and the team",
+      "headline": "A postmortem succeeds when it reduces repeat failure and improves response quality.",
+      "ambitionDiagram": "ambition",
+      "badge": "Blameless review",
+      "closingLine": "Turn the incident into durable operational learning.",
+      "speakerNotes": "Close by emphasizing prevention, detection, and shared accountability."
+    }
+  ]
+}

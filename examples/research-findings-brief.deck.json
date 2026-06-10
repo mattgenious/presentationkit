@@ -1,0 +1,114 @@
+{
+  "$schema": "../schemas/deck.schema.json",
+  "metadata": {
+    "title": "Research Findings Brief",
+    "subject": "Evidence-first research readout for neutral product discovery",
+    "author": "PresentationKit",
+    "company": "Example Organization",
+    "language": "en-US"
+  },
+  "diagrams": {
+    "processFlow": {
+      "title": "How research becomes a decision",
+      "subtitle": "Findings move from question to evidence, synthesis, recommendation, and next step.",
+      "steps": [
+        { "title": "Question", "detail": "decision to inform", "kind": "human" },
+        { "title": "Evidence", "detail": "interviews and data", "kind": "system" },
+        { "title": "Synthesis", "detail": "patterns and gaps", "kind": "system" },
+        { "title": "Recommendation", "detail": "choice and caveats", "kind": "system" },
+        { "title": "Next step", "detail": "test or build", "kind": "outcome" }
+      ],
+      "caption": "Research is useful when it changes the next decision."
+    },
+    "footprint": {
+      "title": "Evidence coverage",
+      "subtitle": "Make sample, sources, confidence, risks, and next learning explicit.",
+      "items": [
+        { "code": "S", "name": "Sample", "group": "Observed" },
+        { "code": "Q", "name": "Questions", "group": "Covered" },
+        { "code": "P", "name": "Patterns", "group": "Found" },
+        { "code": "R", "name": "Risks", "group": "Known" },
+        { "code": "N", "name": "Next", "group": "Upcoming" }
+      ],
+      "caption": "Coverage keeps findings honest."
+    },
+    "architecture": {
+      "title": "Research evidence model",
+      "subtitle": "Qualitative and quantitative inputs become findings and decision options.",
+      "sources": [
+        { "title": "Interviews", "detail": "participant evidence" },
+        { "title": "Survey data", "detail": "directional signals" },
+        { "title": "Usage data", "detail": "observed behavior" },
+        { "title": "Desk research", "detail": "market and context" }
+      ],
+      "center": {
+        "title": "Synthesis",
+        "detail": "patterns + confidence + caveats",
+        "badges": ["evidence", "limits"]
+      },
+      "outputs": [
+        { "title": "Finding set", "detail": "what we learned" },
+        { "title": "Decision options", "detail": "paths and trade-offs" },
+        { "title": "Learning plan", "detail": "what to test next" }
+      ],
+      "guardrails": ["state sample limits", "separate fact from inference", "name uncertainty"]
+    },
+    "ambition": {
+      "leftLabel": "Research inputs",
+      "rightLabel": "Decision quality",
+      "center": {
+        "title": "Findings brief",
+        "detail": "evidence + synthesis + recommendation"
+      },
+      "inputs": [
+        { "title": "User voice", "detail": "needs and language" },
+        { "title": "Behavior data", "detail": "what people do" },
+        { "title": "Market context", "detail": "alternatives and norms" },
+        { "title": "Constraints", "detail": "time and feasibility" }
+      ],
+      "outcomes": [
+        { "title": "Teams", "line1": "clearer problem", "line2": "less opinion drift" },
+        { "title": "Leaders", "line1": "decision options", "line2": "visible uncertainty" },
+        { "title": "Users", "line1": "better fit", "line2": "fewer assumptions" }
+      ]
+    }
+  },
+  "slides": [
+    {
+      "type": "context",
+      "label": "1 / research context",
+      "title": "Research findings should answer a decision question",
+      "headline": "The brief connects evidence to the choice the team needs to make.",
+      "supportingLine": "Start with the research question, coverage, and path from evidence to recommendation.",
+      "processDiagram": "processFlow",
+      "footprintDiagram": "footprint",
+      "footprintChips": [["S", "Sample"], ["Q", "Questions"], ["P", "Patterns"], ["R", "Risks"], ["N", "Next"]],
+      "speakerNotes": "Frame the research around the decision it informs and the limits of the evidence."
+    },
+    {
+      "type": "proof",
+      "label": "2 / research proof",
+      "title": "Findings are stronger when confidence is visible",
+      "headline": "Evidence, inference, and uncertainty are shown as separate things.",
+      "supportingLine": "The readout should make it easy to trace recommendations back to observed evidence.",
+      "architectureDiagram": "architecture",
+      "guardrailLine": "Guardrails: state sample limits; separate fact from inference; name uncertainty.",
+      "proofArtifacts": [
+        { "label": "Evidence table", "caption": "quotes and signals", "accent": "blue" },
+        { "label": "Finding cards", "caption": "patterns and strength", "accent": "green" },
+        { "label": "Decision matrix", "caption": "options and trade-offs", "accent": "orange" }
+      ],
+      "speakerNotes": "Show enough traceability that the audience trusts both the findings and the caveats."
+    },
+    {
+      "type": "ambition",
+      "label": "3 / research ambition",
+      "title": "The dream: better decisions from clearer learning",
+      "headline": "Research creates value when it reduces assumptions and sharpens the next experiment.",
+      "ambitionDiagram": "ambition",
+      "badge": "Research brief",
+      "closingLine": "Let the evidence change the decision, and let the caveats shape the next question.",
+      "speakerNotes": "Close on decision quality and a practical next learning step."
+    }
+  ]
+}
