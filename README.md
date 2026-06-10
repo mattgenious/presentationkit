@@ -34,6 +34,14 @@ node src/cli.js build examples/operational-ai-support.deck.json --out dist/examp
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
 
+## Agent and contributor guidance
+
+- `AGENTS.md` routes agent work, safe edit surfaces, generated artifact rules, verification commands, and git author requirements.
+- `docs/new-agent-start-here.md` is the first stop for agents changing deck behavior.
+- `docs/contributing.md` covers contribution expectations and PR readiness.
+- `docs/contextless-agent-checklist.md` helps implement deck features without relying on prior session context.
+- `docs/review-checklist.md` ties review back to quality, intent, manifest, and render surfaces.
+
 ## Repository layout
 
 | Path | Purpose |
@@ -43,6 +51,11 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
 | `src/layout.js` | Cards, pills, text, arrows, and aspect-ratio fitting. |
 | `src/validate.js` | Lightweight manifest validation. |
+| `AGENTS.md` | Agent routing, verification, generated artifact, and safe-edit guidance. |
+| `docs/new-agent-start-here.md` | Orientation for agents starting deck feature work. |
+| `docs/contributing.md` | Contribution and PR readiness guidance. |
+| `docs/contextless-agent-checklist.md` | Checklist for implementing deck features without prior context. |
+| `docs/review-checklist.md` | Review checklist for intent, quality, manifest, and render surfaces. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
 | `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |
