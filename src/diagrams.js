@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createTheme } from './theme.js';
+import { assertValidManifest } from './validate.js';
 
 function esc(value) {
   return String(value ?? '')
@@ -248,6 +249,8 @@ export function ambitionSvg(diagram, theme) {
 }
 
 export async function renderDiagrams(manifest, outDir) {
+  assertValidManifest(manifest);
+
   const theme = createTheme(manifest.theme);
   await fs.mkdir(outDir, { recursive: true });
   const written = [];

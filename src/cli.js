@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import path from 'node:path';
-import { buildDeck } from './deck.js';
 import { renderDiagrams } from './diagrams.js';
 import { loadManifest } from './manifest.js';
 import { exportSvgToPng } from './svg-to-png.js';
@@ -10,7 +9,7 @@ function usage() {
   console.log(`presentationkit
 
 Usage:
-  presentationkit validate <deck.json>
+  presentationkit validate <deck.json> [--json]
   presentationkit render-diagrams <deck.json> [--out dist/diagrams]
   presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams]
   presentationkit export-svg <input.svg> <output.png> [--scale 2]
@@ -37,8 +36,24 @@ async function main() {
   if (command === 'validate') {
     const file = args[0];
     if (!file) throw new Error('validate requires a deck manifest path.');
-    const { manifest } = await loadManifest(file);
+    const json = args.includes('--json');
+    let manifest;
+    try {
+      ({ manifest } = await loadManifest(file));
+    } catch (error) {
+      if (json) {
+        console.log(JSON.stringify({ file, ok: false, errors: [error.message], warnings: [] }, null, 2));
+        process.exitCode = 1;
+        return;
+      }
+      throw error;
+    }
     const result = validateManifest(manifest);
+    if (json) {
+      console.log(JSON.stringify({ file, ...result }, null, 2));
+      if (!result.ok) process.exitCode = 1;
+      return;
+    }
     for (const warning of result.warnings) console.warn(`warning: ${warning}`);
     if (!result.ok) throw new Error(result.errors.join('\n'));
     console.log(`Valid deck manifest: ${file}`);
@@ -62,6 +77,7 @@ async function main() {
     const diagramDir = path.resolve(readFlag(args, '--diagrams', 'dist/diagrams'));
     const { manifest } = await loadManifest(file);
     await renderDiagrams(manifest, diagramDir);
+    const { buildDeck } = await import('./deck.js');
     const deck = await buildDeck(manifest, { out, diagramDir });
     console.log(deck);
     return;

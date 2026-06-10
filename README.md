@@ -28,11 +28,38 @@ Outputs land in `dist/`:
 
 ```powershell
 node src/cli.js validate examples/operational-ai-support.deck.json
+node src/cli.js validate examples/operational-ai-support.deck.json --json
 node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
 node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
 ```
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+
+## Validation contract
+
+Validation is authoritative for rendering. `validate`, `render-diagrams`, and `build` all fail before rendering when a manifest contains fields that the deck or diagram renderers cannot consume safely.
+
+The validator checks:
+
+- required root objects: `metadata`, `diagrams`, and `slides`;
+- duplicate JSON keys while loading a manifest;
+- unknown fields at the root, metadata, theme, diagram, slide, and nested card levels;
+- theme palette values as six-digit hex colors without `#`;
+- the four supported diagram definitions: `processFlow`, `footprint`, `architecture`, and `ambition`;
+- diagram arrays used by renderers, including process `steps`, footprint `items`, architecture `sources`/`outputs`/`guardrails`, and ambition `inputs`/`outcomes`;
+- slide-specific required fields for `context`, `proof`, and `ambition` slides;
+- diagram references used by slides, currently the canonical renderer keys (`processFlow`, `footprint`, `architecture`, `ambition`);
+- proof artifact accent colors (`blue`, `green`, `yellow`, `orange`, `purple`).
+
+Warnings are limited to optional quality advice, such as missing `speakerNotes` or arrays longer than the renderer displays. Validation errors are intended to be actionable and include the manifest path, for example `slides[0].proofArtifacts[0].accent`.
+
+For machine-readable output, run:
+
+```powershell
+node src/cli.js validate examples/operational-ai-support.deck.json --json
+```
+
+`examples/invalid-validation.deck.json` is intentionally broken and can be used to see the fail-fast errors returned by the validator.
 
 ## Repository layout
 
@@ -42,7 +69,7 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
 | `src/layout.js` | Cards, pills, text, arrows, and aspect-ratio fitting. |
-| `src/validate.js` | Lightweight manifest validation. |
+| `src/validate.js` | Authoritative manifest validation. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
 | `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |

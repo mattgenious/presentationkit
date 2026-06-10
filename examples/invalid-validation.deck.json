@@ -1,0 +1,58 @@
+{
+  "$schema": "../schemas/deck.schema.json",
+  "metadata": {
+    "title": "Invalid validation example"
+  },
+  "theme": {
+    "palette": {
+      "blue": "#2563EB",
+      "typoBlue": "2563EB"
+    }
+  },
+  "diagrams": {
+    "processFlow": {
+      "title": "Broken process",
+      "subtitle": "The step kind is not renderable.",
+      "steps": [
+        { "title": "Signal", "detail": "incoming work", "kind": "robot" }
+      ]
+    },
+    "footprint": {
+      "title": "Broken footprint",
+      "subtitle": "Required item fields are missing.",
+      "items": [
+        { "code": "T1", "group": "Live" }
+      ]
+    },
+    "architecture": {
+      "title": "Broken architecture",
+      "subtitle": "The renderer needs non-empty arrays and a center card.",
+      "sources": [],
+      "center": { "title": "Capability" },
+      "outputs": [],
+      "guardrails": []
+    },
+    "ambition": {
+      "leftLabel": "Inputs",
+      "rightLabel": "Outcomes",
+      "center": { "title": "Missing detail" },
+      "inputs": [],
+      "outcomes": []
+    },
+    "unknownDiagram": {
+      "title": "Ignored before strict validation"
+    }
+  },
+  "slides": [
+    {
+      "type": "proof",
+      "title": "This slide has actionable validation failures",
+      "supportingLine": "Invalid accents and unknown fields fail validation.",
+      "architectureDiagram": "processFlow",
+      "proofArtifacts": [
+        { "label": "Artifact", "accent": "red" }
+      ],
+      "unknownField": true
+    }
+  ]
+}

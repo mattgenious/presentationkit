@@ -2,47 +2,333 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "PresentationKit deck manifest",
   "type": "object",
-  "required": ["metadata", "slides"],
+  "required": ["metadata", "diagrams", "slides"],
+  "additionalProperties": false,
   "properties": {
+    "$schema": { "type": "string" },
     "metadata": {
       "type": "object",
       "required": ["title"],
+      "additionalProperties": false,
       "properties": {
-        "title": { "type": "string" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
         "subject": { "type": "string" },
         "author": { "type": "string" },
         "company": { "type": "string" },
-        "language": { "type": "string" }
-      },
-      "additionalProperties": true
+        "language": { "type": "string" },
+        "footer": { "type": "string" }
+      }
     },
     "theme": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": false,
+      "properties": {
+        "fonts": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "heading": { "type": "string" },
+            "body": { "type": "string" }
+          }
+        },
+        "palette": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "background": { "$ref": "#/$defs/hexColor" },
+            "surface": { "$ref": "#/$defs/hexColor" },
+            "ink": { "$ref": "#/$defs/hexColor" },
+            "navy": { "$ref": "#/$defs/hexColor" },
+            "muted": { "$ref": "#/$defs/hexColor" },
+            "faint": { "$ref": "#/$defs/hexColor" },
+            "line": { "$ref": "#/$defs/hexColor" },
+            "dark": { "$ref": "#/$defs/hexColor" },
+            "blue": { "$ref": "#/$defs/hexColor" },
+            "blue2": { "$ref": "#/$defs/hexColor" },
+            "bluePale": { "$ref": "#/$defs/hexColor" },
+            "yellow": { "$ref": "#/$defs/hexColor" },
+            "yellowPale": { "$ref": "#/$defs/hexColor" },
+            "green": { "$ref": "#/$defs/hexColor" },
+            "greenPale": { "$ref": "#/$defs/hexColor" },
+            "orange": { "$ref": "#/$defs/hexColor" },
+            "orangePale": { "$ref": "#/$defs/hexColor" },
+            "purple": { "$ref": "#/$defs/hexColor" },
+            "purpleDark": { "$ref": "#/$defs/hexColor" },
+            "white": { "$ref": "#/$defs/hexColor" }
+          }
+        }
+      }
     },
     "diagrams": {
       "type": "object",
-      "additionalProperties": true
+      "required": ["processFlow", "footprint", "architecture", "ambition"],
+      "additionalProperties": false,
+      "properties": {
+        "processFlow": { "$ref": "#/$defs/processFlowDiagram" },
+        "footprint": { "$ref": "#/$defs/footprintDiagram" },
+        "architecture": { "$ref": "#/$defs/architectureDiagram" },
+        "ambition": { "$ref": "#/$defs/ambitionDiagram" }
+      }
     },
     "slides": {
       "type": "array",
       "minItems": 1,
       "items": {
-        "type": "object",
-        "required": ["type", "title"],
-        "properties": {
-          "type": {
-            "enum": ["context", "proof", "ambition"]
-          },
-          "label": { "type": "string" },
-          "title": { "type": "string" },
-          "headline": { "type": "string" },
-          "supportingLine": { "type": "string" },
-          "speakerNotes": { "type": "string" }
-        },
-        "additionalProperties": true
+        "oneOf": [
+          { "$ref": "#/$defs/contextSlide" },
+          { "$ref": "#/$defs/proofSlide" },
+          { "$ref": "#/$defs/ambitionSlide" }
+        ]
       }
     }
   },
-  "additionalProperties": true
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{6}$"
+    },
+    "diagramRef": {
+      "type": "string",
+      "enum": ["processFlow", "footprint", "architecture", "ambition"]
+    },
+    "accent": {
+      "type": "string",
+      "enum": ["blue", "green", "yellow", "orange", "purple"]
+    },
+    "commonSlide": {
+      "type": "object",
+      "required": ["type", "title"],
+      "properties": {
+        "type": { "enum": ["context", "proof", "ambition"] },
+        "label": { "type": "string" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "headline": { "type": "string" },
+        "supportingLine": { "type": "string" },
+        "speakerNotes": { "type": "string" }
+      }
+    },
+    "contextSlide": {
+      "allOf": [
+        { "$ref": "#/$defs/commonSlide" },
+        {
+          "type": "object",
+          "required": ["type", "title", "headline", "supportingLine"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "context" },
+            "label": { "type": "string" },
+            "title": { "$ref": "#/$defs/nonEmptyString" },
+            "headline": { "$ref": "#/$defs/nonEmptyString" },
+            "supportingLine": { "$ref": "#/$defs/nonEmptyString" },
+            "speakerNotes": { "type": "string" },
+            "processDiagram": { "const": "processFlow" },
+            "footprintDiagram": { "const": "footprint" },
+            "footprintChips": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  { "$ref": "#/$defs/nonEmptyString" },
+                  { "$ref": "#/$defs/nonEmptyString" }
+                ],
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "proofSlide": {
+      "allOf": [
+        { "$ref": "#/$defs/commonSlide" },
+        {
+          "type": "object",
+          "required": ["type", "title", "supportingLine", "guardrailLine", "proofArtifacts"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "proof" },
+            "label": { "type": "string" },
+            "title": { "$ref": "#/$defs/nonEmptyString" },
+            "headline": { "type": "string" },
+            "supportingLine": { "$ref": "#/$defs/nonEmptyString" },
+            "speakerNotes": { "type": "string" },
+            "architectureDiagram": { "const": "architecture" },
+            "guardrailLine": { "$ref": "#/$defs/nonEmptyString" },
+            "proofArtifacts": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["label"],
+                "additionalProperties": false,
+                "properties": {
+                  "label": { "$ref": "#/$defs/nonEmptyString" },
+                  "caption": { "type": "string" },
+                  "accent": { "$ref": "#/$defs/accent" }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ambitionSlide": {
+      "allOf": [
+        { "$ref": "#/$defs/commonSlide" },
+        {
+          "type": "object",
+          "required": ["type", "title", "headline", "closingLine"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "ambition" },
+            "label": { "type": "string" },
+            "title": { "$ref": "#/$defs/nonEmptyString" },
+            "headline": { "$ref": "#/$defs/nonEmptyString" },
+            "speakerNotes": { "type": "string" },
+            "ambitionDiagram": { "const": "ambition" },
+            "badge": { "type": "string" },
+            "closingLine": { "$ref": "#/$defs/nonEmptyString" }
+          }
+        }
+      ]
+    },
+    "processFlowDiagram": {
+      "type": "object",
+      "required": ["title", "subtitle", "steps"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "subtitle": { "$ref": "#/$defs/nonEmptyString" },
+        "caption": { "type": "string" },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["title", "detail"],
+            "additionalProperties": false,
+            "properties": {
+              "title": { "$ref": "#/$defs/nonEmptyString" },
+              "detail": { "$ref": "#/$defs/nonEmptyString" },
+              "kind": { "enum": ["human", "system", "outcome"] }
+            }
+          }
+        }
+      }
+    },
+    "footprintDiagram": {
+      "type": "object",
+      "required": ["title", "subtitle", "items"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "subtitle": { "$ref": "#/$defs/nonEmptyString" },
+        "caption": { "type": "string" },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["code", "name", "group"],
+            "additionalProperties": false,
+            "properties": {
+              "code": { "$ref": "#/$defs/nonEmptyString" },
+              "name": { "$ref": "#/$defs/nonEmptyString" },
+              "group": { "$ref": "#/$defs/nonEmptyString" }
+            }
+          }
+        }
+      }
+    },
+    "architectureDiagram": {
+      "type": "object",
+      "required": ["title", "subtitle", "sources", "center", "outputs", "guardrails"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "subtitle": { "$ref": "#/$defs/nonEmptyString" },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/titleDetailCard" }
+        },
+        "center": {
+          "type": "object",
+          "required": ["title", "detail"],
+          "additionalProperties": false,
+          "properties": {
+            "title": { "$ref": "#/$defs/nonEmptyString" },
+            "detail": { "$ref": "#/$defs/nonEmptyString" },
+            "badges": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/nonEmptyString" }
+            }
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/titleDetailCard" }
+        },
+        "guardrails": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      }
+    },
+    "ambitionDiagram": {
+      "type": "object",
+      "required": ["leftLabel", "rightLabel", "center", "inputs", "outcomes"],
+      "additionalProperties": false,
+      "properties": {
+        "leftLabel": { "$ref": "#/$defs/nonEmptyString" },
+        "rightLabel": { "$ref": "#/$defs/nonEmptyString" },
+        "center": {
+          "type": "object",
+          "required": ["title", "detail"],
+          "additionalProperties": false,
+          "properties": {
+            "title": { "$ref": "#/$defs/nonEmptyString" },
+            "detail": { "$ref": "#/$defs/nonEmptyString" }
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/titleDetailCard" }
+        },
+        "outcomes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["title", "line1", "line2"],
+            "additionalProperties": false,
+            "properties": {
+              "title": { "$ref": "#/$defs/nonEmptyString" },
+              "line1": { "$ref": "#/$defs/nonEmptyString" },
+              "line2": { "$ref": "#/$defs/nonEmptyString" }
+            }
+          }
+        }
+      }
+    },
+    "titleDetailCard": {
+      "type": "object",
+      "required": ["title", "detail"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "detail": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    }
+  }
 }
