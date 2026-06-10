@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PresentationKit asset provenance",
+  "type": "object",
+  "required": ["version", "assets"],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "source", "license", "usage"],
+        "properties": {
+          "id": { "type": "string" },
+          "path": { "type": "string" },
+          "source": { "type": "string" },
+          "license": { "type": "string" },
+          "usage": { "type": "string" },
+          "owner": { "type": "string" },
+          "created": { "type": "string" },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

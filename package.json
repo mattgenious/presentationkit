@@ -7,10 +7,11 @@
     "presentationkit": "./src/cli.js"
   },
   "scripts": {
+    "preflight": "node src/cli.js preflight examples/operational-ai-support.deck.json",
     "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
     "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
     "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
-    "smoke": "npm run check && npm run render:example && npm run build:example"
+    "smoke": "npm run preflight && npm run check && npm run render:example && npm run build:example"
   },
   "keywords": [
     "presentation",

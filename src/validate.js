@@ -1,4 +1,6 @@
 const slideTypes = new Set(['context', 'proof', 'ambition']);
+const diagramFields = ['processDiagram', 'footprintDiagram', 'architectureDiagram', 'ambitionDiagram'];
+const renderableDiagramTypes = new Set(['processFlow', 'footprint', 'architecture', 'ambition']);
 
 export function validateManifest(manifest) {
   const errors = [];
@@ -30,12 +32,29 @@ export function validateManifest(manifest) {
       if (!slide.speakerNotes) {
         warnings.push(`${prefix}.speakerNotes is missing; speaker intent will be weaker.`);
       }
+      for (const field of diagramFields) {
+        if (!slide[field]) continue;
+        const diagram = manifest.diagrams?.[slide[field]];
+        if (!diagram) {
+          errors.push(`${prefix}.${field} references missing diagrams.${slide[field]}. Add that diagram definition or update the slide reference.`);
+          continue;
+        }
+        const diagramType = diagram.type ?? slide[field];
+        if (!renderableDiagramTypes.has(diagramType)) {
+          errors.push(`${prefix}.${field} references diagrams.${slide[field]}, but it cannot be rendered. Set diagrams.${slide[field]}.type to one of: ${Array.from(renderableDiagramTypes).join(', ')}.`);
+        }
+      }
     });
   }
 
   for (const [key, diagram] of Object.entries(manifest.diagrams ?? {})) {
     if (!diagram || typeof diagram !== 'object') {
       errors.push(`diagrams.${key} must be an object.`);
+      continue;
+    }
+    const diagramType = diagram.type ?? key;
+    if (!renderableDiagramTypes.has(diagramType)) {
+      warnings.push(`diagrams.${key} is not rendered by PresentationKit. Add type: "processFlow", "footprint", "architecture", or "ambition" if it should generate an SVG.`);
     }
   }
 

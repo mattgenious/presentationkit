@@ -254,10 +254,11 @@ export async function renderDiagrams(manifest, outDir) {
 
   for (const [key, diagram] of Object.entries(manifest.diagrams ?? {})) {
     let svg;
-    if (key === 'processFlow') svg = processFlowSvg(diagram, theme);
-    else if (key === 'footprint') svg = footprintSvg(diagram, theme);
-    else if (key === 'architecture') svg = architectureSvg(diagram, theme);
-    else if (key === 'ambition') svg = ambitionSvg(diagram, theme);
+    const diagramType = diagram.type ?? key;
+    if (diagramType === 'processFlow') svg = processFlowSvg(diagram, theme);
+    else if (diagramType === 'footprint') svg = footprintSvg(diagram, theme);
+    else if (diagramType === 'architecture') svg = architectureSvg(diagram, theme);
+    else if (diagramType === 'ambition') svg = ambitionSvg(diagram, theme);
     else continue;
 
     const file = path.join(outDir, `${key}.svg`);

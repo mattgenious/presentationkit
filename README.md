@@ -16,6 +16,7 @@
 
 ```powershell
 npm install
+npm run preflight
 npm run smoke
 ```
 
@@ -27,12 +28,30 @@ Outputs land in `dist/`:
 ## CLI
 
 ```powershell
+node src/cli.js preflight examples/operational-ai-support.deck.json
 node src/cli.js validate examples/operational-ai-support.deck.json
 node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
 node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
 ```
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+
+### Preflight and assets
+
+`preflight` checks the local runtime before rendering or building:
+
+- Node.js version and required build dependency `pptxgenjs`.
+- Optional `puppeteer` availability for `export-svg` with an install hint when it is not present.
+- Manifest validity, missing diagram definitions, unsupported diagram types, and image-like asset references.
+- An asset inventory covering generated diagrams, slide diagram references, and manifest fields such as `image`, `thumbnail`, `screenshot`, `logo`, `asset`, `file`, or `path`.
+
+Use `--json` when another tool needs the dependency and asset inventory:
+
+```powershell
+node src/cli.js preflight examples/operational-ai-support.deck.json --json
+```
+
+For asset review, start from `examples/assets/provenance.json` and the guide in `docs/asset-provenance.md`.
 
 ## Repository layout
 
@@ -42,9 +61,12 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
 | `src/layout.js` | Cards, pills, text, arrows, and aspect-ratio fitting. |
+| `src/preflight.js` | Dependency checks and manifest asset inventory. |
 | `src/validate.js` | Lightweight manifest validation. |
+| `docs/asset-provenance.md` | Asset provenance guidance. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
+| `examples/assets/provenance.json` | Provenance template for deck assets. |
 | `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |
 
 ## Design principles
