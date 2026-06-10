@@ -28,11 +28,13 @@ Outputs land in `dist/`:
 
 ```powershell
 node src/cli.js validate examples/operational-ai-support.deck.json
+node src/cli.js list-intents
 node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
 node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
 ```
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+Use `docs/presentation-intent-map.md` and `presentationkit list-intents` to choose an intent before shaping the deck.
 
 ## Repository layout
 
@@ -41,8 +43,11 @@ Use `examples/operational-ai-support.deck.json` as a starting point. Replace the
 | `src/cli.js` | Command entry point. |
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
+| `src/intents.js` | Presentation intent taxonomy and CLI formatting helpers. |
 | `src/layout.js` | Cards, pills, text, arrows, and aspect-ratio fitting. |
+| `src/renderer-registry.js` | Registry scaffolding for extensible slide and diagram renderers. |
 | `src/validate.js` | Lightweight manifest validation. |
+| `docs/presentation-intent-map.md` | Intent taxonomy, generation invariants, and adoption policy. |
 | `docs/story-strategy-template.md` | Deck planning template. |
 | `docs/metric-defensibility-template.md` | Metric extraction and caveat template. |
 | `examples/operational-ai-support.deck.json` | Brand-neutral example deck manifest. |

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { createRendererRegistry } from './renderer-registry.js';
 import { createTheme } from './theme.js';
 
 function esc(value) {
@@ -247,19 +248,49 @@ export function ambitionSvg(diagram, theme) {
 </svg>`;
 }
 
+export const diagramRenderers = createRendererRegistry({
+  processFlow: {
+    render: processFlowSvg,
+    aspectRatio: 1600 / 440,
+    description: 'Horizontal process flow with step cards and directional arrows.'
+  },
+  footprint: {
+    render: footprintSvg,
+    aspectRatio: 1600 / 520,
+    description: 'Deployment or coverage footprint cards grouped by current/upcoming scope.'
+  },
+  architecture: {
+    render: architectureSvg,
+    aspectRatio: 1600 / 900,
+    description: 'Evidence-source to capability to output architecture map.'
+  },
+  ambition: {
+    render: ambitionSvg,
+    aspectRatio: 3000 / 980,
+    description: 'Future-loop ambition diagram for inputs, AI capability, and outcomes.'
+  }
+});
+
+export function getDiagramRenderer(diagramKey, diagram = {}) {
+  return diagramRenderers.get(diagram.renderer ?? diagram.type ?? diagramKey);
+}
+
+export function diagramAspectRatio(diagramKey, diagramOrFallback = {}, fallback) {
+  const diagram = typeof diagramOrFallback === 'number' ? {} : diagramOrFallback;
+  const resolvedFallback = typeof diagramOrFallback === 'number' ? diagramOrFallback : fallback;
+  return getDiagramRenderer(diagramKey, diagram)?.aspectRatio ?? resolvedFallback;
+}
+
 export async function renderDiagrams(manifest, outDir) {
   const theme = createTheme(manifest.theme);
   await fs.mkdir(outDir, { recursive: true });
   const written = [];
 
   for (const [key, diagram] of Object.entries(manifest.diagrams ?? {})) {
-    let svg;
-    if (key === 'processFlow') svg = processFlowSvg(diagram, theme);
-    else if (key === 'footprint') svg = footprintSvg(diagram, theme);
-    else if (key === 'architecture') svg = architectureSvg(diagram, theme);
-    else if (key === 'ambition') svg = ambitionSvg(diagram, theme);
-    else continue;
+    const renderer = getDiagramRenderer(key, diagram);
+    if (!renderer) continue;
 
+    const svg = renderer.render(diagram, theme, { key, manifest });
     const file = path.join(outDir, `${key}.svg`);
     await fs.writeFile(file, svg, 'utf8');
     written.push(file);

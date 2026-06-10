@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 import path from 'node:path';
-import { buildDeck } from './deck.js';
-import { renderDiagrams } from './diagrams.js';
+import {
+  formatPresentationIntents,
+  getPresentationIntent,
+  presentationIntents
+} from './intents.js';
 import { loadManifest } from './manifest.js';
-import { exportSvgToPng } from './svg-to-png.js';
 import { validateManifest } from './validate.js';
 
 function usage() {
@@ -14,6 +16,7 @@ Usage:
   presentationkit render-diagrams <deck.json> [--out dist/diagrams]
   presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams]
   presentationkit export-svg <input.svg> <output.png> [--scale 2]
+  presentationkit list-intents [--id intent-id] [--json]
 `);
 }
 
@@ -25,6 +28,10 @@ function readFlag(args, name, fallback) {
     throw new Error(`Missing value for ${name}`);
   }
   return value;
+}
+
+function hasFlag(args, name) {
+  return args.includes(name);
 }
 
 async function main() {
@@ -45,11 +52,28 @@ async function main() {
     return;
   }
 
+  if (command === 'list-intents') {
+    const id = readFlag(args, '--id', undefined);
+    const intent = id ? getPresentationIntent(id) : undefined;
+    if (id && !intent) {
+      throw new Error(`Unknown presentation intent: ${id}`);
+    }
+
+    const intents = intent ? [intent] : presentationIntents;
+    if (hasFlag(args, '--json')) {
+      console.log(JSON.stringify(intent ?? intents, null, 2));
+    } else {
+      console.log(formatPresentationIntents(intents));
+    }
+    return;
+  }
+
   if (command === 'render-diagrams') {
     const file = args[0];
     if (!file) throw new Error('render-diagrams requires a deck manifest path.');
     const out = path.resolve(readFlag(args, '--out', 'dist/diagrams'));
     const { manifest } = await loadManifest(file);
+    const { renderDiagrams } = await import('./diagrams.js');
     const written = await renderDiagrams(manifest, out);
     for (const diagram of written) console.log(diagram);
     return;
@@ -61,6 +85,8 @@ async function main() {
     const out = path.resolve(readFlag(args, '--out', 'dist/deck.pptx'));
     const diagramDir = path.resolve(readFlag(args, '--diagrams', 'dist/diagrams'));
     const { manifest } = await loadManifest(file);
+    const { renderDiagrams } = await import('./diagrams.js');
+    const { buildDeck } = await import('./deck.js');
     await renderDiagrams(manifest, diagramDir);
     const deck = await buildDeck(manifest, { out, diagramDir });
     console.log(deck);
@@ -72,6 +98,7 @@ async function main() {
     const output = args[1];
     if (!input || !output) throw new Error('export-svg requires input.svg and output.png.');
     const scale = Number(readFlag(args, '--scale', '2'));
+    const { exportSvgToPng } = await import('./svg-to-png.js');
     const png = await exportSvgToPng(input, output, scale);
     console.log(png);
     return;

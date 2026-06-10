@@ -12,7 +12,11 @@
         "subject": { "type": "string" },
         "author": { "type": "string" },
         "company": { "type": "string" },
-        "language": { "type": "string" }
+        "language": { "type": "string" },
+        "intent": {
+          "type": "string",
+          "description": "Recommended presentation intent id. Known intents can be listed with `presentationkit list-intents`; unknown values should be treated as adoption warnings, not hard schema failures."
+        }
       },
       "additionalProperties": true
     },

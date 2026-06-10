@@ -8,6 +8,7 @@
   },
   "scripts": {
     "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
+    "list:intents": "node src/cli.js list-intents",
     "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
     "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
     "smoke": "npm run check && npm run render:example && npm run build:example"

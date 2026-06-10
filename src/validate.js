@@ -1,8 +1,12 @@
-const slideTypes = new Set(['context', 'proof', 'ambition']);
+import { PRESENTATION_INTENT_IDS } from './intents.js';
 
-export function validateManifest(manifest) {
+const slideTypes = new Set(['context', 'proof', 'ambition']);
+const presentationIntentIds = new Set(PRESENTATION_INTENT_IDS);
+
+export function validateManifest(manifest, options = {}) {
   const errors = [];
   const warnings = [];
+  const allowedSlideTypes = new Set(options.slideTypes ?? slideTypes);
 
   if (!manifest || typeof manifest !== 'object') {
     errors.push('Manifest must be a JSON object.');
@@ -13,13 +17,17 @@ export function validateManifest(manifest) {
     errors.push('metadata.title is required.');
   }
 
+  if (manifest.metadata?.intent && !presentationIntentIds.has(manifest.metadata.intent)) {
+    warnings.push(`metadata.intent should be one of: ${PRESENTATION_INTENT_IDS.join(', ')}.`);
+  }
+
   if (!Array.isArray(manifest.slides) || manifest.slides.length === 0) {
     errors.push('slides must contain at least one slide.');
   } else {
     manifest.slides.forEach((slide, index) => {
       const prefix = `slides[${index}]`;
-      if (!slideTypes.has(slide.type)) {
-        errors.push(`${prefix}.type must be one of: ${Array.from(slideTypes).join(', ')}.`);
+      if (!allowedSlideTypes.has(slide.type)) {
+        errors.push(`${prefix}.type must be one of: ${Array.from(allowedSlideTypes).join(', ')}.`);
       }
       if (!slide.title) {
         errors.push(`${prefix}.title is required.`);
@@ -46,8 +54,8 @@ export function validateManifest(manifest) {
   };
 }
 
-export function assertValidManifest(manifest) {
-  const result = validateManifest(manifest);
+export function assertValidManifest(manifest, options = {}) {
+  const result = validateManifest(manifest, options);
   if (!result.ok) {
     throw new Error(result.errors.join('\n'));
   }
