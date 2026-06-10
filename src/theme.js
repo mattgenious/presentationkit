@@ -26,6 +26,12 @@ export const defaultFonts = {
   body: 'Aptos'
 };
 
+/**
+ * Resolve a partial manifest theme against PresentationKit defaults.
+ *
+ * @param {import('./types.js').ThemeConfig} [manifestTheme]
+ * @returns {import('./types.js').ResolvedThemeConfig}
+ */
 export function createTheme(manifestTheme = {}) {
   return {
     fonts: {
@@ -39,6 +45,11 @@ export function createTheme(manifestTheme = {}) {
   };
 }
 
+/**
+ * @param {import('./types.js').ResolvedThemeConfig} theme
+ * @param {import('./types.js').AccentColor | undefined} accent
+ * @returns {string}
+ */
 export function colorForAccent(theme, accent) {
   const palette = theme.palette;
   const map = {
@@ -51,6 +62,11 @@ export function colorForAccent(theme, accent) {
   return map[accent] ?? palette.blue;
 }
 
+/**
+ * @param {import('./types.js').ResolvedThemeConfig} theme
+ * @param {import('./types.js').AccentColor | undefined} accent
+ * @returns {string}
+ */
 export function paleForAccent(theme, accent) {
   const palette = theme.palette;
   const map = {

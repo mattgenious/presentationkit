@@ -264,6 +264,13 @@ function addAmbitionSlide(pptx, manifest, slideSpec, theme, diagramDir) {
   addSpeakerNotes(slide, slideSpec.speakerNotes);
 }
 
+/**
+ * Build a PowerPoint deck from a typed deck manifest.
+ *
+ * @param {import('./types.js').DeckManifest} manifest
+ * @param {import('./types.js').BuildOptions} [options]
+ * @returns {Promise<string>} absolute output path for the written deck
+ */
 export async function buildDeck(manifest, options = {}) {
   assertValidManifest(manifest);
 

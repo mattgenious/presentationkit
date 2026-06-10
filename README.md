@@ -16,6 +16,8 @@
 
 ```powershell
 npm install
+npm run build
+npm run check
 npm run smoke
 ```
 
@@ -27,18 +29,62 @@ Outputs land in `dist/`:
 ## CLI
 
 ```powershell
-node src/cli.js validate examples/operational-ai-support.deck.json
-node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
-node src/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
+npm run build
+node dist/cli.js validate examples/operational-ai-support.deck.json
+node dist/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams
+node dist/cli.js build examples/operational-ai-support.deck.json --out dist/example.pptx
 ```
 
 Use `examples/operational-ai-support.deck.json` as a starting point. Replace the neutral example story, visuals, and metrics with your own content.
+
+## Programmatic API
+
+The package publishes ESM JavaScript and TypeScript declarations from `dist/`.
+
+```ts
+import {
+  buildDeck,
+  loadManifest,
+  renderDiagrams,
+  validateManifest,
+  type BuildOptions,
+  type DeckManifest
+} from 'presentationkit';
+
+const { manifest } = await loadManifest('examples/operational-ai-support.deck.json');
+const result = validateManifest(manifest);
+
+if (!result.ok) {
+  throw new Error(result.errors.join('\n'));
+}
+
+await renderDiagrams(manifest, 'dist/diagrams');
+const options: BuildOptions = {
+  out: 'dist/example.pptx',
+  diagramDir: 'dist/diagrams'
+};
+
+const deckPath = await buildDeck(manifest as DeckManifest, options);
+console.log(deckPath);
+```
+
+Public API types include `DeckManifest`, `ThemeConfig`, `SlideConfig`, `DiagramConfig`, `BuildOptions`, and `ValidationResult`.
+
+## Build and check workflow
+
+```powershell
+npm run build   # compile src/ to package-ready dist/ JavaScript and .d.ts files
+npm run check   # build and validate the example manifest with the compiled CLI
+npm run smoke   # check, render example diagrams, and build the example deck
+```
 
 ## Repository layout
 
 | Path | Purpose |
 |---|---|
 | `src/cli.js` | Command entry point. |
+| `src/index.ts` | Typed package API surface. |
+| `src/types.ts` | Public TypeScript types. |
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
 | `src/layout.js` | Cards, pills, text, arrows, and aspect-ratio fitting. |

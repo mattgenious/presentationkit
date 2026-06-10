@@ -73,6 +73,11 @@ function card({ x, y, w, h, fill, stroke, title, detail, badge }) {
     </g>`;
 }
 
+/**
+ * @param {import('./types.js').DiagramConfig} diagram
+ * @param {import('./types.js').ResolvedThemeConfig} theme
+ * @returns {string}
+ */
 export function processFlowSvg(diagram, theme) {
   const width = 1600;
   const height = 440;
@@ -122,6 +127,11 @@ export function processFlowSvg(diagram, theme) {
 </svg>`;
 }
 
+/**
+ * @param {import('./types.js').DiagramConfig} diagram
+ * @param {import('./types.js').ResolvedThemeConfig} theme
+ * @returns {string}
+ */
 export function footprintSvg(diagram, theme) {
   const width = 1600;
   const height = 520;
@@ -153,6 +163,11 @@ export function footprintSvg(diagram, theme) {
 </svg>`;
 }
 
+/**
+ * @param {import('./types.js').DiagramConfig} diagram
+ * @param {import('./types.js').ResolvedThemeConfig} theme
+ * @returns {string}
+ */
 export function architectureSvg(diagram, theme) {
   const width = 1600;
   const height = 900;
@@ -199,6 +214,11 @@ export function architectureSvg(diagram, theme) {
 </svg>`;
 }
 
+/**
+ * @param {import('./types.js').DiagramConfig} diagram
+ * @param {import('./types.js').ResolvedThemeConfig} theme
+ * @returns {string}
+ */
 export function ambitionSvg(diagram, theme) {
   const width = 3000;
   const height = 980;
@@ -247,6 +267,13 @@ export function ambitionSvg(diagram, theme) {
 </svg>`;
 }
 
+/**
+ * Render all supported diagrams in a deck manifest to SVG files.
+ *
+ * @param {import('./types.js').DeckManifest} manifest
+ * @param {string} outDir
+ * @returns {Promise<string[]>}
+ */
 export async function renderDiagrams(manifest, outDir) {
   const theme = createTheme(manifest.theme);
   await fs.mkdir(outDir, { recursive: true });

@@ -3,13 +3,33 @@
   "version": "0.1.0",
   "description": "Manifest-driven presentation generation toolkit for evidence-first technical stories.",
   "type": "module",
-  "bin": {
-    "presentationkit": "./src/cli.js"
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
+  "bin": {
+    "presentationkit": "./dist/cli.js"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.map",
+    "schemas",
+    "examples",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
-    "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
-    "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
+    "build": "tsc -p tsconfig.json",
+    "check": "npm run build && node dist/cli.js validate examples/operational-ai-support.deck.json",
+    "render:example": "node dist/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
+    "build:example": "node dist/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
     "smoke": "npm run check && npm run render:example && npm run build:example"
   },
   "keywords": [
@@ -26,5 +46,9 @@
   },
   "dependencies": {
     "pptxgenjs": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
   }
 }

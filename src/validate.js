@@ -1,5 +1,11 @@
 const slideTypes = new Set(['context', 'proof', 'ambition']);
 
+/**
+ * Validate the minimum public contract for a PresentationKit deck manifest.
+ *
+ * @param {unknown} manifest
+ * @returns {import('./types.js').ValidationResult}
+ */
 export function validateManifest(manifest) {
   const errors = [];
   const warnings = [];
@@ -46,6 +52,12 @@ export function validateManifest(manifest) {
   };
 }
 
+/**
+ * Throw when a deck manifest fails validation.
+ *
+ * @param {unknown} manifest
+ * @returns {import('./types.js').ValidationResult}
+ */
 export function assertValidManifest(manifest) {
   const result = validateManifest(manifest);
   if (!result.ok) {

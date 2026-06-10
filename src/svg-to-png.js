@@ -1,5 +1,13 @@
 import fs from 'node:fs/promises';
 
+/**
+ * Export a single SVG file to PNG. Requires optional puppeteer installation.
+ *
+ * @param {string} input
+ * @param {string} output
+ * @param {number} [scale]
+ * @returns {Promise<string>}
+ */
 export async function exportSvgToPng(input, output, scale = 2) {
   const puppeteer = await import('puppeteer').catch(() => {
     throw new Error('SVG to PNG export requires puppeteer. Install it with: npm install --save-dev puppeteer');
