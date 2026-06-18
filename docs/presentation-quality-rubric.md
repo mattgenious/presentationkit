@@ -37,6 +37,12 @@ Use this rubric before a generated deck is shared for review. It complements sch
    - Unused diagrams are removed or intentionally documented.
    - Aspect-ratio metadata is available when the renderer or manifest can provide it.
 
+6. **PPTX production readiness**
+   - The generated `.pptx` has been text-extracted and compared with the storyboard.
+   - Rendered slide images have been inspected for overlaps, clipping, contrast, spacing, alignment, and stretched assets.
+   - Template or brand-specific companion work has no leftover placeholders, empty frames, or orphaned visuals.
+   - Any visual fix was followed by re-rendering and re-checking affected slides.
+
 ## CLI quality gate
 
 Run:
@@ -52,3 +58,5 @@ node src/cli.js qa/review path/to/deck.json --out dist/qa
 ```
 
 The command writes Markdown and JSON artifacts that can be attached to a review or kept with generated deck outputs.
+
+Use `docs/companion-pptx-skill-workflow.md` when pairing PresentationKit output with a generic `.pptx` inspection skill or a private brand-specific presentation skill.

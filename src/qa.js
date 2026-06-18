@@ -43,6 +43,28 @@ function mdCell(value) {
   return String(value ?? '').replaceAll('|', '\\|').replaceAll('\n', '<br>');
 }
 
+function renderPptxProductionChecklist(review) {
+  const expectedSlideImages = Array.from({ length: review.checks.slideCount }, (_, index) => {
+    const number = String(index + 1).padStart(2, '0');
+    return `- Slide image ${number}: confirm the visual matches the manifest title, presenter intent, and expected diagram/proof artifact.`;
+  });
+
+  return `## PPTX production QA
+
+Use this section with a generic PPTX inspection skill or any local Office rendering workflow after the PPTX is built.
+
+1. Extract text from the generated deck and compare it with the manifest/storyboard for missing slides, wrong order, stale placeholders, or repeated claims.
+2. Render each slide to an image and inspect the images, not just the source code. Look for overlaps, clipped text, weak contrast, cramped spacing, inconsistent alignment, stretched assets, or decorative elements that collide with wrapped text.
+3. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
+4. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
+5. Fix issues and re-render the affected slides. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
+
+Expected visual pass:
+
+${expectedSlideImages.length ? expectedSlideImages.join('\n') : '- No slides were found; fix manifest validation first.'}
+`;
+}
+
 function collectSlideDiagramRefs(slide) {
   const refs = new Set();
   for (const field of slideDiagramFields) {
@@ -303,6 +325,8 @@ ${aspectRows.length ? aspectRows.join('\n') : '| n/a | n/a | n/a | No aspect-rat
 3. Are guardrails visible before any ambition or scaling claim?
 4. Are metrics clearly caveated as observed, estimated, or directional?
 5. Are visuals present, referenced, and ratio-safe?
+
+${renderPptxProductionChecklist(review)}
 `;
 }
 
