@@ -1,16 +1,114 @@
-const slideTypes = new Set(['context', 'proof', 'ambition']);
+import { PRESENTATION_INTENT_IDS } from './intents.js';
 
-export function validateManifest(manifest) {
+const defaultSlideTypes = new Set(['context', 'proof', 'ambition']);
+const presentationIntentIds = new Set(PRESENTATION_INTENT_IDS);
+
+const slideRequiredFields = {
+  context: ['supportingLine', 'headline'],
+  proof: ['supportingLine', 'guardrailLine'],
+  ambition: ['headline', 'closingLine']
+};
+
+const diagramRequiredFields = {
+  processFlow: ['title', 'subtitle', 'steps'],
+  footprint: ['title', 'subtitle', 'items'],
+  architecture: ['title', 'subtitle', 'sources', 'center', 'outputs'],
+  ambition: ['leftLabel', 'rightLabel', 'center', 'inputs', 'outcomes']
+};
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function hasValue(value) {
+  return value !== undefined && value !== null && String(value).trim() !== '';
+}
+
+function requirePlainObject(errors, value, path) {
+  if (isPlainObject(value)) return true;
+  errors.push(`${path} must be an object.`);
+  return false;
+}
+
+function requireString(errors, value, path) {
+  if (typeof value === 'string' && value.trim()) return;
+  errors.push(`${path} is required.`);
+}
+
+function requireArray(errors, value, path) {
+  if (Array.isArray(value) && value.length > 0) return;
+  errors.push(`${path} must be a non-empty array.`);
+}
+
+function validateProofArtifacts(errors, warnings, slide, prefix) {
+  if (!Array.isArray(slide.proofArtifacts) || slide.proofArtifacts.length === 0) {
+    errors.push(`${prefix}.proofArtifacts must contain at least one proof artifact.`);
+    return;
+  }
+
+  slide.proofArtifacts.forEach((artifact, artifactIndex) => {
+    const artifactPath = `${prefix}.proofArtifacts[${artifactIndex}]`;
+    if (!requirePlainObject(errors, artifact, artifactPath)) return;
+    requireString(errors, artifact.label, `${artifactPath}.label`);
+    if (!hasValue(artifact.caption)) {
+      warnings.push(`${artifactPath}.caption is missing; proof thumbnails are more credible with a caption.`);
+    }
+  });
+}
+
+function rendererNameForDiagram(key, diagram) {
+  return diagram.renderer ?? diagram.type ?? key;
+}
+
+function validateDiagramShape(errors, diagram, key, rendererName) {
+  const required = diagramRequiredFields[rendererName];
+  if (!required) return;
+
+  for (const field of required) {
+    const value = diagram[field];
+    const path = `diagrams.${key}.${field}`;
+    if (Array.isArray(value)) {
+      requireArray(errors, value, path);
+    } else if (field === 'center') {
+      requirePlainObject(errors, value, path);
+    } else {
+      requireString(errors, value, path);
+    }
+  }
+}
+
+export function validateManifest(manifest, options = {}) {
   const errors = [];
   const warnings = [];
+  const allowedSlideTypes = new Set(options.slideTypes ?? defaultSlideTypes);
+  const allowedDiagramTypes = options.diagramTypes ? new Set(options.diagramTypes) : undefined;
 
-  if (!manifest || typeof manifest !== 'object') {
+  if (!isPlainObject(manifest)) {
     errors.push('Manifest must be a JSON object.');
     return { ok: false, errors, warnings };
   }
 
-  if (!manifest.metadata?.title) {
-    errors.push('metadata.title is required.');
+  if (!requirePlainObject(errors, manifest.metadata, 'metadata')) {
+    return { ok: false, errors, warnings };
+  }
+  requireString(errors, manifest.metadata.title, 'metadata.title');
+
+  if (manifest.metadata.intent && !presentationIntentIds.has(manifest.metadata.intent)) {
+    warnings.push(`metadata.intent should be one of: ${PRESENTATION_INTENT_IDS.join(', ')}.`);
+  }
+
+  if (manifest.diagrams !== undefined && !isPlainObject(manifest.diagrams)) {
+    errors.push('diagrams must be an object when provided.');
+  }
+
+  for (const [key, diagram] of Object.entries(manifest.diagrams ?? {})) {
+    if (!requirePlainObject(errors, diagram, `diagrams.${key}`)) continue;
+    const rendererName = rendererNameForDiagram(key, diagram);
+    if (allowedDiagramTypes && !allowedDiagramTypes.has(rendererName)) {
+      errors.push(`diagrams.${key} uses renderer "${rendererName}", but no renderer is registered for it.`);
+      continue;
+    }
+    validateDiagramShape(errors, diagram, key, rendererName);
   }
 
   if (!Array.isArray(manifest.slides) || manifest.slides.length === 0) {
@@ -18,25 +116,25 @@ export function validateManifest(manifest) {
   } else {
     manifest.slides.forEach((slide, index) => {
       const prefix = `slides[${index}]`;
-      if (!slideTypes.has(slide.type)) {
-        errors.push(`${prefix}.type must be one of: ${Array.from(slideTypes).join(', ')}.`);
+      if (!requirePlainObject(errors, slide, prefix)) return;
+
+      if (!allowedSlideTypes.has(slide.type)) {
+        errors.push(`${prefix}.type must be one of: ${Array.from(allowedSlideTypes).join(', ')}.`);
+        return;
       }
-      if (!slide.title) {
-        errors.push(`${prefix}.title is required.`);
+
+      requireString(errors, slide.title, `${prefix}.title`);
+      for (const field of slideRequiredFields[slide.type] ?? []) {
+        requireString(errors, slide[field], `${prefix}.${field}`);
       }
-      if (!slide.headline) {
-        warnings.push(`${prefix}.headline is missing; the generated slide may feel under-specified.`);
-      }
+
       if (!slide.speakerNotes) {
         warnings.push(`${prefix}.speakerNotes is missing; speaker intent will be weaker.`);
       }
+      if (slide.type === 'proof') {
+        validateProofArtifacts(errors, warnings, slide, prefix);
+      }
     });
-  }
-
-  for (const [key, diagram] of Object.entries(manifest.diagrams ?? {})) {
-    if (!diagram || typeof diagram !== 'object') {
-      errors.push(`diagrams.${key} must be an object.`);
-    }
   }
 
   return {
@@ -46,8 +144,8 @@ export function validateManifest(manifest) {
   };
 }
 
-export function assertValidManifest(manifest) {
-  const result = validateManifest(manifest);
+export function assertValidManifest(manifest, options = {}) {
+  const result = validateManifest(manifest, options);
   if (!result.ok) {
     throw new Error(result.errors.join('\n'));
   }
