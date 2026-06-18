@@ -12,6 +12,7 @@ Use this before opening a PresentationKit PR.
 
 - [ ] New or changed manifest fields are represented in `schemas/deck.schema.json`.
 - [ ] `src/validate.js` gives useful errors or warnings for fields that can break story quality or rendering.
+- [ ] Any `brandPack` usage references an external authorized companion/template and does not commit private brand assets or rules.
 - [ ] Example manifest changes still validate with `npm run check`.
 
 ## Render surface
@@ -27,4 +28,5 @@ Use this before opening a PresentationKit PR.
 - [ ] Metrics are framed defensibly using `docs/metric-defensibility-template.md`.
 - [ ] Slide strategy choices can be traced to `docs/story-strategy-template.md`.
 - [ ] Generated `.pptx` output has a companion-skill or visual QA handoff using `docs/companion-pptx-skill-workflow.md` when the task involves final deck delivery.
+- [ ] Brand-specific decks include `docs/brand-pack-workflow.md` handoff artifacts and final visual QA from the authorized companion skill.
 - [ ] Generated `dist/` artifacts were left out of the commit unless explicitly requested.

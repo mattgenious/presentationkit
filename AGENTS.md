@@ -8,6 +8,7 @@ This repo is a small, brand-neutral toolkit for manifest-driven presentation gen
 2. Read `docs/new-agent-start-here.md` before changing deck behavior.
 3. Use `docs/contextless-agent-checklist.md` when implementing or reviewing deck features without prior session context.
 4. Use `docs/review-checklist.md` before asking for review.
+5. Use `docs/brand-pack-workflow.md` when a private brand companion or template must finalize the generated deck.
 
 ## Safe edit surfaces
 
@@ -24,6 +25,7 @@ Avoid adding company-specific names, proprietary screenshots, private metrics, o
 - Regenerate diagrams and decks locally when validating render changes.
 - Commit source manifests, schemas, code, and docs instead of generated `.svg`, `.png`, or `.pptx` output unless a future task explicitly requests checked-in fixtures.
 - When final `.pptx` delivery matters, use `docs/companion-pptx-skill-workflow.md` to hand off the generated deck to an authorized PPTX inspection or brand-specific companion skill.
+- When a `brandPack` manifest entry is present, keep the actual template, logo, fonts, icons, photos, palette, footer rules, and private context in the external companion skill. Do not copy them into this repo.
 
 ## Verification
 

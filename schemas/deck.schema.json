@@ -26,6 +26,34 @@
       "type": "object",
       "additionalProperties": true
     },
+    "brandPack": {
+      "type": "object",
+      "description": "Optional handoff metadata for an authorized external brand-specific PPTX companion workflow. Do not embed private brand assets in this manifest.",
+      "properties": {
+        "id": { "type": "string" },
+        "companionSkill": { "type": "string" },
+        "templateReference": { "type": "string" },
+        "templatePath": { "type": "string" },
+        "slideSize": {
+          "type": "object",
+          "properties": {
+            "width": { "type": "number" },
+            "height": { "type": "number" },
+            "unit": { "type": "string" }
+          },
+          "additionalProperties": true
+        },
+        "requiredChecks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "handoffNotes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
     "diagrams": {
       "type": "object",
       "additionalProperties": {
