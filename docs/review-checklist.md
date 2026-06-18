@@ -26,4 +26,5 @@ Use this before opening a PresentationKit PR.
 - [ ] Titles, headlines, labels, captions, and speaker notes do not repeat the same claim unnecessarily.
 - [ ] Metrics are framed defensibly using `docs/metric-defensibility-template.md`.
 - [ ] Slide strategy choices can be traced to `docs/story-strategy-template.md`.
+- [ ] Generated `.pptx` output has a companion-skill or visual QA handoff using `docs/companion-pptx-skill-workflow.md` when the task involves final deck delivery.
 - [ ] Generated `dist/` artifacts were left out of the commit unless explicitly requested.

@@ -12,6 +12,7 @@
 - Guardrail and audit-trail messaging for responsible technical capability stories.
 - SVG diagram generation from data: process flows, architecture maps, deployment footprint cards, and future-loop diagrams.
 - Preflight, QA, and render metadata so generated output is traceable and reviewable.
+- Companion `.pptx` skill handoff guidance for template inspection and visual QA.
 
 ## Quick start
 
@@ -79,6 +80,7 @@ import {
 | Path | Purpose |
 |---|---|
 | `AGENTS.md` | Repo-level guidance for agent contributors. |
+| `docs/companion-pptx-skill-workflow.md` | How to pair generated decks with generic or brand-specific PPTX inspection skills. |
 | `src/cli.js` | Commander-based command entry point. |
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
