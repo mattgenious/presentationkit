@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/asset-provenance.schema.json",
+  "version": "1.0",
+  "assets": [
+    {
+      "id": "generated-process-flow",
+      "path": "dist/diagrams/processFlow.svg",
+      "source": "Generated from examples/operational-ai-support.deck.json diagrams.processFlow",
+      "license": "Same as deck manifest unless documented otherwise",
+      "usage": "Example generated diagram for the context slide",
+      "owner": "PresentationKit example",
+      "created": "generated during render-diagrams",
+      "notes": "Generated diagrams should be reproducible from the deck manifest."
+    }
+  ]
+}

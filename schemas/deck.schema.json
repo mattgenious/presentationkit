@@ -4,15 +4,21 @@
   "type": "object",
   "required": ["metadata", "slides"],
   "properties": {
+    "$schema": { "type": "string" },
     "metadata": {
       "type": "object",
       "required": ["title"],
       "properties": {
-        "title": { "type": "string" },
+        "title": { "type": "string", "minLength": 1 },
         "subject": { "type": "string" },
         "author": { "type": "string" },
         "company": { "type": "string" },
-        "language": { "type": "string" }
+        "language": { "type": "string" },
+        "footer": { "type": "string" },
+        "intent": {
+          "type": "string",
+          "description": "Recommended presentation intent id. Unknown values are runtime warnings so teams can add custom intent catalogs."
+        }
       },
       "additionalProperties": true
     },
@@ -22,7 +28,35 @@
     },
     "diagrams": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "renderer": { "type": "string" },
+          "title": { "type": "string" },
+          "subtitle": { "type": "string" },
+          "caption": { "type": "string" },
+          "steps": { "type": "array", "items": { "$ref": "#/$defs/cardItem" } },
+          "items": { "type": "array", "items": { "$ref": "#/$defs/cardItem" } },
+          "sources": { "type": "array", "items": { "$ref": "#/$defs/cardItem" } },
+          "outputs": { "type": "array", "items": { "$ref": "#/$defs/cardItem" } },
+          "guardrails": { "type": "array", "items": { "type": "string" } },
+          "leftLabel": { "type": "string" },
+          "rightLabel": { "type": "string" },
+          "center": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "detail": { "type": "string" },
+              "badges": { "type": "array", "items": { "type": "string" } }
+            },
+            "additionalProperties": true
+          },
+          "inputs": { "type": "array", "items": { "$ref": "#/$defs/cardItem" } },
+          "outcomes": { "type": "array", "items": { "$ref": "#/$defs/cardItem" } }
+        },
+        "additionalProperties": true
+      }
     },
     "slides": {
       "type": "array",
@@ -31,17 +65,50 @@
         "type": "object",
         "required": ["type", "title"],
         "properties": {
-          "type": {
-            "enum": ["context", "proof", "ambition"]
-          },
+          "type": { "type": "string" },
           "label": { "type": "string" },
-          "title": { "type": "string" },
+          "title": { "type": "string", "minLength": 1 },
           "headline": { "type": "string" },
           "supportingLine": { "type": "string" },
-          "speakerNotes": { "type": "string" }
+          "speakerNotes": { "type": "string" },
+          "processDiagram": { "type": "string" },
+          "footprintDiagram": { "type": "string" },
+          "architectureDiagram": { "type": "string" },
+          "ambitionDiagram": { "type": "string" },
+          "guardrailLine": { "type": "string" },
+          "closingLine": { "type": "string" },
+          "proofArtifacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label"],
+              "properties": {
+                "label": { "type": "string" },
+                "caption": { "type": "string" },
+                "accent": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          }
         },
         "additionalProperties": true
       }
+    }
+  },
+  "$defs": {
+    "cardItem": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "detail": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "group": { "type": "string" },
+        "kind": { "type": "string" },
+        "line1": { "type": "string" },
+        "line2": { "type": "string" }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": true

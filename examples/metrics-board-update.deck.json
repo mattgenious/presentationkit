@@ -1,0 +1,114 @@
+{
+  "$schema": "../schemas/deck.schema.json",
+  "metadata": {
+    "title": "Metrics Board Update",
+    "subject": "Neutral board-style update for metrics, progress, risk, and asks",
+    "author": "PresentationKit",
+    "company": "Example Organization",
+    "language": "en-US"
+  },
+  "diagrams": {
+    "processFlow": {
+      "title": "How the update earns confidence",
+      "subtitle": "A board update connects metric movement, interpretation, action, risk, and asks.",
+      "steps": [
+        { "title": "Measure", "detail": "latest indicators", "kind": "system" },
+        { "title": "Interpret", "detail": "drivers and caveats", "kind": "human" },
+        { "title": "Act", "detail": "completed and planned work", "kind": "system" },
+        { "title": "Watch", "detail": "risks and dependencies", "kind": "system" },
+        { "title": "Ask", "detail": "decision or support", "kind": "outcome" }
+      ],
+      "caption": "Metrics need interpretation before they become governance."
+    },
+    "footprint": {
+      "title": "Update sections",
+      "subtitle": "Keep the audience oriented across performance, progress, risk, and decisions.",
+      "items": [
+        { "code": "M", "name": "Metrics", "group": "Current" },
+        { "code": "P", "name": "Progress", "group": "Current" },
+        { "code": "R", "name": "Risk", "group": "Tracked" },
+        { "code": "A", "name": "Asks", "group": "Decision" },
+        { "code": "N", "name": "Next", "group": "Upcoming" }
+      ],
+      "caption": "The structure keeps the discussion actionable."
+    },
+    "architecture": {
+      "title": "Metrics evidence model",
+      "subtitle": "Signals are paired with interpretation, caveats, actions, and governance asks.",
+      "sources": [
+        { "title": "KPI data", "detail": "trend and target" },
+        { "title": "Delivery data", "detail": "milestones and blockers" },
+        { "title": "Risk log", "detail": "likelihood and impact" },
+        { "title": "Stakeholder input", "detail": "context and asks" }
+      ],
+      "center": {
+        "title": "Board narrative",
+        "detail": "performance + risk + decisions",
+        "badges": ["concise", "defensible"]
+      },
+      "outputs": [
+        { "title": "Scorecard", "detail": "what changed" },
+        { "title": "Risk view", "detail": "what needs attention" },
+        { "title": "Decision asks", "detail": "what support is needed" }
+      ],
+      "guardrails": ["label proxy metrics", "show trend not noise", "separate update from ask"]
+    },
+    "ambition": {
+      "leftLabel": "Update inputs",
+      "rightLabel": "Governance outcomes",
+      "center": {
+        "title": "Board update",
+        "detail": "metrics + narrative + asks"
+      },
+      "inputs": [
+        { "title": "Performance", "detail": "KPIs and trends" },
+        { "title": "Progress", "detail": "milestones and work" },
+        { "title": "Risks", "detail": "blockers and exposure" },
+        { "title": "Decisions", "detail": "asks and trade-offs" }
+      ],
+      "outcomes": [
+        { "title": "Board", "line1": "faster context", "line2": "better questions" },
+        { "title": "Team", "line1": "clear support", "line2": "less reporting churn" },
+        { "title": "Program", "line1": "visible risk", "line2": "timely decisions" }
+      ]
+    }
+  },
+  "slides": [
+    {
+      "type": "context",
+      "label": "1 / update context",
+      "title": "A board update should make decisions easier",
+      "headline": "The best update turns metrics into interpretation, action, and explicit asks.",
+      "supportingLine": "Open with the structure that connects measurement to governance decisions.",
+      "processDiagram": "processFlow",
+      "footprintDiagram": "footprint",
+      "footprintChips": [["M", "Metrics"], ["P", "Progress"], ["R", "Risk"], ["A", "Asks"], ["N", "Next"]],
+      "speakerNotes": "Set up the update as a decision-support artifact, not a dashboard screenshot."
+    },
+    {
+      "type": "proof",
+      "label": "2 / update proof",
+      "title": "Metrics become useful when caveats and actions are visible",
+      "headline": "The update separates performance signals from interpretation and decisions.",
+      "supportingLine": "Use proof artifacts to show trend, delivery, risk, and the support requested from the audience.",
+      "architectureDiagram": "architecture",
+      "guardrailLine": "Guardrails: label proxy metrics; show trend not noise; separate update from ask.",
+      "proofArtifacts": [
+        { "label": "Scorecard", "caption": "trend and target", "accent": "blue" },
+        { "label": "Risk view", "caption": "exposure and owner", "accent": "orange" },
+        { "label": "Ask list", "caption": "decision needed", "accent": "green" }
+      ],
+      "speakerNotes": "Make the board-level ask clear and grounded in the metric narrative."
+    },
+    {
+      "type": "ambition",
+      "label": "3 / update ambition",
+      "title": "The dream: governance conversations focus on the right decisions",
+      "headline": "A concise update helps leaders spend time on trade-offs, risks, and support.",
+      "ambitionDiagram": "ambition",
+      "badge": "Board update",
+      "closingLine": "Use metrics to focus the conversation, not to hide the decisions.",
+      "speakerNotes": "Close by reinforcing the intended decision or support needed after the update."
+    }
+  ]
+}

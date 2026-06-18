@@ -1,7 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import PptxGenJS from 'pptxgenjs';
+import { diagramAspectRatio } from './diagrams.js';
 import { createTheme, colorForAccent, paleForAccent } from './theme.js';
+import { createRendererRegistry } from './renderer-registry.js';
 import { assertValidManifest } from './validate.js';
 import {
   WIDE,
@@ -16,13 +18,6 @@ import {
   addTitle,
   slideBg
 } from './layout.js';
-
-const diagramRatios = {
-  processFlow: 1600 / 440,
-  footprint: 1600 / 520,
-  architecture: 1600 / 900,
-  ambition: 3000 / 980
-};
 
 function diagramPath(diagramDir, key) {
   return path.join(diagramDir, `${key}.svg`);
@@ -90,7 +85,7 @@ function addContextSlide(pptx, manifest, slideSpec, theme, diagramDir) {
     slide,
     diagramPath(diagramDir, processKey),
     { x: 0.86, y: 2.32, w: 6.62, h: 1.35 },
-    diagramRatios[processKey] ?? diagramRatios.processFlow,
+    diagramAspectRatio(processKey, manifest.diagrams?.[processKey], 1600 / 440),
     processKey,
     theme
   );
@@ -117,7 +112,7 @@ function addContextSlide(pptx, manifest, slideSpec, theme, diagramDir) {
     slide,
     diagramPath(diagramDir, footprintKey),
     { x: 8.58, y: 1.25, w: 3.66, h: 4.95 },
-    diagramRatios[footprintKey] ?? diagramRatios.footprint,
+    diagramAspectRatio(footprintKey, manifest.diagrams?.[footprintKey], 1600 / 520),
     footprintKey,
     theme
   );
@@ -181,7 +176,7 @@ function addProofSlide(pptx, manifest, slideSpec, theme, diagramDir) {
     slide,
     diagramPath(diagramDir, architectureKey),
     { x: 0.88, y: 2.08, w: 7.61, h: 4.28 },
-    diagramRatios[architectureKey] ?? diagramRatios.architecture,
+    diagramAspectRatio(architectureKey, manifest.diagrams?.[architectureKey], 1600 / 900),
     architectureKey,
     theme
   );
@@ -245,7 +240,7 @@ function addAmbitionSlide(pptx, manifest, slideSpec, theme, diagramDir) {
     slide,
     diagramPath(diagramDir, ambitionKey),
     { x: 0.75, y: 1.9, w: 11.85, h: 4.0 },
-    diagramRatios[ambitionKey] ?? diagramRatios.ambition,
+    diagramAspectRatio(ambitionKey, manifest.diagrams?.[ambitionKey], 3000 / 980),
     ambitionKey,
     theme
   );
@@ -264,18 +259,35 @@ function addAmbitionSlide(pptx, manifest, slideSpec, theme, diagramDir) {
   addSpeakerNotes(slide, slideSpec.speakerNotes);
 }
 
-export async function buildDeck(manifest, options = {}) {
-  assertValidManifest(manifest);
+export const slideRenderers = createRendererRegistry({
+  context: {
+    render: addContextSlide,
+    description: 'Context slide anchored by process and footprint diagrams.'
+  },
+  proof: {
+    render: addProofSlide,
+    description: 'Proof slide anchored by architecture and artifact evidence.'
+  },
+  ambition: {
+    render: addAmbitionSlide,
+    description: 'Ambition slide anchored by a future-loop diagram.'
+  }
+});
 
+export function getSlideRenderer(type) {
+  return slideRenderers.get(type);
+}
+
+export async function buildDeck(manifest, options = {}) {
   const theme = createTheme(manifest.theme);
   const pptx = new PptxGenJS();
   configureDeck(pptx, manifest, theme);
 
   const diagramDir = options.diagramDir ?? path.resolve('dist', 'diagrams');
+  assertValidManifest(manifest, { slideTypes: slideRenderers.names() });
   for (const slideSpec of manifest.slides) {
-    if (slideSpec.type === 'context') addContextSlide(pptx, manifest, slideSpec, theme, diagramDir);
-    if (slideSpec.type === 'proof') addProofSlide(pptx, manifest, slideSpec, theme, diagramDir);
-    if (slideSpec.type === 'ambition') addAmbitionSlide(pptx, manifest, slideSpec, theme, diagramDir);
+    const renderer = getSlideRenderer(slideSpec.type);
+    renderer.render(pptx, manifest, slideSpec, theme, diagramDir);
   }
 
   const out = path.resolve(options.out ?? 'dist/deck.pptx');

@@ -1,0 +1,114 @@
+{
+  "$schema": "../schemas/deck.schema.json",
+  "metadata": {
+    "title": "Roadmap Story",
+    "subject": "Three-slide roadmap narrative for any product or platform team",
+    "author": "PresentationKit",
+    "company": "Example Organization",
+    "language": "en-US"
+  },
+  "diagrams": {
+    "processFlow": {
+      "title": "How the roadmap becomes credible",
+      "subtitle": "A roadmap story links signals, prioritization, sequencing, commitments, and learning.",
+      "steps": [
+        { "title": "Signals", "detail": "customer and operational input", "kind": "human" },
+        { "title": "Themes", "detail": "problems worth solving", "kind": "system" },
+        { "title": "Sequence", "detail": "now, next, later", "kind": "system" },
+        { "title": "Commitments", "detail": "owners and decisions", "kind": "system" },
+        { "title": "Learning", "detail": "review and adapt", "kind": "outcome" }
+      ],
+      "caption": "The story explains why this order is responsible."
+    },
+    "footprint": {
+      "title": "Roadmap scope",
+      "subtitle": "A neutral view of where the roadmap is active and where discovery continues.",
+      "items": [
+        { "code": "N", "name": "Now", "group": "Committed" },
+        { "code": "X", "name": "Next", "group": "Planned" },
+        { "code": "L", "name": "Later", "group": "Exploring" },
+        { "code": "R", "name": "Risks", "group": "Tracked" },
+        { "code": "D", "name": "Discovery", "group": "Upcoming" }
+      ],
+      "caption": "Scope is explicit so expectations stay realistic."
+    },
+    "architecture": {
+      "title": "Roadmap evidence model",
+      "subtitle": "Inputs become trade-off decisions and reviewable delivery commitments.",
+      "sources": [
+        { "title": "User signals", "detail": "interviews and usage" },
+        { "title": "Business goals", "detail": "outcomes and constraints" },
+        { "title": "Technical health", "detail": "debt and risk" },
+        { "title": "Capacity", "detail": "teams and timing" }
+      ],
+      "center": {
+        "title": "Roadmap synthesis",
+        "detail": "priorities + sequence + trade-offs",
+        "badges": ["evidence", "choices"]
+      },
+      "outputs": [
+        { "title": "Theme map", "detail": "why each area matters" },
+        { "title": "Milestone view", "detail": "sequenced delivery intent" },
+        { "title": "Decision log", "detail": "assumptions and caveats" }
+      ],
+      "guardrails": ["no fake certainty", "date ranges over promises", "review cadence"]
+    },
+    "ambition": {
+      "leftLabel": "Roadmap inputs",
+      "rightLabel": "Team alignment",
+      "center": {
+        "title": "Roadmap narrative",
+        "detail": "evidence-led + sequenced + adaptable"
+      },
+      "inputs": [
+        { "title": "Customer needs", "detail": "jobs and friction" },
+        { "title": "Operational constraints", "detail": "risk and support load" },
+        { "title": "Strategy", "detail": "outcomes and focus" },
+        { "title": "Delivery capacity", "detail": "teams and dependencies" }
+      ],
+      "outcomes": [
+        { "title": "Teams", "line1": "clear priorities", "line2": "visible trade-offs" },
+        { "title": "Leaders", "line1": "defensible choices", "line2": "reviewable progress" },
+        { "title": "Users", "line1": "problems solved", "line2": "in useful order" }
+      ]
+    }
+  },
+  "slides": [
+    {
+      "type": "context",
+      "label": "1 / roadmap context",
+      "title": "Roadmaps need a story, not only a list",
+      "headline": "The useful roadmap explains why the sequence is responsible.",
+      "supportingLine": "Start with the signals, constraints, and learning loop that make the roadmap credible.",
+      "processDiagram": "processFlow",
+      "footprintDiagram": "footprint",
+      "footprintChips": [["N", "Now"], ["X", "Next"], ["L", "Later"], ["R", "Risks"], ["D", "Discovery"]],
+      "speakerNotes": "Frame the roadmap as a set of choices made under evidence and constraints."
+    },
+    {
+      "type": "proof",
+      "label": "2 / roadmap proof",
+      "title": "The roadmap is backed by evidence and trade-offs",
+      "headline": "Each theme has a reason to exist and a reason to wait or move now.",
+      "supportingLine": "Artifacts make the roadmap reviewable: signals, decision notes, and milestone assumptions.",
+      "architectureDiagram": "architecture",
+      "guardrailLine": "Guardrails: no fake certainty; date ranges over promises; assumptions stay visible.",
+      "proofArtifacts": [
+        { "label": "Signal map", "caption": "evidence by theme", "accent": "blue" },
+        { "label": "Trade-off log", "caption": "why this order", "accent": "orange" },
+        { "label": "Milestone brief", "caption": "intent and caveats", "accent": "green" }
+      ],
+      "speakerNotes": "Show how the roadmap can be challenged, adjusted, and improved without losing the narrative."
+    },
+    {
+      "type": "ambition",
+      "label": "3 / roadmap ambition",
+      "title": "The dream: roadmap conversations become better decisions",
+      "headline": "A shared narrative helps teams adapt without reopening every priority debate.",
+      "ambitionDiagram": "ambition",
+      "badge": "Roadmap story",
+      "closingLine": "Make the roadmap easier to trust by making the reasoning easier to inspect.",
+      "speakerNotes": "Close on alignment and adaptability rather than pretending the plan will not change."
+    }
+  ]
+}

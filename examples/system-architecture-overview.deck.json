@@ -1,0 +1,114 @@
+{
+  "$schema": "../schemas/deck.schema.json",
+  "metadata": {
+    "title": "System Architecture Overview",
+    "subject": "Neutral architecture overview for technical and product audiences",
+    "author": "PresentationKit",
+    "company": "Example Organization",
+    "language": "en-US"
+  },
+  "diagrams": {
+    "processFlow": {
+      "title": "How requests move through the system",
+      "subtitle": "A concise flow highlights boundaries, responsibilities, and outcomes.",
+      "steps": [
+        { "title": "Client", "detail": "user or service request", "kind": "human" },
+        { "title": "Gateway", "detail": "routing and policy", "kind": "system" },
+        { "title": "Domain", "detail": "business capability", "kind": "system" },
+        { "title": "Data", "detail": "state and events", "kind": "system" },
+        { "title": "Outcome", "detail": "response or workflow", "kind": "outcome" }
+      ],
+      "caption": "Architecture is explained through useful movement."
+    },
+    "footprint": {
+      "title": "System boundary map",
+      "subtitle": "Show what is in scope, adjacent, external, and still evolving.",
+      "items": [
+        { "code": "UI", "name": "Experience", "group": "In scope" },
+        { "code": "API", "name": "Interface", "group": "In scope" },
+        { "code": "DOM", "name": "Domain", "group": "In scope" },
+        { "code": "EXT", "name": "External", "group": "Adjacent" },
+        { "code": "OBS", "name": "Observability", "group": "Upcoming" }
+      ],
+      "caption": "Boundaries reduce architecture ambiguity."
+    },
+    "architecture": {
+      "title": "Architecture evidence model",
+      "subtitle": "Design choices connect constraints, runtime behavior, and operability needs.",
+      "sources": [
+        { "title": "User journeys", "detail": "entry points and flows" },
+        { "title": "Domain model", "detail": "entities and rules" },
+        { "title": "Integrations", "detail": "contracts and SLAs" },
+        { "title": "Operations", "detail": "alerts and runbooks" }
+      ],
+      "center": {
+        "title": "Architecture view",
+        "detail": "boundaries + data + operations",
+        "badges": ["context", "trade-offs"]
+      },
+      "outputs": [
+        { "title": "System diagram", "detail": "major components" },
+        { "title": "Decision records", "detail": "constraints and choices" },
+        { "title": "Runbook hooks", "detail": "operate and recover" }
+      ],
+      "guardrails": ["show assumptions", "separate current from target", "name ownership"]
+    },
+    "ambition": {
+      "leftLabel": "Architecture inputs",
+      "rightLabel": "Shared understanding",
+      "center": {
+        "title": "System overview",
+        "detail": "current state + intent + operations"
+      },
+      "inputs": [
+        { "title": "Runtime flow", "detail": "requests and events" },
+        { "title": "Data model", "detail": "state and ownership" },
+        { "title": "Constraints", "detail": "security and scale" },
+        { "title": "Operations", "detail": "monitoring and recovery" }
+      ],
+      "outcomes": [
+        { "title": "Engineers", "line1": "faster onboarding", "line2": "clear boundaries" },
+        { "title": "Product", "line1": "capability clarity", "line2": "visible trade-offs" },
+        { "title": "Operations", "line1": "known failure modes", "line2": "better recovery" }
+      ]
+    }
+  },
+  "slides": [
+    {
+      "type": "context",
+      "label": "1 / architecture context",
+      "title": "Architecture is easiest to understand through flow",
+      "headline": "The overview shows how responsibility moves across system boundaries.",
+      "supportingLine": "Start with the request path, then widen into the components and constraints that matter.",
+      "processDiagram": "processFlow",
+      "footprintDiagram": "footprint",
+      "footprintChips": [["UI", "Experience"], ["API", "Interface"], ["DOM", "Domain"], ["EXT", "External"], ["OBS", "Observability"]],
+      "speakerNotes": "Explain the system by following a request and naming the responsibilities at each boundary."
+    },
+    {
+      "type": "proof",
+      "label": "2 / architecture proof",
+      "title": "The system view ties design choices to evidence",
+      "headline": "Architecture claims are supported by journeys, models, integrations, and operations.",
+      "supportingLine": "The deck separates what exists today from assumptions, constraints, and intended evolution.",
+      "architectureDiagram": "architecture",
+      "guardrailLine": "Guardrails: show assumptions; separate current from target; name ownership.",
+      "proofArtifacts": [
+        { "label": "Context map", "caption": "systems and boundaries", "accent": "blue" },
+        { "label": "Decision note", "caption": "trade-offs", "accent": "purple" },
+        { "label": "Runbook hook", "caption": "operate and recover", "accent": "green" }
+      ],
+      "speakerNotes": "Use the proof slide to prevent the architecture overview from becoming a decorative diagram."
+    },
+    {
+      "type": "ambition",
+      "label": "3 / architecture ambition",
+      "title": "The dream: architecture that helps teams act",
+      "headline": "A useful overview accelerates onboarding, change planning, and incident response.",
+      "ambitionDiagram": "ambition",
+      "badge": "Architecture overview",
+      "closingLine": "Make the system easier to change by making it easier to understand.",
+      "speakerNotes": "Close by connecting architecture clarity to better delivery and operations."
+    }
+  ]
+}

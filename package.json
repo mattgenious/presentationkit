@@ -3,14 +3,43 @@
   "version": "0.1.0",
   "description": "Manifest-driven presentation generation toolkit for evidence-first technical stories.",
   "type": "module",
-  "bin": {
-    "presentationkit": "./src/cli.js"
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
+  "bin": {
+    "presentationkit": "./dist/cli.js"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map",
+    "dist/**/*.js.map",
+    "schemas",
+    "examples",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "check": "node src/cli.js validate examples/operational-ai-support.deck.json",
-    "render:example": "node src/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
-    "build:example": "node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx",
-    "smoke": "npm run check && npm run render:example && npm run build:example"
+    "build": "tsc -p tsconfig.json",
+    "check": "npm run build && node dist/cli.js validate examples/operational-ai-support.deck.json",
+    "inspect:example": "node dist/cli.js inspect examples/operational-ai-support.deck.json",
+    "list:intents": "node dist/cli.js list-intents",
+    "plan:example": "node dist/cli.js plan examples/operational-ai-support.deck.json --out dist/plan --diagrams dist/diagrams --deck-out dist/operational-ai-support.pptx",
+    "preflight:example": "node dist/cli.js preflight examples/operational-ai-support.deck.json --diagrams dist/diagrams",
+    "qa:example": "node dist/cli.js qa/review examples/operational-ai-support.deck.json --out dist/qa",
+    "render:example": "node dist/cli.js render-diagrams examples/operational-ai-support.deck.json --out dist/diagrams",
+    "build:example": "node dist/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic",
+    "validate:examples": "node scripts/examples.js validate",
+    "render:examples": "node scripts/examples.js render-diagrams",
+    "build:examples": "node scripts/examples.js build",
+    "smoke": "npm run check && npm run validate:examples && npm run inspect:example && npm run list:intents && npm run plan:example && npm run preflight:example && npm run qa:example && npm run render:example && npm run build:example"
   },
   "keywords": [
     "presentation",
@@ -25,6 +54,11 @@
     "node": ">=20"
   },
   "dependencies": {
+    "commander": "12.1.0",
     "pptxgenjs": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
   }
 }
