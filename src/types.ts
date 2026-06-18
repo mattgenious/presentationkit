@@ -49,6 +49,22 @@ export interface ThemeConfig {
   [key: string]: unknown;
 }
 
+export interface BrandPackConfig {
+  id?: string;
+  companionSkill?: string;
+  templateReference?: string;
+  templatePath?: string;
+  slideSize?: {
+    width?: number;
+    height?: number;
+    unit?: string;
+    [key: string]: unknown;
+  };
+  requiredChecks?: string[];
+  handoffNotes?: string[];
+  [key: string]: unknown;
+}
+
 export interface ResolvedThemeConfig {
   fonts: Required<Pick<ThemeFonts, 'heading' | 'body'>> & ThemeFonts;
   palette: Required<
@@ -152,6 +168,7 @@ export interface SlideConfig {
 export interface DeckManifest {
   metadata: ManifestMetadata;
   theme?: ThemeConfig;
+  brandPack?: BrandPackConfig;
   diagrams?: Record<string, DiagramConfig>;
   slides: SlideConfig[];
   [key: string]: unknown;

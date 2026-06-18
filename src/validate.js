@@ -77,6 +77,26 @@ function validateDiagramShape(errors, diagram, key, rendererName) {
   }
 }
 
+function validateBrandPack(errors, warnings, brandPack) {
+  if (brandPack === undefined) return;
+  if (!requirePlainObject(errors, brandPack, 'brandPack')) return;
+
+  if (!hasValue(brandPack.id) && !hasValue(brandPack.name)) {
+    warnings.push('brandPack.id is missing; name the external brand pack for QA traceability.');
+  }
+  if (!hasValue(brandPack.companionSkill) && !hasValue(brandPack.templateReference) && !hasValue(brandPack.templatePath)) {
+    warnings.push(
+      'brandPack should reference an external companion skill or template source; PresentationKit must not embed private brand assets.'
+    );
+  }
+  if (brandPack.requiredChecks !== undefined && !Array.isArray(brandPack.requiredChecks)) {
+    errors.push('brandPack.requiredChecks must be an array when provided.');
+  }
+  if (brandPack.handoffNotes !== undefined && !Array.isArray(brandPack.handoffNotes)) {
+    errors.push('brandPack.handoffNotes must be an array when provided.');
+  }
+}
+
 export function validateManifest(manifest, options = {}) {
   const errors = [];
   const warnings = [];
@@ -96,6 +116,8 @@ export function validateManifest(manifest, options = {}) {
   if (manifest.metadata.intent && !presentationIntentIds.has(manifest.metadata.intent)) {
     warnings.push(`metadata.intent should be one of: ${PRESENTATION_INTENT_IDS.join(', ')}.`);
   }
+
+  validateBrandPack(errors, warnings, manifest.brandPack);
 
   if (manifest.diagrams !== undefined && !isPlainObject(manifest.diagrams)) {
     errors.push('diagrams must be an object when provided.');

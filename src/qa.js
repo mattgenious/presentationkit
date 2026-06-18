@@ -43,6 +43,58 @@ function mdCell(value) {
   return String(value ?? '').replaceAll('|', '\\|').replaceAll('\n', '<br>');
 }
 
+function summarizeBrandPack(manifest) {
+  const value = manifest?.brandPack;
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  return {
+    id: value.id ?? value.name ?? 'external-brand-pack',
+    companionSkill: value.companionSkill ?? value.skill ?? '',
+    templateReference: value.templateReference ?? value.templatePath ?? value.template ?? '',
+    slideSize: value.slideSize ?? undefined,
+    requiredChecks: Array.isArray(value.requiredChecks) ? value.requiredChecks : []
+  };
+}
+
+function renderBrandPackChecklist(review) {
+  const brandPack = review.checks.brandPack;
+  if (!brandPack) return '';
+  const slideSize = brandPack.slideSize
+    ? `- Target slide size: ${mdCell(JSON.stringify(brandPack.slideSize))}`
+    : '- Target slide size: confirm from the external template or target team deck before final editing.';
+  const companion = brandPack.companionSkill
+    ? `- Companion skill: ${mdCell(brandPack.companionSkill)}`
+    : '- Companion skill: not specified; use the authorized brand-specific deck workflow if one exists.';
+  const template = brandPack.templateReference
+    ? `- Template/reference: ${mdCell(brandPack.templateReference)}`
+    : '- Template/reference: not specified; inspect the authorized template before applying brand styling.';
+  const requiredChecks = brandPack.requiredChecks.length
+    ? brandPack.requiredChecks.map((check) => `- ${mdCell(check)}`).join('\n')
+    : '- No custom brand-pack checks listed in the manifest.';
+
+  return `## Authorized brand-pack handoff
+
+Brand pack: **${mdCell(brandPack.id)}**
+
+${companion}
+${template}
+${slideSize}
+
+Before final delivery, keep brand-owned assets and rules outside this repository and use the authorized companion skill or template owner as the source of truth.
+
+Brand-pack checks:
+
+${requiredChecks}
+
+Review prompts:
+
+1. Did the brand companion inspect the official template/reference deck rather than guessing from memory?
+2. Does every generated slide map to a deliberate approved layout family?
+3. Are required chrome elements such as logo, legal/confidentiality footer, page numbering, and speaker notes present where the brand pack expects them?
+4. Are fonts, colors, imagery, icon style, and section pacing coming from the authorized external pack, not from PresentationKit defaults?
+5. If this section is merged into an existing team deck, did the final merged deck get rendered and inspected rather than only the standalone source deck?
+`;
+}
+
 function renderPptxProductionChecklist(review) {
   const expectedSlideImages = Array.from({ length: review.checks.slideCount }, (_, index) => {
     const number = String(index + 1).padStart(2, '0');
@@ -272,7 +324,8 @@ export function reviewManifest(manifest, options = {}) {
       usedDiagrams: Array.from(usedDiagrams).sort(),
       unusedDiagrams: Array.from(diagramKeys).filter((key) => !usedDiagrams.has(key)).sort(),
       metricsDetected: metrics.length,
-      aspectRatios
+      aspectRatios,
+      brandPack: summarizeBrandPack(manifest)
     },
     findings
   };
@@ -327,6 +380,7 @@ ${aspectRows.length ? aspectRows.join('\n') : '| n/a | n/a | n/a | No aspect-rat
 5. Are visuals present, referenced, and ratio-safe?
 
 ${renderPptxProductionChecklist(review)}
+${renderBrandPackChecklist(review)}
 `;
 }
 

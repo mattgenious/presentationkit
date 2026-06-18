@@ -43,6 +43,11 @@ Use this rubric before a generated deck is shared for review. It complements sch
    - Template or brand-specific companion work has no leftover placeholders, empty frames, or orphaned visuals.
    - Any visual fix was followed by re-rendering and re-checking affected slides.
 
+7. **Authorized brand-pack readiness**
+   - `brandPack` references the external companion skill or template owner that is authorized to apply private brand rules.
+   - Brand-specific template, fonts, logo/chrome, footer/legal rules, image/icon library, and layout primitives are not committed to PresentationKit.
+   - Final QA inspected the branded or merged deck, not only the neutral PresentationKit draft.
+
 ## CLI quality gate
 
 Run:
@@ -59,4 +64,4 @@ node src/cli.js qa/review path/to/deck.json --out dist/qa
 
 The command writes Markdown and JSON artifacts that can be attached to a review or kept with generated deck outputs.
 
-Use `docs/companion-pptx-skill-workflow.md` when pairing PresentationKit output with a generic `.pptx` inspection skill or a private brand-specific presentation skill.
+Use `docs/companion-pptx-skill-workflow.md` when pairing PresentationKit output with a generic `.pptx` inspection skill or a private brand-specific presentation skill. Use `docs/brand-pack-workflow.md` when the manifest includes `brandPack`.

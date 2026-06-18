@@ -13,6 +13,7 @@
 - SVG diagram generation from data: process flows, architecture maps, deployment footprint cards, and future-loop diagrams.
 - Preflight, QA, and render metadata so generated output is traceable and reviewable.
 - Companion `.pptx` skill handoff guidance for template inspection and visual QA.
+- Optional authorized brand-pack handoff metadata for private template/brand companions while keeping brand assets outside the repo.
 
 ## Quick start
 
@@ -81,6 +82,7 @@ import {
 |---|---|
 | `AGENTS.md` | Repo-level guidance for agent contributors. |
 | `docs/companion-pptx-skill-workflow.md` | How to pair generated decks with generic or brand-specific PPTX inspection skills. |
+| `docs/brand-pack-workflow.md` | How to reference private brand companions without committing their assets or instructions. |
 | `src/cli.js` | Commander-based command entry point. |
 | `src/deck.js` | PPTX generation from a manifest. |
 | `src/diagrams.js` | SVG diagram generation from manifest data. |
