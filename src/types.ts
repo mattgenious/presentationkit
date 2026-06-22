@@ -50,8 +50,10 @@ export interface ThemeConfig {
 }
 
 export interface BrandPackConfig {
+  kind?: 'presentation-brand-pack';
   id?: string;
   companionSkill?: string;
+  brandPackManifest?: string;
   templateReference?: string;
   templatePath?: string;
   slideSize?: {

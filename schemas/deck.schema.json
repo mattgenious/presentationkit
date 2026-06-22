@@ -30,8 +30,17 @@
       "type": "object",
       "description": "Optional handoff metadata for an authorized external brand-specific PPTX companion workflow. Do not embed private brand assets in this manifest.",
       "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["presentation-brand-pack"],
+          "description": "Generic contract marker for external companion skill folders that expose a presentation brand pack."
+        },
         "id": { "type": "string" },
         "companionSkill": { "type": "string" },
+        "brandPackManifest": {
+          "type": "string",
+          "description": "Optional path to the companion skill brand-pack.json. When omitted, agents should look for brand-pack.json in the companionSkill folder."
+        },
         "templateReference": { "type": "string" },
         "templatePath": { "type": "string" },
         "slideSize": {

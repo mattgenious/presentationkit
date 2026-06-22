@@ -81,6 +81,9 @@ function validateBrandPack(errors, warnings, brandPack) {
   if (brandPack === undefined) return;
   if (!requirePlainObject(errors, brandPack, 'brandPack')) return;
 
+  if (brandPack.kind !== undefined && brandPack.kind !== 'presentation-brand-pack') {
+    errors.push('brandPack.kind must be "presentation-brand-pack" when provided.');
+  }
   if (!hasValue(brandPack.id) && !hasValue(brandPack.name)) {
     warnings.push('brandPack.id is missing; name the external brand pack for QA traceability.');
   }
@@ -88,6 +91,9 @@ function validateBrandPack(errors, warnings, brandPack) {
     warnings.push(
       'brandPack should reference an external companion skill or template source; PresentationKit must not embed private brand assets.'
     );
+  }
+  if (hasValue(brandPack.brandPackManifest) && !hasValue(brandPack.companionSkill)) {
+    warnings.push('brandPack.brandPackManifest is most useful with brandPack.companionSkill so agents can locate the external brand pack.');
   }
   if (brandPack.requiredChecks !== undefined && !Array.isArray(brandPack.requiredChecks)) {
     errors.push('brandPack.requiredChecks must be an array when provided.');
