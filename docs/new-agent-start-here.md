@@ -12,6 +12,7 @@ PresentationKit builds technical decks from structured JSON manifests. The repo 
 2. `AGENTS.md` for repo-wide routing, generated artifact rules, verification, and git author requirements.
 3. `docs/contextless-agent-checklist.md` before implementing a deck feature.
 4. `docs/review-checklist.md` before opening a PR.
+5. `docs/open-source-release-checklist.md` before preparing a public release.
 
 ## Work by surface
 
@@ -23,6 +24,7 @@ PresentationKit builds technical decks from structured JSON manifests. The repo 
 | Change diagrams | `src/diagrams.js`, example `diagrams` data | `npm run render:example` or `npm run smoke` |
 | Change CLI behavior | `src/cli.js` | Relevant CLI command plus `npm run check` |
 | Change docs only | `docs/*.md`, `README.md`, `AGENTS.md` | Verify links/paths and run `npm run check` |
+| Prepare public release | `package.json`, `README.md`, `LICENSE`, `docs/open-source-release-checklist.md` | `npm run check` plus package metadata review |
 
 ## Default implementation loop
 

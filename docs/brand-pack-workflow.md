@@ -7,8 +7,10 @@ Use `brandPack` in a manifest when a generated deck must be finalized through an
 ```json
 {
   "brandPack": {
+    "kind": "presentation-brand-pack",
     "id": "private-brand-companion",
     "companionSkill": "local-brand-powerpoint-skill",
+    "brandPackManifest": "local-brand-powerpoint-skill/brand-pack.json",
     "templateReference": "external template or reference deck path",
     "slideSize": { "width": 13.333, "height": 7.5, "unit": "in" },
     "requiredChecks": [
@@ -22,6 +24,47 @@ Use `brandPack` in a manifest when a generated deck must be finalized through an
 ```
 
 Keep the actual template, fonts, logos, photography, icons, palette constants, confidential footer text, internal org facts, and helper implementation in the external brand skill or template repository. This repository should only record the handoff contract.
+
+## Recognizable companion shape
+
+PresentationKit remains brand-neutral. Agents and companion workflows can recognize an external folder as a presentation brand pack when it contains a `brand-pack.json` file shaped like this:
+
+```json
+{
+  "kind": "presentation-brand-pack",
+  "id": "example-presentation-brand",
+  "displayName": "Example Presentation Brand",
+  "skill": "SKILL.md",
+  "slideSize": { "width": 13.333, "height": 7.5, "unit": "in" },
+  "template": "reference/Brand_Template.potx",
+  "assets": ["assets/", "reference/"],
+  "requiredChecks": [
+    "Speaker notes preserved or added on every slide.",
+    "Finished deck rendered to PDF or slide images.",
+    "Every slide inspected for margins, alignment, overflow, clipped text, placeholder remnants, footer, page numbers, and brand chrome."
+  ]
+}
+```
+
+The companion folder may be installed by any private plugin, package manager, local checkout, or internal distribution process. PresentationKit only needs the manifest-level pointer; it does not need to know how the brand pack was installed.
+
+Recommended companion folder:
+
+```text
+brand-presentation-skill/
+  SKILL.md
+  brand-pack.json
+  reference/
+    Brand_Template.potx
+    template_slides/
+    template_fonts/
+  assets/
+    logo.png
+    icons/
+  helpers/
+```
+
+If `brandPack.kind` is `presentation-brand-pack` and `brandPack.companionSkill` points at a folder, agents should first look for `brand-pack.json` in that folder. Use `brandPack.brandPackManifest` only when the manifest is not at the default location.
 
 ## Handoff artifacts
 

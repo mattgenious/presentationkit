@@ -48,7 +48,9 @@ function summarizeBrandPack(manifest) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
   return {
     id: value.id ?? value.name ?? 'external-brand-pack',
+    kind: value.kind ?? '',
     companionSkill: value.companionSkill ?? value.skill ?? '',
+    brandPackManifest: value.brandPackManifest ?? '',
     templateReference: value.templateReference ?? value.templatePath ?? value.template ?? '',
     slideSize: value.slideSize ?? undefined,
     requiredChecks: Array.isArray(value.requiredChecks) ? value.requiredChecks : []
@@ -64,6 +66,11 @@ function renderBrandPackChecklist(review) {
   const companion = brandPack.companionSkill
     ? `- Companion skill: ${mdCell(brandPack.companionSkill)}`
     : '- Companion skill: not specified; use the authorized brand-specific deck workflow if one exists.';
+  const manifest = brandPack.brandPackManifest
+    ? `- Brand-pack manifest: ${mdCell(brandPack.brandPackManifest)}`
+    : brandPack.companionSkill
+      ? '- Brand-pack manifest: look for `brand-pack.json` in the companion skill folder when present.'
+      : '- Brand-pack manifest: not specified.';
   const template = brandPack.templateReference
     ? `- Template/reference: ${mdCell(brandPack.templateReference)}`
     : '- Template/reference: not specified; inspect the authorized template before applying brand styling.';
@@ -76,6 +83,7 @@ function renderBrandPackChecklist(review) {
 Brand pack: **${mdCell(brandPack.id)}**
 
 ${companion}
+${manifest}
 ${template}
 ${slideSize}
 
