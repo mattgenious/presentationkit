@@ -1,6 +1,6 @@
 # Companion PPTX skill workflow
 
-PresentationKit is the source-of-truth layer for manifest-driven deck generation. A generic `.pptx` skill or a brand-specific companion skill should sit after it as an inspection, template, and visual QA layer.
+PresentationKit is the source-of-truth layer for manifest-driven deck generation and can build a complete `.pptx` on its own. A generic `.pptx` skill, local Office workflow, or brand-specific companion skill is optional and should sit after it as an inspection, template, and visual QA layer when final delivery needs that extra pass.
 
 Do not copy proprietary skill instructions, scripts, assets, templates, or brand rules into this repository. Keep this repo brand-neutral and record only reusable workflow boundaries.
 
@@ -14,28 +14,28 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
 
 ## Recommended deck build loop
 
-1. Pick a presentation intent with `node src/cli.js list-intents`.
-2. Draft or update the manifest and run `node src/cli.js inspect <deck.json>`.
+1. Pick a presentation intent with `presentationkit list-intents`.
+2. Draft or update the manifest and run `presentationkit inspect <deck.json>`.
 3. Generate a plan before building:
 
-   ```powershell
-   node src/cli.js plan <deck.json> --out dist/plan --diagrams dist/diagrams --deck-out dist/deck.pptx
+   ```sh
+   presentationkit plan <deck.json> --out dist/plan --diagrams dist/diagrams --deck-out dist/deck.pptx
    ```
 
 4. Run preflight and QA:
 
-   ```powershell
-   node src/cli.js preflight <deck.json> --diagrams dist/diagrams
-   node src/cli.js qa/review <deck.json> --out dist/qa
+   ```sh
+   presentationkit preflight <deck.json> --diagrams dist/diagrams
+   presentationkit qa/review <deck.json> --out dist/qa
    ```
 
 5. Build the PPTX with traceability artifacts:
 
-   ```powershell
-   node src/cli.js build <deck.json> --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic
+   ```sh
+   presentationkit build <deck.json> --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic
    ```
 
-6. Hand these artifacts to the generic or brand-specific PPTX skill:
+6. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill:
    - generated `.pptx`,
    - `dist/plan/storyboard.md`,
    - `dist/qa/presentation-qa.md`,
@@ -81,4 +81,4 @@ When an existing `.pptx` template is involved, inspect it before generating or e
 
 ## PresentationKit QA expectations
 
-`node src/cli.js qa/review` now writes a PPTX production QA section into the Markdown report. Treat it as the handoff checklist between PresentationKit and a `.pptx` inspection skill.
+`presentationkit qa/review` writes a PPTX production QA section into the Markdown report. Treat it as a standalone visual QA checklist, or as the handoff checklist between PresentationKit and a `.pptx` inspection skill when one is used.

@@ -2,8 +2,8 @@
 
 Use the plan step before rendering when a deck needs human review or traceability.
 
-```powershell
-node src/cli.js plan examples/operational-ai-support.deck.json --out dist/plan --diagrams dist/diagrams --deck-out dist/operational-ai-support.pptx
+```sh
+presentationkit plan examples/operational-ai-support.deck.json --out dist/plan --diagrams dist/diagrams --deck-out dist/operational-ai-support.pptx
 ```
 
 The command writes:

@@ -12,12 +12,31 @@
 - Guardrail and audit-trail messaging for responsible technical capability stories.
 - SVG diagram generation from data: process flows, architecture maps, deployment footprint cards, and future-loop diagrams.
 - Preflight, QA, and render metadata so generated output is traceable and reviewable.
-- Companion `.pptx` skill handoff guidance for template inspection and visual QA.
+- Standalone `.pptx` generation through the `presentationkit` CLI; no external PowerPoint skill is required for core deck output.
+- Optional companion `.pptx` or brand-pack handoff guidance for template inspection, visual QA, and private brand finalization.
 - Optional authorized brand-pack handoff metadata for private template/brand companions while keeping brand assets outside the repo, including a generic `presentation-brand-pack` companion shape that external skills can implement.
 
-## Quick start
+## Install
 
-```powershell
+Requires Node.js 20 or newer. Once the package is published to npm:
+
+```sh
+npx presentationkit --help
+npm install -g presentationkit
+presentationkit --help
+```
+
+Until an npm release exists, install directly from GitHub:
+
+```sh
+npm exec --yes --package github:mattgenious/presentationkit -- presentationkit --help
+npm install -g github:mattgenious/presentationkit
+presentationkit --help
+```
+
+For local development from a checkout:
+
+```sh
 npm install
 npm run smoke
 ```
@@ -34,32 +53,32 @@ The smoke flow validates every example and produces the main artifacts under `di
 
 Copy an example manifest and edit the story fields:
 
-```powershell
-Copy-Item examples/operational-ai-support.deck.json my-deck.deck.json
-node src/cli.js list-intents
-node src/cli.js inspect my-deck.deck.json
-node src/cli.js plan my-deck.deck.json --out dist/my-deck-plan --diagrams dist/my-deck-diagrams --deck-out dist/my-deck.pptx
-node src/cli.js preflight my-deck.deck.json --diagrams dist/my-deck-diagrams
-node src/cli.js qa/review my-deck.deck.json --out dist/my-deck-qa
-node src/cli.js build my-deck.deck.json --out dist/my-deck.pptx --diagrams dist/my-deck-diagrams --manifest-out dist/my-deck-render-manifest.json --plan-out dist/my-deck-plan --qa-out dist/my-deck-qa --deterministic
+```sh
+node -e "require('node:fs').copyFileSync('examples/operational-ai-support.deck.json', 'my-deck.deck.json')"
+presentationkit list-intents
+presentationkit inspect my-deck.deck.json
+presentationkit plan my-deck.deck.json --out dist/my-deck-plan --diagrams dist/my-deck-diagrams --deck-out dist/my-deck.pptx
+presentationkit preflight my-deck.deck.json --diagrams dist/my-deck-diagrams
+presentationkit qa/review my-deck.deck.json --out dist/my-deck-qa
+presentationkit build my-deck.deck.json --out dist/my-deck.pptx --diagrams dist/my-deck-diagrams --manifest-out dist/my-deck-render-manifest.json --plan-out dist/my-deck-plan --qa-out dist/my-deck-qa --deterministic
 ```
 
 Use `--verbose` on any command when you need more progress output.
 
 ## CLI
 
-```powershell
-node src/cli.js validate <deck.json> [--json]
-node src/cli.js inspect <deck.json> [--json]
-node src/cli.js list <deck.json> [--json]
-node src/cli.js examples [--json]
-node src/cli.js list-intents [--id intent-id] [--json]
-node src/cli.js plan <deck.json> [--out dist/plan] [--diagrams dist/diagrams] [--deck-out dist/deck.pptx] [--json]
-node src/cli.js preflight <deck.json> [--diagrams dist/diagrams] [--json]
-node src/cli.js qa/review <deck.json> [--out dist/qa] [--json]
-node src/cli.js render-diagrams <deck.json> [--out dist/diagrams]
-node src/cli.js build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams] [--manifest-out dist/render-manifest.json] [--plan-out dist/plan] [--qa-out dist/qa] [--deterministic]
-node src/cli.js export-svg <input.svg> <output.png> [--scale 2]
+```sh
+presentationkit validate <deck.json> [--json]
+presentationkit inspect <deck.json> [--json]
+presentationkit list <deck.json> [--json]
+presentationkit examples [--json]
+presentationkit list-intents [--id intent-id] [--json]
+presentationkit plan <deck.json> [--out dist/plan] [--diagrams dist/diagrams] [--deck-out dist/deck.pptx] [--json]
+presentationkit preflight <deck.json> [--diagrams dist/diagrams] [--json]
+presentationkit qa/review <deck.json> [--out dist/qa] [--json]
+presentationkit render-diagrams <deck.json> [--out dist/diagrams]
+presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams] [--manifest-out dist/render-manifest.json] [--plan-out dist/plan] [--qa-out dist/qa] [--deterministic]
+presentationkit export-svg <input.svg> <output.png> [--scale 2]
 ```
 
 The package build emits `dist/index.js` and `dist/index.d.ts`, so consumers can use the same primitives programmatically:
@@ -81,7 +100,7 @@ import {
 | Path | Purpose |
 |---|---|
 | `AGENTS.md` | Repo-level guidance for agent contributors. |
-| `docs/companion-pptx-skill-workflow.md` | How to pair generated decks with generic or brand-specific PPTX inspection skills. |
+| `docs/companion-pptx-skill-workflow.md` | Optional workflow for pairing generated decks with generic or brand-specific PPTX inspection skills. |
 | `docs/brand-pack-workflow.md` | How to reference and recognize external presentation brand-pack companions without committing their assets or instructions. |
 | `docs/open-source-release-checklist.md` | Public-release checklist for keeping the package reusable and free of private context. |
 | `src/cli.js` | Commander-based command entry point. |

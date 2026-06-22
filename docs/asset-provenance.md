@@ -23,8 +23,8 @@ SVG diagrams produced by `presentationkit render-diagrams` are generated assets.
 
 Run:
 
-```powershell
-node src/cli.js preflight examples/operational-ai-support.deck.json
+```sh
+presentationkit preflight examples/operational-ai-support.deck.json
 ```
 
 The preflight output lists generated diagrams, slide diagram references, and image-like files referenced by manifest fields such as `image`, `thumbnail`, `screenshot`, `logo`, `asset`, `file`, or `path`.

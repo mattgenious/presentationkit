@@ -68,10 +68,10 @@ If `brandPack.kind` is `presentation-brand-pack` and `brandPack.companionSkill` 
 
 ## Handoff artifacts
 
-Generate these from PresentationKit before invoking the brand companion:
+Generate these from PresentationKit before invoking an optional brand companion:
 
-```powershell
-node src/cli.js build path/to/deck.json --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic
+```sh
+presentationkit build path/to/deck.json --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic
 ```
 
 Pass the companion skill:

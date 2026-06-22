@@ -52,16 +52,16 @@ Use this rubric before a generated deck is shared for review. It complements sch
 
 Run:
 
-```powershell
+```sh
 npm run qa:example
 ```
 
 or:
 
-```powershell
-node src/cli.js qa/review path/to/deck.json --out dist/qa
+```sh
+presentationkit qa/review path/to/deck.json --out dist/qa
 ```
 
 The command writes Markdown and JSON artifacts that can be attached to a review or kept with generated deck outputs.
 
-Use `docs/companion-pptx-skill-workflow.md` when pairing PresentationKit output with a generic `.pptx` inspection skill or a private brand-specific presentation skill. Use `docs/brand-pack-workflow.md` when the manifest includes `brandPack`.
+Use `docs/companion-pptx-skill-workflow.md` when optional visual QA, template merging, or a private brand-specific presentation skill is part of final delivery. Use `docs/brand-pack-workflow.md` when the manifest includes `brandPack`.

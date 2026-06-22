@@ -2,8 +2,8 @@
 
 `presentationkit build` writes a render manifest beside the generated deck by default:
 
-```powershell
-node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx
+```sh
+presentationkit build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx
 ```
 
 Default outputs:
@@ -14,8 +14,8 @@ Default outputs:
 
 Use `--manifest-out <path>` to place the render manifest somewhere else:
 
-```powershell
-node src/cli.js build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx --manifest-out dist/operational-ai-support.render.json
+```sh
+presentationkit build examples/operational-ai-support.deck.json --out dist/operational-ai-support.pptx --manifest-out dist/operational-ai-support.render.json
 ```
 
 ## Manifest contents
@@ -37,8 +37,8 @@ The source manifest and generated SVG checksums are deterministic for identical 
 
 Pass `--deterministic` when consumers need metadata without a wall-clock timestamp:
 
-```powershell
-node src/cli.js build examples/operational-ai-support.deck.json --deterministic
+```sh
+presentationkit build examples/operational-ai-support.deck.json --deterministic
 ```
 
 In deterministic mode the render manifest includes `deterministic: true` and a `timestampNote` instead of `generatedAt`. It also omits the output deck checksum and records why, leaving stable source and SVG checksums as the deterministic comparison surface.
