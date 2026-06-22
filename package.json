@@ -22,7 +22,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "presentationkit": "./dist/cli.js"
+    "presentationkit": "dist/cli.js"
   },
   "files": [
     "dist/**/*.js",
@@ -36,6 +36,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsc -p tsconfig.json",
     "check": "npm run build && node dist/cli.js validate examples/operational-ai-support.deck.json",
     "inspect:example": "node dist/cli.js inspect examples/operational-ai-support.deck.json",
@@ -48,7 +49,8 @@
     "validate:examples": "node scripts/examples.js validate",
     "render:examples": "node scripts/examples.js render-diagrams",
     "build:examples": "node scripts/examples.js build",
-    "smoke": "npm run check && npm run validate:examples && npm run inspect:example && npm run list:intents && npm run plan:example && npm run preflight:example && npm run qa:example && npm run render:example && npm run build:example"
+    "smoke:cli": "node scripts/smoke-cli-install.js",
+    "smoke": "npm run check && npm run validate:examples && npm run inspect:example && npm run list:intents && npm run plan:example && npm run preflight:example && npm run qa:example && npm run render:example && npm run build:example && npm run smoke:cli"
   },
   "keywords": [
     "presentation",

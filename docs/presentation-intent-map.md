@@ -15,7 +15,7 @@ PresentationKit decks should declare a clear communication intent before choosin
 | `metric-defensibility-review` | Present metrics while preserving caveats and signal quality. | Proxy data would be misread as SLA-grade truth. | Metric intent → source/calculation → signal quality → caveats → decision use. | Show lineage, sample size, exclusions, and known bias. | Use lineage chains, confidence badges, caveat strips, and metric cards. |
 | `enablement-training` | Teach a repeatable workflow or operating practice. | The workflow is unstable or the deck is only a status briefing. | Learning goal → mental model → guided example → practice → checklist. | Show worked examples, practice artifacts, rubrics, and pitfalls. | Use step cards, do/don’t pairs, worksheets, and checklists. |
 
-Run `node src/cli.js list-intents` to print the same taxonomy from the package.
+Run `presentationkit list-intents` to print the same taxonomy from the package.
 
 ## Generation invariants
 
