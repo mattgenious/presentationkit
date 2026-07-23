@@ -65,6 +65,17 @@ presentationkit build my-deck.deck.json --out dist/my-deck.pptx --diagrams dist/
 
 Use `--verbose` on any command when you need more progress output.
 
+The first generated `.pptx` version starts with a pending visual QA gate. Keep
+the QA status at `review` until the deck has been rendered and inspected. Record
+the evidence from a visual QA bundle or report with:
+
+```sh
+presentationkit qa/review my-deck.deck.json --out dist/my-deck-qa --first-version-visual-qa passed --visual-qa-evidence dist/my-deck-visual-qa
+```
+
+Use `--require-first-version-visual-qa` when a CI or handoff script should fail
+unless the gate is passed with evidence.
+
 ## CLI
 
 ```sh
@@ -75,9 +86,9 @@ presentationkit examples [--json]
 presentationkit list-intents [--id intent-id] [--json]
 presentationkit plan <deck.json> [--out dist/plan] [--diagrams dist/diagrams] [--deck-out dist/deck.pptx] [--json]
 presentationkit preflight <deck.json> [--diagrams dist/diagrams] [--json]
-presentationkit qa/review <deck.json> [--out dist/qa] [--json]
+presentationkit qa/review <deck.json> [--out dist/qa] [--first-version-visual-qa pending|passed|waived] [--visual-qa-evidence path] [--require-first-version-visual-qa] [--json]
 presentationkit render-diagrams <deck.json> [--out dist/diagrams]
-presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams] [--manifest-out dist/render-manifest.json] [--plan-out dist/plan] [--qa-out dist/qa] [--deterministic]
+presentationkit build <deck.json> [--out dist/deck.pptx] [--diagrams dist/diagrams] [--manifest-out dist/render-manifest.json] [--plan-out dist/plan] [--qa-out dist/qa] [--first-version-visual-qa pending|passed|waived] [--visual-qa-evidence path] [--require-first-version-visual-qa] [--deterministic]
 presentationkit export-svg <input.svg> <output.png> [--scale 2]
 ```
 

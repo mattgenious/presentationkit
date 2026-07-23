@@ -35,12 +35,22 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    presentationkit build <deck.json> --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic
    ```
 
-6. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill:
+6. Render the built PPTX and run first-version visual QA before calling the deck ready. Prefer a bundle with:
+   - high-resolution full-slide images,
+   - padded component and group crops when geometry is available,
+   - a visible component-bound rectangle inside each padded crop,
+   - labeled overlays and bounds-only overlays,
+   - contact sheets for sibling comparison.
+7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill:
    - generated `.pptx`,
    - `dist/plan/storyboard.md`,
    - `dist/qa/presentation-qa.md`,
    - `dist/render-manifest.json`,
    - generated slide/diagram images if available.
+8. Record the first-version visual QA evidence in the QA gate:
+   ```sh
+   presentationkit qa/review <deck.json> --out dist/qa --first-version-visual-qa passed --visual-qa-evidence <visual-qa-bundle-or-report>
+   ```
 
 ## Companion-skill inspection brief
 
@@ -54,14 +64,16 @@ Inputs:
 - Storyboard: <path>
 - QA report: <path>
 - Render manifest: <path>
+- Visual QA bundle/report: <path>
 
 Check:
 1. Text extraction matches the storyboard: no missing slides, stale placeholders, wrong ordering, or repeated claims.
 2. Rendered slide images have no overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, or inconsistent alignment.
-3. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
-4. Every slide has a deliberate visual element and a clear dominant message.
-5. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
-6. Any fix is followed by re-rendering the affected slide images and re-checking them.
+3. Component and group crops are checked for local defects, but every finding is confirmed against the full slide or overlay.
+4. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
+5. Every slide has a deliberate visual element and a clear dominant message.
+6. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
+7. Any fix is followed by re-rendering the affected slide images and re-checking them.
 
 Return:
 - Slide-by-slide findings.
@@ -82,4 +94,4 @@ When an existing `.pptx` template is involved, inspect it before generating or e
 
 ## PresentationKit QA expectations
 
-`presentationkit qa/review` writes a PPTX production QA section into the Markdown report. Treat it as a standalone visual QA checklist, or as the handoff checklist between PresentationKit and a `.pptx` inspection skill when one is used.
+`presentationkit qa/review` writes a PPTX production QA section into the Markdown report and keeps the first-version visual QA gate pending until evidence is recorded. Treat it as a standalone visual QA checklist, or as the handoff checklist between PresentationKit and a `.pptx` inspection skill when one is used.

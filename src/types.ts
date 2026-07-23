@@ -67,6 +67,22 @@ export interface BrandPackConfig {
   [key: string]: unknown;
 }
 
+export interface FirstVersionVisualQaConfig {
+  status?: 'pending' | 'passed' | 'waived';
+  evidence?: string | string[];
+  report?: string;
+  bundle?: string;
+  notes?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
+  [key: string]: unknown;
+}
+
+export interface QaConfig {
+  firstVersionVisualQa?: FirstVersionVisualQaConfig;
+  [key: string]: unknown;
+}
+
 export interface ResolvedThemeConfig {
   fonts: Required<Pick<ThemeFonts, 'heading' | 'body'>> & ThemeFonts;
   palette: Required<
@@ -171,6 +187,7 @@ export interface DeckManifest {
   metadata: ManifestMetadata;
   theme?: ThemeConfig;
   brandPack?: BrandPackConfig;
+  qa?: QaConfig;
   diagrams?: Record<string, DiagramConfig>;
   slides: SlideConfig[];
   [key: string]: unknown;

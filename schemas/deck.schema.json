@@ -63,6 +63,36 @@
       },
       "additionalProperties": true
     },
+    "qa": {
+      "type": "object",
+      "description": "Optional QA evidence recorded after generated deck review.",
+      "properties": {
+        "firstVersionVisualQa": {
+          "type": "object",
+          "description": "Visual QA gate for declaring the first generated PPTX version ready.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["pending", "passed", "waived"]
+            },
+            "evidence": {
+              "oneOf": [
+                { "type": "string" },
+                { "type": "array", "items": { "type": "string" } }
+              ],
+              "description": "Path(s) or URI(s) to visual QA bundle, report, rendered slide images, or review evidence."
+            },
+            "report": { "type": "string" },
+            "bundle": { "type": "string" },
+            "notes": { "type": "string" },
+            "reviewedBy": { "type": "string" },
+            "reviewedAt": { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
     "diagrams": {
       "type": "object",
       "additionalProperties": {
