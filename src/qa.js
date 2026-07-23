@@ -115,9 +115,10 @@ Use this section with a generic PPTX inspection skill or any local Office render
 
 1. Extract text from the generated deck and compare it with the manifest/storyboard for missing slides, wrong order, stale placeholders, or repeated claims.
 2. Render each slide to an image and inspect the images, not just the source code. Look for overlaps, clipped text, weak contrast, cramped spacing, inconsistent alignment, stretched assets, or decorative elements that collide with wrapped text.
-3. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
-4. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
-5. Fix issues and re-render the affected slides. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
+3. For icon cards and compact callouts, confirm titles and body text reserve a clear icon column. Text must not start under or run through icons.
+4. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
+5. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
+6. Fix issues and re-render the affected slides. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
 
 Expected visual pass:
 

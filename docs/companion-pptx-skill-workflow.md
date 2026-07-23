@@ -58,9 +58,10 @@ Inputs:
 Check:
 1. Text extraction matches the storyboard: no missing slides, stale placeholders, wrong ordering, or repeated claims.
 2. Rendered slide images have no overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, or inconsistent alignment.
-3. Every slide has a deliberate visual element and a clear dominant message.
-4. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
-5. Any fix is followed by re-rendering the affected slide images and re-checking them.
+3. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
+4. Every slide has a deliberate visual element and a clear dominant message.
+5. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
+6. Any fix is followed by re-rendering the affected slide images and re-checking them.
 
 Return:
 - Slide-by-slide findings.

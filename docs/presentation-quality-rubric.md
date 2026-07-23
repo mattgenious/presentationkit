@@ -40,6 +40,7 @@ Use this rubric before a generated deck is shared for review. It complements sch
 6. **PPTX production readiness**
    - The generated `.pptx` has been text-extracted and compared with the storyboard.
    - Rendered slide images have been inspected for overlaps, clipping, contrast, spacing, alignment, and stretched assets.
+   - Icon cards and compact callouts keep titles and body text clear of the icon column.
    - Template or brand-specific companion work has no leftover placeholders, empty frames, or orphaned visuals.
    - Any visual fix was followed by re-rendering and re-checking affected slides.
 
