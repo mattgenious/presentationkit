@@ -45,6 +45,22 @@ function printValidationResult(file, validation) {
   console.log(`Valid deck manifest: ${file}`);
 }
 
+function reviewOptions(options, extra = {}) {
+  const validVisualQaStatuses = new Set(['pending', 'passed', 'waived']);
+  if (options.firstVersionVisualQa && !validVisualQaStatuses.has(options.firstVersionVisualQa)) {
+    throw new Error('--first-version-visual-qa must be one of: pending, passed, waived.');
+  }
+  return {
+    ...extra,
+    firstVersionVisualQa: {
+      status: options.firstVersionVisualQa,
+      evidence: options.visualQaEvidence,
+      notes: options.visualQaNotes
+    },
+    requireFirstVersionVisualQa: Boolean(options.requireFirstVersionVisualQa)
+  };
+}
+
 function collectSummary(manifest, file) {
   return {
     file,
@@ -208,8 +224,10 @@ async function commandReview(file, options) {
   printWarnings(validation.warnings);
   assertValidDeck(validation);
   const review = reviewManifest(manifest, {
-    minSlides: Number(options.minSlides),
-    diagramTypes: diagramRenderers.names()
+    ...reviewOptions(options, {
+      minSlides: Number(options.minSlides),
+      diagramTypes: diagramRenderers.names()
+    })
   });
   const artifacts = await writeReviewArtifacts(review, path.resolve(options.out));
   if (options.json) {
@@ -279,7 +297,7 @@ async function commandBuild(file, options) {
   });
 
   if (options.qaOut) {
-    const review = reviewManifest(manifest, { diagramTypes: diagramRenderers.names() });
+    const review = reviewManifest(manifest, reviewOptions(options, { diagramTypes: diagramRenderers.names() }));
     await writeReviewArtifacts(review, path.resolve(options.qaOut));
     if (review.summary.counts.error > 0) {
       throw new Error(`QA review found ${review.summary.counts.error} error(s).`);
@@ -383,6 +401,10 @@ async function main() {
     .argument('<deck.json>', 'deck manifest to review')
     .option('--out <dir-or-file>', 'QA output directory or JSON/Markdown file', 'dist/qa')
     .option('--min-slides <count>', 'minimum expected slide count', '1')
+    .option('--first-version-visual-qa <status>', 'first-version visual QA gate status: pending, passed, or waived')
+    .option('--visual-qa-evidence <path>', 'path to visual QA bundle, report, or reviewed artifact evidence')
+    .option('--visual-qa-notes <text>', 'short note about the first-version visual QA decision')
+    .option('--require-first-version-visual-qa', 'fail unless first-version visual QA is passed with evidence')
     .option('--json', 'emit review as JSON')
     .action((file, options) => commandReview(file, { ...options, verbose: program.opts().verbose }));
 
@@ -402,6 +424,10 @@ async function main() {
     .option('--manifest-out <json>', 'render manifest output path')
     .option('--plan-out <dir>', 'also write render-plan/storyboard artifacts')
     .option('--qa-out <dir-or-file>', 'also write QA review artifacts')
+    .option('--first-version-visual-qa <status>', 'first-version visual QA gate status for --qa-out: pending, passed, or waived')
+    .option('--visual-qa-evidence <path>', 'path to visual QA bundle, report, or reviewed artifact evidence for --qa-out')
+    .option('--visual-qa-notes <text>', 'short note about the first-version visual QA decision for --qa-out')
+    .option('--require-first-version-visual-qa', 'fail --qa-out unless first-version visual QA is passed with evidence')
     .option('--deterministic', 'omit wall-clock fields from render manifest')
     .option('--skip-preflight', 'skip dependency and asset preflight checks')
     .action((file, options) => commandBuild(file, { ...options, verbose: program.opts().verbose }));

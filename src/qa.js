@@ -57,6 +57,90 @@ function summarizeBrandPack(manifest) {
   };
 }
 
+function normalizeArray(value) {
+  if (value === undefined || value === null) return [];
+  const values = Array.isArray(value) ? value : [value];
+  return values.map((entry) => String(entry ?? '').trim()).filter(Boolean);
+}
+
+function normalizeFirstVersionVisualQa(manifest, options = {}) {
+  const manifestGate =
+    manifest?.qa?.firstVersionVisualQa ??
+    manifest?.qualityGates?.firstVersionVisualQa ??
+    {};
+  const optionGate = options.firstVersionVisualQa ?? {};
+  const rawStatus = optionGate.status ?? manifestGate.status ?? manifestGate.state ?? 'pending';
+  const status = ['pending', 'passed', 'waived'].includes(String(rawStatus).toLowerCase())
+    ? String(rawStatus).toLowerCase()
+    : 'pending';
+  const evidence = [
+    ...normalizeArray(manifestGate.evidence),
+    ...normalizeArray(manifestGate.report),
+    ...normalizeArray(manifestGate.bundle),
+    ...normalizeArray(optionGate.evidence)
+  ].filter((entry, index, list) => list.indexOf(entry) === index);
+  const notes = String(optionGate.notes ?? manifestGate.notes ?? manifestGate.summary ?? '').trim();
+  const required = Boolean(options.requireFirstVersionVisualQa);
+
+  let level = 'warning';
+  let code = 'first-version-visual-qa-pending';
+  let message = 'First-version visual QA gate is pending; render full slides/component crops and record visual judge evidence before declaring the deck ready.';
+  let gateStatus = 'pending';
+
+  if (status === 'passed' && evidence.length > 0) {
+    level = 'info';
+    code = 'first-version-visual-qa-passed';
+    message = 'First-version visual QA gate has evidence and is passed.';
+    gateStatus = 'passed';
+  } else if (status === 'passed') {
+    level = required ? 'error' : 'warning';
+    code = 'first-version-visual-qa-evidence';
+    message = 'First-version visual QA is marked passed but has no evidence path or report; the deck is not ready.';
+    gateStatus = 'missing-evidence';
+  } else if (status === 'waived') {
+    level = required ? 'error' : 'warning';
+    code = 'first-version-visual-qa-waived';
+    message = 'First-version visual QA was waived; keep the deck in review until a visual pass is run.';
+    gateStatus = 'waived';
+  } else if (required) {
+    level = 'error';
+  }
+
+  return {
+    status: gateStatus,
+    requestedStatus: status,
+    required,
+    evidence,
+    notes,
+    finding: {
+      level,
+      code,
+      message,
+      evidence,
+      notes
+    }
+  };
+}
+
+function renderFirstVersionVisualQaGate(review) {
+  const gate = review.checks.firstVersionVisualQa;
+  const evidence = gate.evidence.length
+    ? gate.evidence.map((entry) => `- ${mdCell(entry)}`).join('\n')
+    : '- No visual QA evidence recorded yet.';
+  const notes = gate.notes ? `\nNotes: ${mdCell(gate.notes)}\n` : '';
+
+  return `## First-version visual QA gate
+
+Status: **${mdCell(gate.status)}**
+
+This gate must be passed before declaring the first generated version ready. Build the deck, render full-slide images, create padded component/group crops with component bounds, inspect full-slide and component artifacts with visual judgement, then record the evidence path.
+
+Evidence:
+
+${evidence}
+${notes}`;
+}
+
 function renderBrandPackChecklist(review) {
   const brandPack = review.checks.brandPack;
   if (!brandPack) return '';
@@ -114,10 +198,14 @@ function renderPptxProductionChecklist(review) {
 Use this section with a generic PPTX inspection skill or any local Office rendering workflow after the PPTX is built.
 
 1. Extract text from the generated deck and compare it with the manifest/storyboard for missing slides, wrong order, stale placeholders, or repeated claims.
-2. Render each slide to an image and inspect the images, not just the source code. Look for overlaps, clipped text, weak contrast, cramped spacing, inconsistent alignment, stretched assets, or decorative elements that collide with wrapped text.
-3. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
-4. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
-5. Fix issues and re-render the affected slides. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
+2. Render each slide to a high-resolution image with the same renderer/fonts the presenter will use. Inspect the images, not just the source code.
+3. Create padded component/group crops when component geometry is available. Keep a visible rectangle for the actual component bounds so reviewers can distinguish component content from context bleed.
+4. Inspect full slides, grouped regions, contact sheets, and component crops. Crops alone are not enough because they miss slide-level balance, gutters, connectors, and reading-order problems.
+5. Look for overlaps, clipped text, weak contrast, cramped spacing, inconsistent alignment, stretched assets, or decorative elements that collide with wrapped text.
+6. For icon cards and compact callouts, confirm titles and body text reserve a clear icon column. Text must not start under or run through icons.
+7. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
+8. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
+9. Fix issues and re-render the affected slides. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
 
 Expected visual pass:
 
@@ -225,6 +313,17 @@ export function reviewManifest(manifest, options = {}) {
   const validation = validateManifest(manifest);
   for (const error of validation.errors) addFinding(findings, 'error', 'manifest-schema', error);
   for (const warning of validation.warnings) addFinding(findings, 'warning', 'manifest-warning', warning);
+  const firstVersionVisualQa = normalizeFirstVersionVisualQa(manifest, options);
+  addFinding(
+    findings,
+    firstVersionVisualQa.finding.level,
+    firstVersionVisualQa.finding.code,
+    firstVersionVisualQa.finding.message,
+    {
+      evidence: firstVersionVisualQa.finding.evidence,
+      notes: firstVersionVisualQa.finding.notes
+    }
+  );
 
   const slides = Array.isArray(manifest?.slides) ? manifest.slides : [];
   const diagrams = manifest?.diagrams && typeof manifest.diagrams === 'object' ? manifest.diagrams : {};
@@ -333,6 +432,13 @@ export function reviewManifest(manifest, options = {}) {
       unusedDiagrams: Array.from(diagramKeys).filter((key) => !usedDiagrams.has(key)).sort(),
       metricsDetected: metrics.length,
       aspectRatios,
+      firstVersionVisualQa: {
+        status: firstVersionVisualQa.status,
+        requestedStatus: firstVersionVisualQa.requestedStatus,
+        required: firstVersionVisualQa.required,
+        evidence: firstVersionVisualQa.evidence,
+        notes: firstVersionVisualQa.notes
+      },
       brandPack: summarizeBrandPack(manifest)
     },
     findings
@@ -387,6 +493,7 @@ ${aspectRows.length ? aspectRows.join('\n') : '| n/a | n/a | n/a | No aspect-rat
 4. Are metrics clearly caveated as observed, estimated, or directional?
 5. Are visuals present, referenced, and ratio-safe?
 
+${renderFirstVersionVisualQaGate(review)}
 ${renderPptxProductionChecklist(review)}
 ${renderBrandPackChecklist(review)}
 `;
