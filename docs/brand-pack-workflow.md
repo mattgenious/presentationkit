@@ -2,7 +2,7 @@
 
 PresentationKit can prepare a deck for a private brand-specific companion skill without absorbing that skill's proprietary assets or instructions.
 
-Use `brandPack` in a manifest when a generated deck must be finalized through an authorized external brand workflow:
+Use `brandPack` in a manifest when a generated deck must be finalized through an authorized external brand workflow. The companion is a post-build brand/QA layer, not a replacement for PresentationKit's generator:
 
 ```json
 {
@@ -68,7 +68,7 @@ If `brandPack.kind` is `presentation-brand-pack` and `brandPack.companionSkill` 
 
 ## Handoff artifacts
 
-Generate these from PresentationKit before invoking an optional brand companion:
+Generate these from PresentationKit before invoking an optional brand companion. If these artifacts do not exist yet, build with PresentationKit first instead of starting a custom companion generator:
 
 ```sh
 presentationkit build path/to/deck.json --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic

@@ -29,5 +29,5 @@ Use this before opening a PresentationKit PR.
 - [ ] Slide strategy choices can be traced to `docs/story-strategy-template.md`.
 - [ ] First-version visual QA is still pending for unreviewed generated decks, or it is passed with an evidence path/report.
 - [ ] Generated `.pptx` output has a visual QA plan using `docs/companion-pptx-skill-workflow.md` when the task involves final deck delivery; companion skills are optional, not required for core PresentationKit output.
-- [ ] Brand-specific decks include `docs/brand-pack-workflow.md` handoff artifacts and final visual QA from the authorized companion skill.
+- [ ] Brand-specific decks include `docs/brand-pack-workflow.md` handoff artifacts and final visual QA from the authorized companion skill; the companion did not replace the PresentationKit build without a documented limitation.
 - [ ] Generated `dist/` artifacts were left out of the commit unless explicitly requested.

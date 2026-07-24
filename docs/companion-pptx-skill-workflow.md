@@ -1,6 +1,6 @@
 # Companion PPTX skill workflow
 
-PresentationKit is the source-of-truth layer for manifest-driven deck generation and can build a complete `.pptx` on its own. A generic `.pptx` skill, local Office workflow, or brand-specific companion skill is optional and should sit after it as an inspection, template, and visual QA layer when final delivery needs that extra pass.
+PresentationKit is the source-of-truth layer for manifest-driven deck generation and can build a complete `.pptx` on its own. A generic `.pptx` skill, local Office workflow, or brand-specific companion skill is optional and should sit after it as an inspection, template, and visual QA layer when final delivery needs that extra pass. Do not replace the PresentationKit build with a custom `pptxgenjs`/OpenXML generator unless a specific PresentationKit limitation is documented first.
 
 Do not copy proprietary skill instructions, scripts, assets, templates, or brand rules into this repository. Keep this repo brand-neutral and record only reusable workflow boundaries.
 
@@ -10,7 +10,7 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
 |---|---|---|
 | PresentationKit | Manifest schema, story intent, diagram data, generated SVGs, PPTX generation, render plan, QA markdown, render manifest. | Private brand templates, confidential imagery, one-off presentation content. |
 | Generic PPTX skill | Reading existing `.pptx` files, extracting text, creating slide thumbnails/images, inspecting visual output, editing generated decks when needed. | PresentationKit manifest semantics or repo source changes. |
-| Brand-specific companion skill | Brand colors, template rules, typography, approved layouts, logo placement, legal/compliance constraints. | Generic PresentationKit behavior or non-public content committed to this repo. |
+| Brand-specific companion skill | Brand colors, template rules, typography, approved layouts, logo placement, legal/compliance constraints. | Generic PresentationKit behavior, replacement deck generation, or non-public content committed to this repo. |
 
 ## Recommended deck build loop
 
@@ -41,7 +41,7 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    - a visible component-bound rectangle inside each padded crop,
    - labeled overlays and bounds-only overlays,
    - contact sheets for sibling comparison.
-7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill:
+7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill after the PresentationKit build:
    - generated `.pptx`,
    - `dist/plan/storyboard.md`,
    - `dist/qa/presentation-qa.md`,
