@@ -133,7 +133,7 @@ function renderFirstVersionVisualQaGate(review) {
 
 Status: **${mdCell(gate.status)}**
 
-This gate must be passed before declaring the first generated version ready. Build the deck, render full-slide images, create padded component/group crops with component bounds, inspect full-slide and component artifacts with visual judgement, then record the evidence path.
+This gate must be passed before declaring the first generated version ready. Build the deck, render the final PPTX to full-slide images, create padded component/group crops with component bounds when geometry is available, and record evidence from an independent visual reviewer or subagent. The deck-builder's own manual scan, OpenXML validation, COM open, or contact sheet alone is not enough evidence.
 
 Evidence:
 
@@ -184,7 +184,8 @@ Review prompts:
 3. Are required chrome elements such as logo, legal/confidentiality footer, page numbering, and speaker notes present where the brand pack expects them?
 4. Are fonts, colors, imagery, icon style, and section pacing coming from the authorized external pack, not from PresentationKit defaults?
 5. If the companion edits the PPTX, does the final edited file open/render without repair or invalid-file warnings?
-6. If this section is merged into an existing team deck, did the final merged deck get rendered and inspected rather than only the standalone source deck?
+6. Did an independent visual reviewer or subagent inspect the final rendered artifact, rather than the deck-builder marking their own manual scan as passed?
+7. If this section is merged into an existing team deck, did the final merged deck get rendered and inspected rather than only the standalone source deck?
 `;
 }
 
@@ -206,8 +207,9 @@ Use this section with a generic PPTX inspection skill or any local Office render
 6. For icon cards and compact callouts, confirm titles and body text reserve a clear icon column. Text must not start under or run through icons.
 7. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
 8. If a companion or Office automation edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings before recording visual QA as passed.
-9. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
-10. Fix issues and re-render the affected slides. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
+9. Use an independent visual reviewer or subagent for the final rendered artifact. The deck-builder's own manual scan, OpenXML validation, COM open, or contact sheet alone is not enough to pass visual QA.
+10. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
+11. Fix issues and re-render the affected slides. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
 
 Expected visual pass:
 

@@ -41,13 +41,14 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    - a visible component-bound rectangle inside each padded crop,
    - labeled overlays and bounds-only overlays,
    - contact sheets for sibling comparison.
+   For agent-generated decks, use an independent visual reviewer or subagent; the deck-builder's own manual scan, OpenXML validation, COM open, or contact sheet alone is not enough to pass visual QA.
 7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill after the PresentationKit build:
    - generated `.pptx`,
    - `dist/plan/storyboard.md`,
    - `dist/qa/presentation-qa.md`,
    - `dist/render-manifest.json`,
    - generated slide/diagram images if available.
-8. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings. Visual QA evidence must come from that final artifact, not only the pre-companion PresentationKit output.
+8. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings. Visual QA evidence must come from an independent review of that final artifact, not only the pre-companion PresentationKit output.
 9. Record the first-version visual QA evidence in the QA gate:
    ```sh
    presentationkit qa/review <deck.json> --out dist/qa --first-version-visual-qa passed --visual-qa-evidence <visual-qa-bundle-or-report>
@@ -75,7 +76,8 @@ Check:
 5. Every slide has a deliberate visual element and a clear dominant message.
 6. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
 7. If a companion or Office automation edited the PPTX, the final file opens/renders without repair or invalid-file warnings.
-8. Any fix is followed by re-rendering the affected slide images and re-checking them.
+8. The visual QA finding was produced from the final rendered slide images by someone/something other than the deck-builder.
+9. Any fix is followed by re-rendering the affected slide images and re-checking them.
 
 Return:
 - Slide-by-slide findings.
