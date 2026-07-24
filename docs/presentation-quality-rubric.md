@@ -11,8 +11,9 @@ Use this rubric before a generated deck is shared for review. It complements sch
 | Needs work | One or more errors mean the deck is incomplete or misleading. | Fix before sharing. |
 
 `presentationkit qa/review` keeps a first generated deck at **Review** until the
-first-version visual QA gate is passed with evidence. Use **Ready** only after a
-rendered-slide/component inspection has been recorded.
+first-version visual QA gate is passed with final component-bundle evidence. Use
+**Ready** only after full slides, component/group crops, a component manifest,
+and an independent visual review report have been recorded.
 
 ## Rubric
 
@@ -44,7 +45,7 @@ rendered-slide/component inspection has been recorded.
 6. **PPTX production readiness**
    - The generated `.pptx` has been text-extracted and compared with the storyboard.
    - Rendered slide images have been inspected for overlaps, clipping, contrast, spacing, alignment, and stretched assets.
-   - Component and group crops are used when geometry is available, but they are paired with full-slide images, overlays, and contact sheets so relational layout defects are still visible.
+   - Component and group crops exist for each logical component/group and are paired with full-slide images, overlays, and contact sheets so relational layout defects are still visible.
    - Icon cards and compact callouts keep titles and body text clear of the icon column.
    - Template or brand-specific companion work has no leftover placeholders, empty frames, or orphaned visuals.
    - Any visual fix was followed by re-rendering and re-checking affected slides.
@@ -70,14 +71,16 @@ presentationkit qa/review path/to/deck.json --out dist/qa
 
 The command writes Markdown and JSON artifacts that can be attached to a review or kept with generated deck outputs.
 
-The first-version visual QA gate can be passed from a reviewed visual bundle or
-report:
+The first-version visual QA gate can be passed from a reviewed component visual
+QA bundle:
 
 ```sh
 presentationkit qa/review path/to/deck.json --out dist/qa --first-version-visual-qa passed --visual-qa-evidence dist/visual-qa
 ```
 
 Use `--require-first-version-visual-qa` to make the pending gate a hard failure
-for delivery scripts.
+for delivery scripts. With `passed`, the evidence path must be a directory with
+full-slide renders, component/group crops, a component manifest, and an
+independent visual review report.
 
 Use `docs/companion-pptx-skill-workflow.md` when optional visual QA, template merging, or a private brand-specific presentation skill is part of final delivery. Use `docs/brand-pack-workflow.md` when the manifest includes `brandPack`.

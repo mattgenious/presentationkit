@@ -35,12 +35,14 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    presentationkit build <deck.json> --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic
    ```
 
-6. Render the built PPTX and run first-version visual QA before calling the deck ready. Prefer a bundle with:
+6. Render the built PPTX and run first-version visual QA before calling the deck ready. The required evidence bundle has:
    - high-resolution full-slide images,
-   - padded component and group crops when geometry is available,
+   - padded component and group crops for every logical component/group,
    - a visible component-bound rectangle inside each padded crop,
    - labeled overlays and bounds-only overlays,
-   - contact sheets for sibling comparison.
+   - contact sheets for sibling comparison,
+   - a component manifest tying crop IDs to slides, bounds, expected text, and helper/source,
+   - an independent visual review report from a fresh-eyes reviewer or subagent.
    For agent-generated decks, use an independent visual reviewer or subagent; the deck-builder's own manual scan, OpenXML validation, COM open, or contact sheet alone is not enough to pass visual QA.
 7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill after the PresentationKit build:
    - generated `.pptx`,
@@ -48,7 +50,7 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    - `dist/qa/presentation-qa.md`,
    - `dist/render-manifest.json`,
    - generated slide/diagram images if available.
-8. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings. Visual QA evidence must come from an independent review of that final artifact, not only the pre-companion PresentationKit output.
+8. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings. Visual QA evidence must come from an independent component-bundle review of that final artifact, not only the pre-companion PresentationKit output.
 9. Record the first-version visual QA evidence in the QA gate:
    ```sh
    presentationkit qa/review <deck.json> --out dist/qa --first-version-visual-qa passed --visual-qa-evidence <visual-qa-bundle-or-report>
@@ -71,13 +73,14 @@ Inputs:
 Check:
 1. Text extraction matches the storyboard: no missing slides, stale placeholders, wrong ordering, or repeated claims.
 2. Rendered slide images have no overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, or inconsistent alignment.
-3. Component and group crops are checked for local defects, but every finding is confirmed against the full slide or overlay.
+3. Component and group crops exist for every logical component/group and are checked for local defects; every finding is confirmed against the full slide or overlay.
 4. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
 5. Every slide has a deliberate visual element and a clear dominant message.
 6. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
 7. If a companion or Office automation edited the PPTX, the final file opens/renders without repair or invalid-file warnings.
 8. The visual QA finding was produced from the final rendered slide images by someone/something other than the deck-builder.
-9. Any fix is followed by re-rendering the affected slide images and re-checking them.
+9. A full-slide-only export is treated as incomplete evidence, not a passed gate.
+10. Any fix is followed by re-rendering the affected slide/component images and re-checking them.
 
 Return:
 - Slide-by-slide findings.
