@@ -1,6 +1,6 @@
 # Companion PPTX skill workflow
 
-PresentationKit is the source-of-truth layer for manifest-driven deck generation and can build a complete `.pptx` on its own. A generic `.pptx` skill, local Office workflow, or brand-specific companion skill is optional and should sit after it as an inspection, template, and visual QA layer when final delivery needs that extra pass.
+PresentationKit is the source-of-truth layer for manifest-driven deck generation and can build a complete `.pptx` on its own. A generic `.pptx` skill, local Office workflow, or brand-specific companion skill is optional and should sit after it as an inspection, template, and visual QA layer when final delivery needs that extra pass. Do not replace the PresentationKit build with a custom `pptxgenjs`/OpenXML generator unless a specific PresentationKit limitation is documented first.
 
 Do not copy proprietary skill instructions, scripts, assets, templates, or brand rules into this repository. Keep this repo brand-neutral and record only reusable workflow boundaries.
 
@@ -10,7 +10,7 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
 |---|---|---|
 | PresentationKit | Manifest schema, story intent, diagram data, generated SVGs, PPTX generation, render plan, QA markdown, render manifest. | Private brand templates, confidential imagery, one-off presentation content. |
 | Generic PPTX skill | Reading existing `.pptx` files, extracting text, creating slide thumbnails/images, inspecting visual output, editing generated decks when needed. | PresentationKit manifest semantics or repo source changes. |
-| Brand-specific companion skill | Brand colors, template rules, typography, approved layouts, logo placement, legal/compliance constraints. | Generic PresentationKit behavior or non-public content committed to this repo. |
+| Brand-specific companion skill | Brand colors, template rules, typography, approved layouts, logo placement, legal/compliance constraints. | Generic PresentationKit behavior, replacement deck generation, or non-public content committed to this repo. |
 
 ## Recommended deck build loop
 
@@ -41,13 +41,15 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    - a visible component-bound rectangle inside each padded crop,
    - labeled overlays and bounds-only overlays,
    - contact sheets for sibling comparison.
-7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill:
+   For agent-generated decks, use an independent visual reviewer or subagent; the deck-builder's own manual scan, OpenXML validation, COM open, or contact sheet alone is not enough to pass visual QA.
+7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill after the PresentationKit build:
    - generated `.pptx`,
    - `dist/plan/storyboard.md`,
    - `dist/qa/presentation-qa.md`,
    - `dist/render-manifest.json`,
    - generated slide/diagram images if available.
-8. Record the first-version visual QA evidence in the QA gate:
+8. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings. Visual QA evidence must come from an independent review of that final artifact, not only the pre-companion PresentationKit output.
+9. Record the first-version visual QA evidence in the QA gate:
    ```sh
    presentationkit qa/review <deck.json> --out dist/qa --first-version-visual-qa passed --visual-qa-evidence <visual-qa-bundle-or-report>
    ```
@@ -73,7 +75,9 @@ Check:
 4. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
 5. Every slide has a deliberate visual element and a clear dominant message.
 6. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
-7. Any fix is followed by re-rendering the affected slide images and re-checking them.
+7. If a companion or Office automation edited the PPTX, the final file opens/renders without repair or invalid-file warnings.
+8. The visual QA finding was produced from the final rendered slide images by someone/something other than the deck-builder.
+9. Any fix is followed by re-rendering the affected slide images and re-checking them.
 
 Return:
 - Slide-by-slide findings.

@@ -2,7 +2,7 @@
 
 PresentationKit can prepare a deck for a private brand-specific companion skill without absorbing that skill's proprietary assets or instructions.
 
-Use `brandPack` in a manifest when a generated deck must be finalized through an authorized external brand workflow:
+Use `brandPack` in a manifest when a generated deck must be finalized through an authorized external brand workflow. The companion is a post-build brand/QA layer, not a replacement for PresentationKit's generator:
 
 ```json
 {
@@ -68,7 +68,7 @@ If `brandPack.kind` is `presentation-brand-pack` and `brandPack.companionSkill` 
 
 ## Handoff artifacts
 
-Generate these from PresentationKit before invoking an optional brand companion:
+Generate these from PresentationKit before invoking an optional brand companion. If these artifacts do not exist yet, build with PresentationKit first instead of starting a custom companion generator:
 
 ```sh
 presentationkit build path/to/deck.json --out dist/deck.pptx --diagrams dist/diagrams --manifest-out dist/render-manifest.json --plan-out dist/plan --qa-out dist/qa --deterministic
@@ -93,7 +93,9 @@ The brand companion should:
 4. Apply brand-owned typography, palette, logo/chrome, legal footer rules, and approved imagery from the external pack.
 5. Preserve or add speaker notes for every slide.
 6. Render every finished slide to images and inspect the images for margin, alignment, contrast, wrapping, clipped text, overlaps, placeholder remnants, stretched assets, and missing brand chrome.
-7. Re-render changed slides after fixes and inspect the final merged deck, not only the standalone section.
+7. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings.
+8. Use an independent visual reviewer or subagent for the final rendered artifact; the deck-builder's manual scan is not enough.
+9. Re-render changed slides after fixes and inspect the final merged deck, not only the standalone section.
 
 ## Private brand companion use
 
