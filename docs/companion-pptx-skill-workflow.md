@@ -47,7 +47,8 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    - `dist/qa/presentation-qa.md`,
    - `dist/render-manifest.json`,
    - generated slide/diagram images if available.
-8. Record the first-version visual QA evidence in the QA gate:
+8. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings. Visual QA evidence must come from that final artifact, not only the pre-companion PresentationKit output.
+9. Record the first-version visual QA evidence in the QA gate:
    ```sh
    presentationkit qa/review <deck.json> --out dist/qa --first-version-visual-qa passed --visual-qa-evidence <visual-qa-bundle-or-report>
    ```
@@ -73,7 +74,8 @@ Check:
 4. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
 5. Every slide has a deliberate visual element and a clear dominant message.
 6. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
-7. Any fix is followed by re-rendering the affected slide images and re-checking them.
+7. If a companion or Office automation edited the PPTX, the final file opens/renders without repair or invalid-file warnings.
+8. Any fix is followed by re-rendering the affected slide images and re-checking them.
 
 Return:
 - Slide-by-slide findings.

@@ -93,7 +93,8 @@ The brand companion should:
 4. Apply brand-owned typography, palette, logo/chrome, legal footer rules, and approved imagery from the external pack.
 5. Preserve or add speaker notes for every slide.
 6. Render every finished slide to images and inspect the images for margin, alignment, contrast, wrapping, clipped text, overlaps, placeholder remnants, stretched assets, and missing brand chrome.
-7. Re-render changed slides after fixes and inspect the final merged deck, not only the standalone section.
+7. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings.
+8. Re-render changed slides after fixes and inspect the final merged deck, not only the standalone section.
 
 ## Private brand companion use
 
