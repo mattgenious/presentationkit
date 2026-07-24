@@ -42,8 +42,8 @@ Do not copy proprietary skill instructions, scripts, assets, templates, or brand
    - labeled overlays and bounds-only overlays,
    - contact sheets for sibling comparison,
    - a component manifest tying crop IDs to slides, bounds, expected text, and helper/source,
-   - an independent visual review report from a fresh-eyes reviewer or subagent.
-   For agent-generated decks, use an independent visual reviewer or subagent; the deck-builder's own manual scan, OpenXML validation, COM open, or contact sheet alone is not enough to pass visual QA.
+   - raw independent visual review output from a fresh-eyes reviewer or subagent.
+   For agent-generated decks, use an independent visual reviewer or subagent; the deck-builder's own manual scan, coordinator-written PASS summary, OpenXML validation, COM open, or contact sheet alone is not enough to pass visual QA.
 7. If you need extra visual QA, brand finalization, or template merging, hand these artifacts to a generic or brand-specific PPTX skill after the PresentationKit build:
    - generated `.pptx`,
    - `dist/plan/storyboard.md`,
@@ -71,7 +71,7 @@ Inputs:
 - Visual QA bundle/report: <path>
 
 Task:
-Find what is wrong or could be improved before deciding whether this deck is ready. Use your own visual judgement; do not limit the review to named checklist items. For each meaningful issue, name the slide/crop, explain why it hurts the audience or presenter, and propose a concrete fix. If nothing material is wrong, say what you inspected and why the deck looks presentation-ready.
+Find what is wrong or could be improved before deciding whether this deck is ready. Use your own visual judgement; do not limit the review to named checklist items. For each meaningful issue, name the slide/crop, explain why it hurts the audience or presenter, and propose a concrete fix. Readable is not enough: ugly, sparse, amateur, or poorly balanced output is a finding. If nothing material is wrong, say what you inspected and why the deck looks presentation-ready.
 
 Minimum evidence to inspect:
 - Text extraction vs. storyboard for missing slides, stale placeholders, wrong ordering, or repeated claims.
@@ -79,10 +79,10 @@ Minimum evidence to inspect:
 - Component/group crops for every logical component/group, confirmed against full slides or overlays.
 - Brand/template completeness when used: no empty frames, hidden placeholders, orphaned icons, unused layout slots, or missing chrome.
 - Final PPTX open/render status if a companion or Office automation edited the file.
-- Fresh-eyes/subagent findings from someone/something other than the deck-builder.
+- Raw fresh-eyes/subagent findings from someone/something other than the deck-builder; do not replace them with a coordinator-written PASS summary.
 - Re-rendered affected slide/component images after fixes.
 
-Examples to consider, not the review boundary: overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, inconsistent alignment, card chrome/rounded-corner mismatches, weak typography rhythm, icon/text collisions, unclear dominant messages, and full-slide-only evidence being treated as a pass.
+Examples to consider, not the review boundary: overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, inconsistent alignment, card chrome/rounded-corner mismatches, weak typography rhythm, icon/text collisions, unclear dominant messages, cards with more than half their body left blank, massive unused slide space, and full-slide-only evidence being treated as a pass.
 
 Return:
 - Slide-by-slide findings.

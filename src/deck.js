@@ -7,6 +7,7 @@ import { createRendererRegistry } from './renderer-registry.js';
 import { assertValidManifest } from './validate.js';
 import {
   WIDE,
+  addAccentRail,
   addCard,
   addFooter,
   addImageOrPlaceholder,
@@ -131,14 +132,7 @@ function addProofArtifacts(pptx, slide, artifacts, theme) {
     const y = 2.26 + index * 1.24;
     const accent = colorForAccent(theme, artifact.accent);
     addCard(pptx, slide, 9.06, y, 3.63, 1.08, theme);
-    slide.addShape(pptx.ShapeType.rect, {
-      x: 9.06,
-      y,
-      w: 0.08,
-      h: 1.08,
-      fill: { color: accent },
-      line: { color: accent, transparency: 100 }
-    });
+    addAccentRail(pptx, slide, 9.06, y, 1.08, accent);
     addPlaceholder(pptx, slide, artifact.label, 9.28, y + 0.13, 1.42, 0.78, theme, {
       fill: paleForAccent(theme, artifact.accent),
       line: accent,

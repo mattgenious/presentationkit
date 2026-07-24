@@ -221,7 +221,7 @@ async function validateVisualQaBundleFiles(root, files) {
   missing.push(...await validateComponentManifestFiles(root, manifestFiles));
   if (!hasFullSlides) missing.push('full-slide renders');
   if (!hasComponentCrops) missing.push('component/group crop images');
-  if (!hasIndependentReview) missing.push('independent visual review report');
+  if (!hasIndependentReview) missing.push('raw independent visual critique');
   return missing;
 }
 

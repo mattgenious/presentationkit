@@ -13,7 +13,7 @@ Use this rubric before a generated deck is shared for review. It complements sch
 `presentationkit qa/review` keeps a first generated deck at **Review** until the
 first-version visual QA gate is passed with final component-bundle evidence. Use
 **Ready** only after full slides, component/group crops, a component manifest,
-and an independent visual review report have been recorded.
+and raw independent visual critique have been recorded.
 
 ## Rubric
 
@@ -43,12 +43,12 @@ and an independent visual review report have been recorded.
    - Aspect-ratio metadata is available when the renderer or manifest can provide it.
 
 6. **PPTX production readiness**
-   - An independent reviewer produced an open critique of what looks wrong or could be improved before applying minimum evidence checks; the review is not only yes/no checklist answers.
+   - An independent reviewer produced raw open critique of what looks wrong or could be improved before applying minimum evidence checks; the review is not only yes/no checklist answers or a coordinator-written PASS summary.
    - The generated `.pptx` has been text-extracted and compared with the storyboard.
    - Rendered slide images have been inspected for what looks wrong, weak, unfinished, confusing, or improvable, with overlaps, clipping, contrast, spacing, alignment, and stretched assets treated as examples.
    - Component and group crops exist for each logical component/group and are paired with full-slide images, overlays, and contact sheets so relational layout defects are still visible.
-   - Card chrome is inspected in crops: borders, fills, accent bars, and rounded corners line up cleanly.
-   - List/text cards have intentional title/body insets, line spacing, readable type, and balanced vertical space use.
+   - Card chrome is inspected in crops: borders, fills, accent rails, and rounded corners look intentional together.
+   - List/text cards have intentional title/body insets, line spacing, readable type, and balanced vertical space use; readable cards with massive empty bodies are not ready.
    - Icon cards and compact callouts keep titles and body text clear of the icon column.
    - Template or brand-specific companion work has no leftover placeholders, empty frames, or orphaned visuals.
    - Any visual fix was followed by re-rendering and re-checking affected slides.
@@ -83,7 +83,7 @@ presentationkit qa/review path/to/deck.json --out dist/qa --first-version-visual
 
 Use `--require-first-version-visual-qa` to make the pending gate a hard failure
 for delivery scripts. With `passed`, the evidence path must be a directory with
-full-slide renders, component/group crops, a component manifest, and an
-independent visual review report.
+full-slide renders, component/group crops, a component manifest, and raw
+independent visual critique.
 
 Use `docs/companion-pptx-skill-workflow.md` when optional visual QA, template merging, or a private brand-specific presentation skill is part of final delivery. Use `docs/brand-pack-workflow.md` when the manifest includes `brandPack`.

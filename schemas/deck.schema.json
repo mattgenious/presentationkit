@@ -80,7 +80,7 @@
                 { "type": "string" },
                 { "type": "array", "items": { "type": "string" } }
               ],
-              "description": "Path(s) or URI(s) to the final visual QA bundle. Required handoff evidence should include full-slide renders, component/group crops, a component manifest, and an independent visual review report."
+              "description": "Path(s) or URI(s) to the final visual QA bundle. Required handoff evidence should include full-slide renders, component/group crops, a component manifest, and raw independent visual critique."
             },
             "report": { "type": "string" },
             "bundle": { "type": "string" },

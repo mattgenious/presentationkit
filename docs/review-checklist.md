@@ -27,7 +27,7 @@ Use this before opening a PresentationKit PR.
 - [ ] Titles, headlines, labels, captions, and speaker notes do not repeat the same claim unnecessarily.
 - [ ] Metrics are framed defensibly using `docs/metric-defensibility-template.md`.
 - [ ] Slide strategy choices can be traced to `docs/story-strategy-template.md`.
-- [ ] First-version visual QA is still pending for unreviewed generated decks, or it is passed with final component-bundle evidence and an independent reviewer/subagent report that starts with open critique, not only yes/no checklist answers.
+- [ ] First-version visual QA is still pending for unreviewed generated decks, or it is passed with final component-bundle evidence and raw independent reviewer/subagent critique, not only yes/no checklist answers or a coordinator PASS summary.
 - [ ] Generated `.pptx` output has a visual QA plan using `docs/companion-pptx-skill-workflow.md` when the task involves final deck delivery; companion skills are optional, not required for core PresentationKit output.
 - [ ] Brand-specific decks include `docs/brand-pack-workflow.md` handoff artifacts and final visual QA from the authorized companion skill; the companion did not replace the PresentationKit build without a documented limitation, and any final companion-edited PPTX opens/renders cleanly.
 - [ ] Generated `dist/` artifacts were left out of the commit unless explicitly requested.

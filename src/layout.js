@@ -87,6 +87,20 @@ export function addCard(pptx, slide, x, y, w, h, theme, opts = {}) {
   });
 }
 
+export function addAccentRail(pptx, slide, x, y, h, color, opts = {}) {
+  const pad = opts.pad ?? Math.min(0.12, h / 4);
+  const railW = opts.width ?? 0.06;
+  slide.addShape(pptx.ShapeType.roundRect, {
+    x: x + (opts.xInset ?? 0.12),
+    y: y + pad,
+    w: railW,
+    h: Math.max(0.05, h - pad * 2),
+    rectRadius: opts.radius ?? railW / 2,
+    fill: { color },
+    line: { color, transparency: 100 }
+  });
+}
+
 export function addPill(pptx, slide, value, x, y, w, theme, opts = {}) {
   const h = opts.h ?? 0.36;
   addCard(pptx, slide, x, y, w, h, theme, {
