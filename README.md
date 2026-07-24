@@ -68,7 +68,8 @@ Use `--verbose` on any command when you need more progress output.
 The first generated `.pptx` version starts with a pending visual QA gate. Keep
 the QA status at `review` until the final deck has a component visual QA bundle:
 full-slide renders, component/group crops, a component manifest, and an
-independent visual review report. Record that bundle with:
+independent visual review report that starts by finding what is wrong or could be
+improved, not by answering only fixed checklist questions. Record that bundle with:
 
 ```sh
 presentationkit qa/review my-deck.deck.json --out dist/my-deck-qa --first-version-visual-qa passed --visual-qa-evidence dist/my-deck-visual-qa
