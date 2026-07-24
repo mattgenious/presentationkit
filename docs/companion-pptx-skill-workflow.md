@@ -70,23 +70,25 @@ Inputs:
 - Render manifest: <path>
 - Visual QA bundle/report: <path>
 
-Check:
-1. Text extraction matches the storyboard: no missing slides, stale placeholders, wrong ordering, or repeated claims.
-2. Rendered slide images have no overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, or inconsistent alignment.
-3. Component and group crops exist for every logical component/group and are checked for local defects; every finding is confirmed against the full slide or overlay.
-4. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
-5. Every slide has a deliberate visual element and a clear dominant message.
-6. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
-7. If a companion or Office automation edited the PPTX, the final file opens/renders without repair or invalid-file warnings.
-8. The visual QA finding was produced from the final rendered slide images by someone/something other than the deck-builder.
-9. A full-slide-only export is treated as incomplete evidence, not a passed gate.
-10. Any fix is followed by re-rendering the affected slide/component images and re-checking them.
+Task:
+Find what is wrong or could be improved before deciding whether this deck is ready. Use your own visual judgement; do not limit the review to named checklist items. For each meaningful issue, name the slide/crop, explain why it hurts the audience or presenter, and propose a concrete fix. If nothing material is wrong, say what you inspected and why the deck looks presentation-ready.
+
+Minimum evidence to inspect:
+- Text extraction vs. storyboard for missing slides, stale placeholders, wrong ordering, or repeated claims.
+- Final rendered slide images, not just source files.
+- Component/group crops for every logical component/group, confirmed against full slides or overlays.
+- Brand/template completeness when used: no empty frames, hidden placeholders, orphaned icons, unused layout slots, or missing chrome.
+- Final PPTX open/render status if a companion or Office automation edited the file.
+- Fresh-eyes/subagent findings from someone/something other than the deck-builder.
+- Re-rendered affected slide/component images after fixes.
+
+Examples to consider, not the review boundary: overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, inconsistent alignment, card chrome/rounded-corner mismatches, weak typography rhythm, icon/text collisions, unclear dominant messages, and full-slide-only evidence being treated as a pass.
 
 Return:
 - Slide-by-slide findings.
 - Blocking fixes before presentation use.
 - Non-blocking polish suggestions.
-- Whether a second visual pass found no new issues.
+- Whether a second visual pass found no new issues, with the evidence inspected.
 ```
 
 ## Template intake
@@ -101,4 +103,4 @@ When an existing `.pptx` template is involved, inspect it before generating or e
 
 ## PresentationKit QA expectations
 
-`presentationkit qa/review` writes a PPTX production QA section into the Markdown report and keeps the first-version visual QA gate pending until evidence is recorded. Treat it as a standalone visual QA checklist, or as the handoff checklist between PresentationKit and a `.pptx` inspection skill when one is used.
+`presentationkit qa/review` writes a PPTX production QA section into the Markdown report and keeps the first-version visual QA gate pending until evidence is recorded. Treat it as an open critique brief plus minimum evidence requirements, or as the handoff between PresentationKit and a `.pptx` inspection skill when one is used.

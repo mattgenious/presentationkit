@@ -177,42 +177,45 @@ Brand-pack checks:
 
 ${requiredChecks}
 
-Review prompts:
+Review brief:
 
-1. Did the brand companion inspect the official template/reference deck rather than guessing from memory?
-2. Does every generated slide map to a deliberate approved layout family?
-3. Are required chrome elements such as logo, legal/confidentiality footer, page numbering, and speaker notes present where the brand pack expects them?
-4. Are fonts, colors, imagery, icon style, and section pacing coming from the authorized external pack, not from PresentationKit defaults?
-5. If the companion edits the PPTX, does the final edited file open/render without repair or invalid-file warnings?
-6. Did the final evidence bundle include component/group crops plus a component manifest, not only full-slide exports?
-7. Did an independent visual reviewer or subagent inspect the final rendered artifact, rather than the deck-builder marking their own manual scan as passed?
-8. If this section is merged into an existing team deck, did the final merged deck get rendered and inspected rather than only the standalone source deck?
+Act as a skeptical brand reviewer, not a checklist confirmer. Find what looks wrong, off-brand, unfinished, or improvable in the final rendered artifact, explain why it matters, and recommend a concrete fix. Only after that open critique, cover these minimum evidence points:
+
+- The official template/reference deck shaped the design decisions.
+- Each generated slide maps to a deliberate approved layout family.
+- Required chrome such as logo, legal/confidentiality footer, page numbering, and speaker notes appears where the brand pack expects it.
+- Fonts, colors, imagery, icon style, and section pacing come from the authorized external pack, not PresentationKit defaults.
+- If the companion edits the PPTX, the final edited file opens/renders without repair or invalid-file warnings.
+- The final evidence bundle includes component/group crops plus a component manifest, not only full-slide exports.
+- An independent visual reviewer or subagent inspected the final rendered artifact instead of the deck-builder marking their own scan as passed.
+- If this section is merged into an existing team deck, the final merged deck was rendered and inspected, not only the standalone source deck.
 `;
 }
 
 function renderPptxProductionChecklist(review) {
   const expectedSlideImages = Array.from({ length: review.checks.slideCount }, (_, index) => {
     const number = String(index + 1).padStart(2, '0');
-    return `- Slide image ${number}: confirm the visual matches the manifest title, presenter intent, and expected diagram/proof artifact.`;
+    return `- Slide image ${number}: state the strongest visual/content issue or improvement opportunity; if none, say why the slide looks ready for its presenter intent.`;
   });
 
   return `## PPTX production QA
 
 Use this section with a generic PPTX inspection skill or any local Office rendering workflow after the PPTX is built.
 
-1. Extract text from the generated deck and compare it with the manifest/storyboard for missing slides, wrong order, stale placeholders, or repeated claims.
-2. Render each slide to a high-resolution image with the same renderer/fonts the presenter will use. Inspect the images, not just the source code.
-3. Create padded component/group crops for every logical component/group. Keep a visible rectangle for the actual component bounds so reviewers can distinguish component content from context bleed.
-4. Inspect full slides, grouped regions, contact sheets, and component crops. Crops alone are not enough because they miss slide-level balance, gutters, connectors, and reading-order problems.
-5. Look for overlaps, clipped text, weak contrast, cramped spacing, inconsistent alignment, stretched assets, or decorative elements that collide with wrapped text.
-6. For icon cards and compact callouts, confirm titles and body text reserve a clear icon column. Text must not start under or run through icons.
-7. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
-8. If a companion or Office automation edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings before recording visual QA as passed.
-9. Use an independent visual reviewer or subagent for the final rendered artifact. The deck-builder's own manual scan, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough to pass visual QA.
-10. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
-11. Fix issues and re-render the affected slide/component images. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
+Run this as an open-ended critique before deciding whether the deck is ready: what looks wrong, weak, confusing, ugly, unfinished, or improvable? For each meaningful issue, name the slide/crop, explain why it hurts the audience or presenter, and suggest a concrete fix. If you find no meaningful issue, say what you inspected and why the deck still looks presentation-ready.
 
-Expected visual pass:
+Minimum evidence to inspect:
+
+- Extracted text compared with the manifest/storyboard for missing slides, wrong order, stale placeholders, or repeated claims.
+- High-resolution slide renders from the same renderer/fonts the presenter will use.
+- Padded component/group crops for every logical component/group, with visible actual-bounds rectangles.
+- Full slides, grouped regions, overlays/contact sheets, and component crops; crops alone miss slide-level balance, gutters, connectors, and reading-order problems.
+- Final edited PPTX open/render status when a companion or Office automation edits the file.
+- Independent visual reviewer or subagent findings for the final rendered artifact; deck-builder self-review, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough.
+
+Examples of issues to catch, not a complete checklist: overlaps, clipping, weak contrast, cramped spacing, inconsistent alignment, stretched assets, decorative collisions after text wraps, card chrome that does not meet rounded edges, poor list/text rhythm, icon/text collisions, repeated generic layouts, unused template slots, orphaned shapes, and placeholder media.
+
+Expected per-slide critique:
 
 ${expectedSlideImages.length ? expectedSlideImages.join('\n') : '- No slides were found; fix manifest validation first.'}
 `;

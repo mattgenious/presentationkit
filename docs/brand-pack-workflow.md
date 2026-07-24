@@ -92,11 +92,13 @@ The brand companion should:
 3. Map each PresentationKit slide to a deliberate approved layout family instead of repeating one generic layout.
 4. Apply brand-owned typography, palette, logo/chrome, legal footer rules, and approved imagery from the external pack.
 5. Preserve or add speaker notes for every slide.
-6. Render every finished slide to images and inspect the images for margin, alignment, contrast, wrapping, clipped text, overlaps, placeholder remnants, stretched assets, and missing brand chrome.
+6. Render every finished slide to images and inspect the images as an open critique: what looks wrong, off-brand, unfinished, or improvable?
 7. If the companion edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings.
 8. Export component/group crops and a component manifest for the final rendered artifact; full-slide-only evidence is incomplete.
-9. Use an independent visual reviewer or subagent for the final rendered artifact; the deck-builder's manual scan is not enough.
-10. Re-render changed slides/components after fixes and inspect the final merged deck, not only the standalone section.
+9. Use judgement before examples: flag anything ugly, awkward, amateur, weirdly spaced, hard to read, or likely to distract the presenter even if no named check covers it.
+10. Treat card chrome, list/text rhythm, margin, alignment, contrast, wrapping, clipped text, overlaps, placeholder remnants, stretched assets, and missing brand chrome as minimum examples, not the full review scope.
+11. Use an independent visual reviewer or subagent for the final rendered artifact; the deck-builder's manual scan is not enough.
+12. Re-render changed slides/components after fixes and inspect the final merged deck, not only the standalone section.
 
 ## Private brand companion use
 
