@@ -133,7 +133,7 @@ function renderFirstVersionVisualQaGate(review) {
 
 Status: **${mdCell(gate.status)}**
 
-This gate must be passed before declaring the first generated version ready. Build the deck, render the final PPTX to full-slide images, create padded component/group crops for every logical component/group, include a component manifest, and record evidence from an independent visual reviewer or subagent. The deck-builder's own manual scan, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough evidence.
+This gate must be passed before declaring the first generated version ready. Build the deck, render the final PPTX to full-slide images, create padded component/group crops for every logical component/group, include a component manifest, and record raw evidence from an independent visual reviewer or subagent. The deck-builder's own manual scan, rewritten PASS summary, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough evidence.
 
 Evidence:
 
@@ -187,7 +187,7 @@ Act as a skeptical brand reviewer, not a checklist confirmer. Find what looks wr
 - Fonts, colors, imagery, icon style, and section pacing come from the authorized external pack, not PresentationKit defaults.
 - If the companion edits the PPTX, the final edited file opens/renders without repair or invalid-file warnings.
 - The final evidence bundle includes component/group crops plus a component manifest, not only full-slide exports.
-- An independent visual reviewer or subagent inspected the final rendered artifact instead of the deck-builder marking their own scan as passed.
+- Raw independent visual reviewer or subagent output is preserved; a coordinator-written PASS summary is not a substitute for the critique.
 - If this section is merged into an existing team deck, the final merged deck was rendered and inspected, not only the standalone source deck.
 `;
 }
@@ -202,7 +202,7 @@ function renderPptxProductionChecklist(review) {
 
 Use this section with a generic PPTX inspection skill or any local Office rendering workflow after the PPTX is built.
 
-Run this as an open-ended critique before deciding whether the deck is ready: what looks wrong, weak, confusing, ugly, unfinished, or improvable? For each meaningful issue, name the slide/crop, explain why it hurts the audience or presenter, and suggest a concrete fix. If you find no meaningful issue, say what you inspected and why the deck still looks presentation-ready.
+Run this as an open-ended critique before deciding whether the deck is ready: what looks wrong, weak, confusing, ugly, unfinished, or improvable? For each meaningful issue, name the slide/crop, explain why it hurts the audience or presenter, and suggest a concrete fix. Readable is not enough: if a card, list, or layout looks ugly, sparse, amateur, or poorly balanced, call it out. If you find no meaningful issue, say what you inspected and why the deck still looks presentation-ready.
 
 Minimum evidence to inspect:
 
@@ -211,9 +211,9 @@ Minimum evidence to inspect:
 - Padded component/group crops for every logical component/group, with visible actual-bounds rectangles.
 - Full slides, grouped regions, overlays/contact sheets, and component crops; crops alone miss slide-level balance, gutters, connectors, and reading-order problems.
 - Final edited PPTX open/render status when a companion or Office automation edits the file.
-- Independent visual reviewer or subagent findings for the final rendered artifact; deck-builder self-review, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough.
+- Raw independent visual reviewer or subagent findings for the final rendered artifact; deck-builder self-review, coordinator-written PASS summaries, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough.
 
-Examples of issues to catch, not a complete checklist: overlaps, clipping, weak contrast, cramped spacing, inconsistent alignment, stretched assets, decorative collisions after text wraps, card chrome that does not meet rounded edges, poor list/text rhythm, icon/text collisions, repeated generic layouts, unused template slots, orphaned shapes, and placeholder media.
+Examples of issues to catch, not a complete checklist: overlaps, clipping, weak contrast, cramped spacing, inconsistent alignment, stretched assets, decorative collisions after text wraps, card chrome that does not meet rounded edges, poor list/text rhythm, icon/text collisions, repeated generic layouts, cards with more than half their body left blank, massive unused slide space, unused template slots, orphaned shapes, and placeholder media.
 
 Expected per-slide critique:
 
