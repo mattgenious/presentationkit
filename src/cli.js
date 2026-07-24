@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fs from 'node:fs/promises';
 import path from 'node:path';
 import { Command } from 'commander';
 import { buildDeck, slideRenderers } from './deck.js';
@@ -151,6 +152,109 @@ function ensureSafeRenderManifestPath(renderManifestPath, { deckPath, manifestPa
   }
 }
 
+async function collectEvidenceFiles(dir, root = dir) {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const absolute = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...await collectEvidenceFiles(absolute, root));
+    } else if (entry.isFile()) {
+      files.push(path.relative(root, absolute));
+    }
+  }
+  return files;
+}
+
+function isImageFile(file) {
+  return /\.(?:png|jpe?g|webp)$/i.test(file);
+}
+
+function componentRecordsFromManifest(value) {
+  if (Array.isArray(value)) return value;
+  if (!value || typeof value !== 'object') return [];
+  if (Array.isArray(value.components)) return value.components;
+  if (Array.isArray(value.items)) return value.items;
+  if (Array.isArray(value.slides)) {
+    return value.slides.flatMap((slide) => Array.isArray(slide?.components) ? slide.components : []);
+  }
+  return [];
+}
+
+async function validateComponentManifestFiles(root, manifestFiles) {
+  if (manifestFiles.length === 0) return ['component manifest'];
+  const errors = [];
+  for (const manifestFile of manifestFiles) {
+    const manifestPath = path.join(root, manifestFile);
+    try {
+      const parsed = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+      const records = componentRecordsFromManifest(parsed);
+      const nonFullSlideRecords = records.filter((record) => String(record?.kind ?? '').toLowerCase() !== 'full-slide');
+      if (nonFullSlideRecords.length > 0) return [];
+      errors.push(`${manifestFile}: no non-full-slide component/group records`);
+    } catch (error) {
+      errors.push(`${manifestFile}: ${error.message}`);
+    }
+  }
+  return errors.length > 0 ? errors : ['component manifest with non-full-slide records'];
+}
+
+async function validateVisualQaBundleFiles(root, files) {
+  const normalized = files.map((file) => file.replaceAll('\\', '/').toLowerCase());
+  const imageFiles = normalized.filter(isImageFile);
+  const manifestFiles = normalized.filter((file) => {
+    const base = path.posix.basename(file);
+    return ['qa-crops-manifest.json', 'component-manifest.json', 'components.json'].includes(base);
+  });
+  const hasFullSlides = imageFiles.some((file) => {
+    const base = path.posix.basename(file);
+    return file.includes('full-slide') || /^slide[-_]\d+/.test(base);
+  });
+  const hasComponentCrops = imageFiles.some((file) => {
+    return !file.includes('contact') && (file.includes('crop') || file.includes('component') || file.includes('group'));
+  });
+  const hasIndependentReview = normalized.some((file) => {
+    return /\.(?:json|md|txt)$/i.test(file) && !file.includes('manifest') && /(agent|review|finding|report)/.test(file);
+  });
+
+  const missing = [];
+  missing.push(...await validateComponentManifestFiles(root, manifestFiles));
+  if (!hasFullSlides) missing.push('full-slide renders');
+  if (!hasComponentCrops) missing.push('component/group crop images');
+  if (!hasIndependentReview) missing.push('independent visual review report');
+  return missing;
+}
+
+async function validateVisualQaEvidencePath(evidencePath) {
+  const resolved = path.resolve(evidencePath);
+  let stats;
+  try {
+    stats = await fs.stat(resolved);
+  } catch {
+    return [`${evidencePath}: path does not exist`];
+  }
+  if (!stats.isDirectory()) {
+    return [`${evidencePath}: evidence must be a directory containing a component visual QA bundle`];
+  }
+  const files = await collectEvidenceFiles(resolved);
+  const missing = await validateVisualQaBundleFiles(resolved, files);
+  return missing.map((item) => `${evidencePath}: missing ${item}`);
+}
+
+async function assertRequiredVisualQaEvidenceBundle(review) {
+  const gate = review.checks.firstVersionVisualQa;
+  if (!gate.required || gate.requestedStatus !== 'passed') return;
+  const evidence = gate.evidence ?? [];
+  if (evidence.length === 0) return;
+  const errors = [];
+  for (const evidencePath of evidence) {
+    const pathErrors = await validateVisualQaEvidencePath(evidencePath);
+    if (pathErrors.length === 0) return;
+    errors.push(...pathErrors);
+  }
+  throw new Error(`--require-first-version-visual-qa needs final component visual QA evidence:\n${errors.map((error) => `- ${error}`).join('\n')}`);
+}
+
 async function commandValidate(file, options) {
   const { validation } = await readDeck(file, { verbose: options.verbose });
   if (options.json) {
@@ -229,6 +333,7 @@ async function commandReview(file, options) {
       diagramTypes: diagramRenderers.names()
     })
   });
+  await assertRequiredVisualQaEvidenceBundle(review);
   const artifacts = await writeReviewArtifacts(review, path.resolve(options.out));
   if (options.json) {
     outputJson({ review, artifacts });
@@ -298,6 +403,7 @@ async function commandBuild(file, options) {
 
   if (options.qaOut) {
     const review = reviewManifest(manifest, reviewOptions(options, { diagramTypes: diagramRenderers.names() }));
+    await assertRequiredVisualQaEvidenceBundle(review);
     await writeReviewArtifacts(review, path.resolve(options.qaOut));
     if (review.summary.counts.error > 0) {
       throw new Error(`QA review found ${review.summary.counts.error} error(s).`);
