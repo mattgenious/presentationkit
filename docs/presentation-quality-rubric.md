@@ -43,9 +43,12 @@ and an independent visual review report have been recorded.
    - Aspect-ratio metadata is available when the renderer or manifest can provide it.
 
 6. **PPTX production readiness**
+   - An independent reviewer first made a holistic visual judgement and flagged anything ugly, awkward, amateur, weirdly spaced, or hard to read, even if not covered by a specific checklist item.
    - The generated `.pptx` has been text-extracted and compared with the storyboard.
    - Rendered slide images have been inspected for overlaps, clipping, contrast, spacing, alignment, and stretched assets.
    - Component and group crops exist for each logical component/group and are paired with full-slide images, overlays, and contact sheets so relational layout defects are still visible.
+   - Card chrome is inspected in crops: borders, fills, accent bars, and rounded corners line up cleanly.
+   - List/text cards have intentional title/body insets, line spacing, readable type, and balanced vertical space use.
    - Icon cards and compact callouts keep titles and body text clear of the icon column.
    - Template or brand-specific companion work has no leftover placeholders, empty frames, or orphaned visuals.
    - Any visual fix was followed by re-rendering and re-checking affected slides.

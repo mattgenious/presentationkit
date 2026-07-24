@@ -200,17 +200,20 @@ function renderPptxProductionChecklist(review) {
 
 Use this section with a generic PPTX inspection skill or any local Office rendering workflow after the PPTX is built.
 
-1. Extract text from the generated deck and compare it with the manifest/storyboard for missing slides, wrong order, stale placeholders, or repeated claims.
-2. Render each slide to a high-resolution image with the same renderer/fonts the presenter will use. Inspect the images, not just the source code.
-3. Create padded component/group crops for every logical component/group. Keep a visible rectangle for the actual component bounds so reviewers can distinguish component content from context bleed.
-4. Inspect full slides, grouped regions, contact sheets, and component crops. Crops alone are not enough because they miss slide-level balance, gutters, connectors, and reading-order problems.
-5. Look for overlaps, clipped text, weak contrast, cramped spacing, inconsistent alignment, stretched assets, or decorative elements that collide with wrapped text.
-6. For icon cards and compact callouts, confirm titles and body text reserve a clear icon column. Text must not start under or run through icons.
-7. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
-8. If a companion or Office automation edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings before recording visual QA as passed.
-9. Use an independent visual reviewer or subagent for the final rendered artifact. The deck-builder's own manual scan, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough to pass visual QA.
-10. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
-11. Fix issues and re-render the affected slide/component images. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
+1. Start with a holistic visual judgement pass: would this look polished and intentional to a tired presenter? Flag anything ugly, awkward, amateur, weirdly spaced, or hard to read even if it is not named below.
+2. Extract text from the generated deck and compare it with the manifest/storyboard for missing slides, wrong order, stale placeholders, or repeated claims.
+3. Render each slide to a high-resolution image with the same renderer/fonts the presenter will use. Inspect the images, not just the source code.
+4. Create padded component/group crops for every logical component/group. Keep a visible rectangle for the actual component bounds so reviewers can distinguish component content from context bleed.
+5. Inspect full slides, grouped regions, contact sheets, and component crops. Crops alone are not enough because they miss slide-level balance, gutters, connectors, and reading-order problems.
+6. Look for overlaps, clipped text, weak contrast, cramped spacing, inconsistent alignment, stretched assets, or decorative elements that collide with wrapped text.
+7. Inspect card chrome in component crops: borders, fills, accent bars, and rounded corners must line up cleanly. A square accent strip that does not meet a rounded card edge is a defect.
+8. Inspect text rhythm in list/text cards: title inset, body inset, line spacing, font size/weight, and vertical space use must look intentional. Cramped text at the top with large unused space below is a defect.
+9. For icon cards and compact callouts, confirm titles and body text reserve a clear icon column. Text must not start under or run through icons.
+10. If a source template or brand-specific companion skill is used, map each slide to a deliberate layout before editing; vary layouts to match content instead of repeating one text-heavy pattern.
+11. If a companion or Office automation edits the PPTX, verify the final edited file opens/renders without repair or invalid-file warnings before recording visual QA as passed.
+12. Use an independent visual reviewer or subagent for the final rendered artifact. The deck-builder's own manual scan, OpenXML validation, COM open, contact sheet, or full-slide-only export is not enough to pass visual QA.
+13. Remove unused template slots, orphaned shapes, and placeholder media rather than leaving empty frames or invisible text behind.
+14. Fix issues and re-render the affected slide/component images. Do not treat the first generated deck as final until at least one visual inspection pass has found or consciously ruled out issues.
 
 Expected visual pass:
 

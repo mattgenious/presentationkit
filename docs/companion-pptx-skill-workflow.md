@@ -71,16 +71,19 @@ Inputs:
 - Visual QA bundle/report: <path>
 
 Check:
-1. Text extraction matches the storyboard: no missing slides, stale placeholders, wrong ordering, or repeated claims.
-2. Rendered slide images have no overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, or inconsistent alignment.
-3. Component and group crops exist for every logical component/group and are checked for local defects; every finding is confirmed against the full slide or overlay.
-4. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
-5. Every slide has a deliberate visual element and a clear dominant message.
-6. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
-7. If a companion or Office automation edited the PPTX, the final file opens/renders without repair or invalid-file warnings.
-8. The visual QA finding was produced from the final rendered slide images by someone/something other than the deck-builder.
-9. A full-slide-only export is treated as incomplete evidence, not a passed gate.
-10. Any fix is followed by re-rendering the affected slide/component images and re-checking them.
+1. First make a holistic visual judgement: would this look polished and intentional to a tired presenter? Flag anything ugly, awkward, amateur, weirdly spaced, or hard to read even if no checklist item names it.
+2. Text extraction matches the storyboard: no missing slides, stale placeholders, wrong ordering, or repeated claims.
+3. Rendered slide images have no overlapping objects, clipped text, accidental wrapping, stretched assets, low contrast, cramped spacing, or inconsistent alignment.
+4. Component and group crops exist for every logical component/group and are checked for local defects; every finding is confirmed against the full slide or overlay.
+5. Card chrome is clean: borders, fills, accent bars, and rounded corners line up; square accent strips do not float away from rounded card edges.
+6. List/text cards have intentional typography rhythm: title inset, body inset, line spacing, readable font size/weight, and balanced vertical space use.
+7. Icon cards and compact callouts reserve a clear icon column; body text does not start under or run through icons.
+8. Every slide has a deliberate visual element and a clear dominant message.
+9. Template or brand-specific elements are complete: no empty frames, hidden placeholders, orphaned icons, or unused layout slots.
+10. If a companion or Office automation edited the PPTX, the final file opens/renders without repair or invalid-file warnings.
+11. The visual QA finding was produced from the final rendered slide images by someone/something other than the deck-builder.
+12. A full-slide-only export is treated as incomplete evidence, not a passed gate.
+13. Any fix is followed by re-rendering the affected slide/component images and re-checking them.
 
 Return:
 - Slide-by-slide findings.
